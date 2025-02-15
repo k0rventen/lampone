@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitea-act-runner
+spec:
+  selector:
+    matchLabels:
+      app: gitea-act-runner
+  template:
+    metadata:
+      labels:
+        app: gitea-act-runner
+    spec:
+      containers:
+        - name: gitea-act-runner
+          image: vegardit/gitea-act-runner:dind-latest
+          env:
+            - name: GITEA_INSTANCE_URL
+              value: "http://gitea:3000"
+            - name: GITEA_RUNNER_REGISTRATION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: gitea-ci-token
+                  key: token
+          securityContext:
+            privileged: true

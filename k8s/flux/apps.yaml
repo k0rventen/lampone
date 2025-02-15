@@ -1,16 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloud
+  namespace: flux-system
+spec:
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: ./k8s/apps/cloud
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 10m
+  targetNamespace: cloud
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: gitea
   namespace: flux-system
 spec:
   interval: 10m0s
-  # dependsOn:
-  #   - name: infra
+  targetNamespace: gitea
+  path: ./k8s/apps/gitea
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./k8s/apps/ks.yaml
-  prune: true
-  wait: true
-  timeout: 5m0s

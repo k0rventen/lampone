@@ -1,0 +1,9 @@
+dependencies:
+- name: appchart
+  repository: file://../appchart
+  version: 1.0.0
+- name: cloudflare-tunnel-remote
+  repository: https://cloudflare.github.io/helm-charts
+  version: 0.1.2
+digest: sha256:fcd6da5b1aeda3c764f4aee5aeafe12be2d77481047fbce8f8e2382e9a46a602
+generated: "2025-02-15T02:08:50.523149772+01:00"

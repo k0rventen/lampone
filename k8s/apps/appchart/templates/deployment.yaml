@@ -59,30 +59,6 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  #volumeName: pv-{{$.Release.Namespace}}-{{ .pvc }}
----
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   annotations:
-#     pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
-#   name: pv-{{$.Release.Namespace}}-{{ .pvc }}
-# spec:
-#   capacity:
-#     storage: 5Gi
-#   accessModes:
-#     - ReadWriteMany
-#   persistentVolumeReclaimPolicy: Retain
-#   storageClassName: nfs-csi
-#   mountOptions:
-#     - nfsvers=4.2
-#   csi:
-#     driver: nfs.csi.k8s.io
-#     volumeHandle: 192.168.100.1#nfs#pv-{{$.Release.Namespace}}-{{ .pvc }}##
-#     volumeAttributes:
-#       server: 192.168.100.1
-#       share: /nfs
-#       subdir: pv-{{$.Release.Namespace}}-{{ .pvc }}
 {{- end }}
 {{- end }}
 

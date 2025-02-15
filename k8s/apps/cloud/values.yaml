@@ -1,3 +1,5 @@
+cloudflare-tunnel-remote:
+  replicaCount: 1
 appchart:
   apps:
     - name: glance

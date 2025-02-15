@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard
+spec:
+  selector:
+    matchLabels:
+      app: adguard
+  template:
+    metadata:
+      labels:
+        app: adguard
+    spec:
+      hostNetwork: true
+      nodeName: "drupelet-1"
+      containers:
+        - name: adguard
+          image: adguard/adguardhome
+          volumeMounts:
+            - mountPath: "/opt/adguardhome/conf"
+              name: adguard-data
+            - mountPath: "/opt/adguardhome/work"
+              name: adguard-data
+          resources: {}
+      volumes:
+        - name: adguard-data
+          persistentVolumeClaim:
+            claimName: adguard-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adguard-data
+spec:
+  resources:
+    requests:
+      storage: 100Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
