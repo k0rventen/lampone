@@ -7,7 +7,7 @@ appVersion: "1.16.0"
 
 dependencies:
   - name: appchart
-    repository: file://../../appchart
+    repository: file://../appchart
     version: ">= 0.0.0"
   - name: cloudflare-tunnel-remote
     version: "0.1.2"
