@@ -19,6 +19,16 @@ appchart:
       image: traefik/whoami
       service: 80
 
+    - name: countdown
+      image: gitea.cocointhe.cloud/coco/countdown
+      imagePullSecret: registry-creds
+      service: 8080
+
+    - name: blog
+      image: gitea.cocointhe.cloud/coco/k0rventen.github.io
+      imagePullSecret: registry-creds
+      service: 8080
+
   configmaps:
     glance-config:
       custom.css: |-
