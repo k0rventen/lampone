@@ -71,3 +71,24 @@ spec:
         - name: gitea-conf
           persistentVolumeClaim:
             claimName: gitea-conf
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitea
+  namespace: gitea
+spec:
+  rules:
+    - host: gitea.cocointhe.cloud
+      http:
+        paths:
+          - backend:
+              service:
+                name: gitea
+                port:
+                  number: 3000
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - gitea.cocointhe.cloud

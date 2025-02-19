@@ -1,0 +1,13 @@
+appchart:
+  apps:
+    - name: vaultwarden
+      image: vaultwarden/server:latest
+      volumeMounts:
+        - name: vaultwarden-data
+          mountPath: /data
+      volumes:
+        - name: vaultwarden-data
+          persistentVolumeClaim:
+            claimName: vaultwarden-data
+      service: 8080
+      pvc: vaultwarden-data

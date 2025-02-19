@@ -1,8 +1,8 @@
 apiVersion: v2
-name: cloud
-description: A Helm chart for Kubernetes
+name: services
+description: A Helm chart for internal services
 type: application
-version: 0.3.0
+version: 0.2.0
 appVersion: "1.16.0"
 
 dependencies:
