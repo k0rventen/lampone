@@ -1,0 +1,5 @@
+creation_rules:
+  - encrypted_regex: "((?i)(pass|secret($|[^N])|key|token|^data$|^stringData$))"
+    key_groups:
+      - age:
+          - age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
