@@ -18,34 +18,14 @@ spec:
   chart:
     spec:
       chart: cloudflare-tunnel-remote
-      version: 0.1.*
+      version: "0.1.*"
       sourceRef:
         kind: HelmRepository
         name: cloudflare
       interval: 1h
   releaseName: cf-tunnel
   targetNamespace: ingress
-  values:
-    replicaCount: 1
-    cloudflare:
-      tunnel_token: ENC[AES256_GCM,data:d2C0RIsl6r2UjwKV6Bsw4NfZCBcev1Kl+2twOpdUH1YxqwwDzwUvqgcxZN9VS24bAgVayE538TWxNLCDHGXs48WDq5qI6L9eVeLuCUl6Idp3MN7VKbRaSao0/onnGhACdfBQhvGBsUDcbFVNv2Ugue+9QlbBxVEmHpX4lsf1OFDFXGzUtbPb1lNZQlC0P/VTni8Lq52Z9fvsH29N99IclgRHeTf36Yiw2bkHr4LxkpWxzsxNKnY/QQ==,iv:GgNII6xA+M7ohGGRgjqHQu9KcQE4NZsMCcWIrG2Sf04=,tag:mtTUW8X+vUGNpfHzmCo9EA==,type:str]
-sops:
-  kms: []
-  gcp_kms: []
-  azure_kv: []
-  hc_vault: []
-  age:
-    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXZ0x6cVRTR1g0b09tTzFq
-        NWY5QjlYemUxTS9qd2xxR0c3WTEyQVAxYTMwCnNheUQ3M3BuQy9zS21DbHFndzMr
-        VkYxQlJ2RnZYczNIbmd0NFV1a3lteVkKLS0tIDFVZE9IY0JGQlFaYTRac3BEN3VI
-        bzMxNE1EZWVQNk5YQXdtcXdpaG1ua00KtDAV2hTvwhnym8ckR96InXNWKU0rVBJl
-        fI2ccgQFDqOIbGHW1RnYBoM+jj7SqyFOtRbyNsO03r42LuYiwTRhAg==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-02-22T13:11:42Z"
-  mac: ENC[AES256_GCM,data:f5n5qoiRDg4icxyNNZ93EtoRA5H5Ip26y01IaXIqzC83de6lzpGZ90Bg6qSHGBV+MrULY0m6SFyEPBZV7mr3zzpvCCCfC3aD9UpvxN5NE51WWTkuSULqaPvoNrmFB9TRlx6u1bSAbpdMf2zalFEhgVO1P2Riw9PdC19v/sC/GD0=,iv:nGS+YxnzYwibhTPaSQDyID3QIAHpG88jdUSeWvaNI9k=,tag:kju7xf8hVIQwb9BUJOLM/w==,type:str]
-  pgp: []
-  encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData$))
-  version: 3.9.4
+
+  valuesFrom:
+    - kind: Secret
+      name: cloudflare-secret
