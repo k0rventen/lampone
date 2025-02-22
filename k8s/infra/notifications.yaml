@@ -25,3 +25,31 @@ spec:
       name: "*"
     - kind: HelmRelease
       name: "*"
+---
+apiVersion: v1
+data:
+  address: ENC[AES256_GCM,data:TZ2HkKngufrr3zlJxKwbe8gwtamiCwGEgnK7a0nSXCl2TRXKLrwyq7s6d5nI8lYRc/S7pdnL/5U2eXKA+oDTS8gp9SMgLjD7Dv7BZwjzebTY4F2nALBxwxyF96fB9d4SXi1CiVwFOsd+W6V2DD1wkTxZ7xPBQQzrBTycpSzoSFJWtxaT43vmbS8sasjAnRXwA000e2+W1tBe7n+jDZq+oaQ3uM8=,iv:VUn7MWXTYebQFlJD0xAcsRth+2cvlTKyp8W8+x9BRyk=,tag:jpSNjIuCg3QeHtbELNkUtw==,type:str]
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: discord-webhook
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBVVcxbk9wODN1TDJGMmV3
+        cUg2RXdtUFBHOUtJdnlkSkY4MnkvZ1Rkd1N3CkoyRjJmYVVLY283NzNpWWNzL3lJ
+        bW9zS2MxaGVKY2FaS3hzZ1Q4YlpSZFkKLS0tIGZXOFlzek05QWRjWXBvM1hGZFVp
+        T0hDRXpTa0NNV1kzekdqMGVlMFhuUEUK+9lX9p6uymckMdFcSlp4k3UZ0kVTaU4+
+        dbLUaQgYW7Y4Kh6Qro5bSVzuu5OaJpy9VhdtAMZt4VHhU04uEqDBtw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-02-22T13:52:03Z"
+  mac: ENC[AES256_GCM,data:2SeHhP1BCmO3x8JT8yPk7kNoMyBHFaq5jYFFSg+k0Ov/Sugv1GW4hWHgDFAuSAMq3Ki5P6qVPJC6icALJjAZkLHQ2CpNhbUaf1xSxtAPynw/cB6uZlwelRrRDbtpL9UOJvWIsZriXir6xzbE0BIdLNQk/Ih5UEkIao0vUu8Bv8g=,iv:vu/uRgRoHUszprfWmd/VeWdqzwrW20BYuVcWN2GYdxA=,tag:b2yNd+fuk9Yxh86JaLYiPw==,type:str]
+  pgp: []
+  encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData$))
+  version: 3.9.4
