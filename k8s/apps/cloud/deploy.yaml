@@ -9,7 +9,7 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: ./k8s/apps/cloud
+      chart: ./k8s/apps/appchart
       version: "x.x.x"
       sourceRef:
         kind: GitRepository
@@ -18,86 +18,85 @@ spec:
       interval: 10m
   targetNamespace: cloud
   values:
-    appchart:
-      apps:
-        - name: glance
-          image: glanceapp/glance
-          volumeMounts:
-            - name: glance-config
-              mountPath: /app/config/glance.yml
-              subPath: glance.yml
-            - name: glance-config
-              mountPath: /app/assets/custom.css
-              subPath: custom.css
-          volumes:
-            - name: glance-config
-              configMap:
-                name: glance-config
-          service: 8080
+    apps:
+      - name: glance
+        image: glanceapp/glance
+        volumeMounts:
+          - name: glance-config
+            mountPath: /app/config/glance.yml
+            subPath: glance.yml
+          - name: glance-config
+            mountPath: /app/assets/custom.css
+            subPath: custom.css
+        volumes:
+          - name: glance-config
+            configMap:
+              name: glance-config
+        service: 8080
 
-        - name: whoami
-          image: traefik/whoami
-          service: 80
+      - name: whoami
+        image: traefik/whoami
+        service: 80
 
-        - name: countdown
-          image: gitea.cocointhe.cloud/coco/countdown
-          imagePullSecret: registry-creds
-          service: 8080
+      - name: countdown
+        image: gitea.cocointhe.cloud/coco/countdown
+        imagePullSecret: registry-creds
+        service: 8080
 
-        - name: blog
-          image: gitea.cocointhe.cloud/coco/k0rventen.github.io
-          imagePullSecret: registry-creds
-          service: 8080
+      - name: blog
+        image: gitea.cocointhe.cloud/coco/k0rventen.github.io
+        imagePullSecret: registry-creds
+        service: 8080
 
-      configmaps:
-        glance-config:
-          custom.css: |-
-            .header-container, .mobile-navigation, .expand-toggle-button{
-                display: none;
-            }
-          glance.yml: |-
-            server:
-              assets-path: /app/assets
-            theme:
-              background-color: 229 19 23
-              contrast-multiplier: 1.6
-              primary-color: 222 74 74
-              positive-color: 96 44 68
-              negative-color: 359 68 71
-              custom-css-file: /assets/custom.css
-            branding:
-              hide-footer: true
-            pages:
-            - name: Home
-              columns:
-                - size: full
-                  widgets:
-                    - type: group
-                      widgets:
-                      - type: hacker-news
-                        cache: 1h
-                        collapse-after: 8
-                      - type: reddit
-                        cache: 1h
-                        subreddit: selfhosted
-                      - type: rss
-                        cache: 1h
-                        title: Ars Technica
-                        feeds:
-                        - url: https://feeds.arstechnica.com/arstechnica/index
-                      - type: rss
-                        cache: 1h
-                        title: Phoronix
-                        feeds:
-                        - url: https://www.phoronix.com/phoronix-rss.php
-                      - type: rss
-                        cache: 1h
-                        title: SE Unix & Linux
-                        feeds:
-                        - url: https://unix.stackexchange.com/feeds/week
-                    - type: videos
+    configmaps:
+      glance-config:
+        custom.css: |-
+          .header-container, .mobile-navigation, .expand-toggle-button{
+              display: none;
+          }
+        glance.yml: |-
+          server:
+            assets-path: /app/assets
+          theme:
+            background-color: 229 19 23
+            contrast-multiplier: 1.6
+            primary-color: 222 74 74
+            positive-color: 96 44 68
+            negative-color: 359 68 71
+            custom-css-file: /assets/custom.css
+          branding:
+            hide-footer: true
+          pages:
+          - name: Home
+            columns:
+              - size: full
+                widgets:
+                  - type: group
+                    widgets:
+                    - type: hacker-news
                       cache: 1h
-                      channels:
-                        - UCXuqSBlHAE6Xw-yeJA0Tunw # LTT
-                        #- UCdBK94H6oZT2Q7l0-b0xmMg # SC
-                        - UCeeFfhMcJa1kjtfZAGskOCA # TechLinked
+                      collapse-after: 8
+                    - type: reddit
+                      cache: 1h
+                      subreddit: selfhosted
+                    - type: rss
+                      cache: 1h
+                      title: Ars Technica
+                      feeds:
+                      - url: https://feeds.arstechnica.com/arstechnica/index
+                    - type: rss
+                      cache: 1h
+                      title: Phoronix
+                      feeds:
+                      - url: https://www.phoronix.com/phoronix-rss.php
+                    - type: rss
+                      cache: 1h
+                      title: SE Unix & Linux
+                      feeds:
+                      - url: https://unix.stackexchange.com/feeds/week
+                  - type: videos
+                    cache: 1h
+                    channels:
+                      - UCXuqSBlHAE6Xw-yeJA0Tunw # LTT
+                      #- UCdBK94H6oZT2Q7l0-b0xmMg # SC
+                      - UCeeFfhMcJa1kjtfZAGskOCA # TechLinked
