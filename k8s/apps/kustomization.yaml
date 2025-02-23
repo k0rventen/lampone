@@ -1,6 +1,7 @@
 # this calls all kustomisaztions in each foldr (meaning generaly each namespace)
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: flux-system
 resources:
   - ./cloud/deploy.yaml
   - ./gitea/deploy.yaml
