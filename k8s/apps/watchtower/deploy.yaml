@@ -26,7 +26,7 @@ spec:
       interval: 10m
   targetNamespace: watchtower
   values:
-    appchart:
+    apps:
       - name: beem-exporter
         image: gitea.cocointhe.cloud/coco/beem-exporter
         imagePullSecret: registry-creds
