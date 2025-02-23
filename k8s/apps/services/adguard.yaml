@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adguard
+  namespace: services
 spec:
   selector:
     matchLabels:
@@ -12,7 +13,7 @@ spec:
         app: adguard
     spec:
       hostNetwork: true
-      nodeName: "drupelet-1"
+      nodeName: "drupelet-3"
       containers:
         - name: adguard
           image: adguard/adguardhome
@@ -21,7 +22,6 @@ spec:
               name: adguard-data
             - mountPath: "/opt/adguardhome/work"
               name: adguard-data
-          resources: {}
       volumes:
         - name: adguard-data
           persistentVolumeClaim:
@@ -32,6 +32,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: adguard-data
+  namespace: services
 spec:
   resources:
     requests:

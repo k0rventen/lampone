@@ -1,5 +1,6 @@
 # templates/deployment.yaml
 {{- range .Values.apps }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,6 +18,10 @@ spec:
       containers:
         - name: {{ .name }}
           image: {{ .image }}
+          {{- if .env }}
+          env:
+            {{- toYaml .env | nindent 12 }}
+          {{- end }}
           {{- if .volumeMounts }}
           volumeMounts:
             {{- toYaml .volumeMounts | nindent 12 }}
@@ -42,6 +47,7 @@ spec:
     app: {{ .name }}
   ports:
     - protocol: TCP
+      name: {{ .service | quote }}
       port: {{ .service }}
       targetPort: {{ .service }}
 {{- end }}
@@ -49,20 +55,26 @@ spec:
 ---
 # pvc generation
 {{- if .pvc }}
+{{- range .pvc }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .pvc }}
+  name: {{ . }}
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
+---
 {{- end }}
 {{- end }}
 
+{{- end }}
+
 ---
+
+
 
 # configmap generation
 {{- range $name, $data := .Values.configmaps }}
@@ -75,4 +87,6 @@ data:
   {{ $key }}: |
     {{- $value | nindent 4 }}
   {{- end }}
+
+---
 {{- end }}
