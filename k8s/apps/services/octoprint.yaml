@@ -4,7 +4,7 @@ metadata:
   name: octoprint-pi
 subsets:
   - addresses:
-      - ip: 192.168.1.110
+      - ip: 192.168.1.122
     ports:
       - port: 80
 ---

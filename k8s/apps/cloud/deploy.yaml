@@ -6,7 +6,7 @@ metadata:
 spec:
   install:
     createNamespace: true
-  interval: 10m
+  interval: 24h
   chart:
     spec:
       chart: ./k8s/apps/appchart
@@ -15,12 +15,12 @@ spec:
         kind: GitRepository
         name: flux-system
         namespace: flux-system
-      interval: 10m
+      interval: 1h
   targetNamespace: cloud
   values:
     apps:
       - name: glance
-        image: glanceapp/glance
+        image: glanceapp/glance:v0.7.4
         volumeMounts:
           - name: glance-config
             mountPath: /app/config/glance.yml
@@ -51,7 +51,7 @@ spec:
     configmaps:
       glance-config:
         custom.css: |-
-          .header-container, .mobile-navigation, .expand-toggle-button{
+          .header-container, .expand-toggle-button{
               display: none;
           }
         glance.yml: |-
@@ -76,27 +76,84 @@ spec:
                     - type: hacker-news
                       cache: 1h
                       collapse-after: 8
+                    - type: lobsters
+                      sort-by: hot
+                      collapse-after: 8
                     - type: reddit
                       cache: 1h
                       subreddit: selfhosted
+                      collapse-after: 8
                     - type: rss
                       cache: 1h
                       title: Ars Technica
+                      collapse-after: 8
                       feeds:
                       - url: https://feeds.arstechnica.com/arstechnica/index
                     - type: rss
                       cache: 1h
                       title: Phoronix
+                      collapse-after: 8
                       feeds:
                       - url: https://www.phoronix.com/phoronix-rss.php
                     - type: rss
                       cache: 1h
                       title: SE Unix & Linux
+                      collapse-after: 8
                       feeds:
                       - url: https://unix.stackexchange.com/feeds/week
                   - type: videos
                     cache: 1h
+                    style: grid-cards
+                    collapse-after-rows: 2
                     channels:
                       - UCXuqSBlHAE6Xw-yeJA0Tunw # LTT
-                      #- UCdBK94H6oZT2Q7l0-b0xmMg # SC
+                      - UCdBK94H6oZT2Q7l0-b0xmMg # SC
                       - UCeeFfhMcJa1kjtfZAGskOCA # TechLinked
+                      - UC3XTzVzaHQEd30rQbuvCtTQ # John Oliver
+                    playlists:
+                      - PLiZxWe0ejyv8CSMylrxb6Nx4Ii2RHbu_j # Stephen Colbert
+
+
+              - size: small
+                widgets:
+                  - type: monitor
+                    cache: 10m
+                    title: Services
+                    sites:
+                      - title: Grafana
+                        url: https://grafana.cocointhe.cloud
+                        icon: si:grafana
+                      - title: Immich
+                        url: https://immich.cocointhe.cloud
+                        icon: si:immich
+                      - title: Gitea
+                        url: https://gitea.cocointhe.cloud
+                        icon: si:gitea
+                      - title: Vaultwarden
+                        url: https://vaultwarden.cocointhe.cloud
+                        icon: si:vaultwarden
+                      - title: AdGuard
+                        url: https://adguard.cocointhe.cloud
+                        icon: si:adguard
+                      - title: Octoprint
+                        url: https://octoprint.cocointhe.cloud
+                        icon: si:octoprint
+                      - title: Paperless
+                        url: https://paperless.cocointhe.cloud
+                        icon: si:paperlessngx
+                      - title: Files
+                        url: https://files.cocointhe.cloud
+                        icon: si:files
+                  - type: monitor
+                    cache: 10m
+                    title: Links
+                    sites:
+                      - title: TinkerCAD
+                        url: https://www.tinkercad.com/dashboard
+                        icon: si:tinkercad
+                      - title: Printables
+                        url: https://www.printables.com/
+                        icon: si:printables
+                      - title: YouTube
+                        url: https://www.youtube.com/feed/subscriptions
+                        icon: si:youtube
