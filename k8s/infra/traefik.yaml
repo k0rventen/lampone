@@ -4,9 +4,11 @@ metadata:
   name: traefik
   namespace: flux-system
 spec:
-  interval: 1h
+  interval: 24h
   url: https://traefik.github.io/charts
 ---
+# traefik w/ tls from cert-manager secret
+# is default ingressclass
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -37,3 +39,40 @@ spec:
       enabled: true
       isDefaultClass: true
       name: "traefik"
+---
+# specific traefik for routing traffic from the cloudflare tunnel
+# only listens for ingressclass 'traefik-tunnel'
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik-tunnel
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: traefik
+      version: "34.3.*"
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+      interval: 1h
+  releaseName: traefik-tunnel
+  targetNamespace: ingress
+  values:
+    service:
+      enabled: true
+      type: ClusterIP
+    ingressClass:
+      enabled: true
+      isDefaultClass: false
+      name: "traefik-tunnel"
+    providers:
+      kubernetesCRD:
+        enabled: false
+      kubernetesIngress:
+        ingressClass: "traefik-tunnel"
+    websecure:
+      expose:
+        default: false

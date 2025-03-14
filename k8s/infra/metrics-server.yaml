@@ -25,6 +25,6 @@ spec:
       interval: 1h
   releaseName: metrics-server
   targetNamespace: kube-system
-  values:
-    args:
-      - --kubelet-insecure-tls
+  # values:
+  #   args:
+  #     - --kubelet-insecure-tls
