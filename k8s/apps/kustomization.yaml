@@ -6,4 +6,5 @@ resources:
   - ./cloud/deploy.yaml
   - ./gitea/deploy.yaml
   - ./services/deploy.yaml
+  - ./services/immich.yaml
   - ./watchtower/deploy.yaml
