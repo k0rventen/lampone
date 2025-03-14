@@ -110,7 +110,13 @@ stringData:
       image:
         repository: ghcr.io/immich-app/immich-server
         pullPolicy: IfNotPresent
-
+      resources:
+        limits:
+          cpu: 2
+          memory: 2Gi
+        requests:
+          cpu: 200m
+          memory: 512Mi
     machine-learning:
       enabled: true
       image:
@@ -118,7 +124,7 @@ stringData:
         pullPolicy: IfNotPresent
       resources:
         limits:
-          cpu: 2
+          cpu: 1
           memory: 2Gi
         requests:
           cpu: 200m
