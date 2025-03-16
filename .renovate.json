@@ -1,0 +1,5 @@
+{
+  "flux": {
+    "fileMatch": ["k8s/.+\\.yaml$"]
+  }
+}
