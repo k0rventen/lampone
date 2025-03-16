@@ -1,9 +1,14 @@
 name: Renovate
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # Runs every day at midnight
-  workflow_dispatch: # Allows manual triggering of the workflow
+  schedule: # Every day at midnight
+    - cron: "0 0 * * *"
+  push: # if renovate files changes
+    branches: ["main"]
+    paths:
+      - .renovate.json
+      - .github/workflows/renovate.yaml
+  workflow_dispatch: # Manual triggering
 
 jobs:
   renovate:
