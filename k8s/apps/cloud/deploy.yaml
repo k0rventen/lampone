@@ -35,9 +35,10 @@ spec:
         service: 8080
 
       - name: whoami
-        image: traefik/whoami
+        image: traefik/whoami:v1.10
         service: 80
 
+      - name:
       - name: countdown
         image: gitea.cocointhe.cloud/coco/countdown
         imagePullSecret: registry-creds
