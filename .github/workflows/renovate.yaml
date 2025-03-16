@@ -6,7 +6,7 @@ on:
   push: # if renovate files changes
     branches: ["main"]
     paths:
-      - .renovate.json
+      - .renovaterc.json
       - .github/workflows/renovate.yaml
   workflow_dispatch: # Manual triggering
 
