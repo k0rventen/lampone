@@ -22,7 +22,6 @@ jobs:
         uses: renovatebot/github-action@6312f35b96c47b1e3cd516f42616ce96145a0982
         with:
           token: ${{ secrets.RENOVATE_TOKEN }} #PAT
-          configurationFile: .renovate.json
         env:
           RENOVATE_AUTODISCOVER: true
           RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
