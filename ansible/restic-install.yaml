@@ -1,0 +1,34 @@
+- name: Install and configure restic for nfs backups
+  hosts: all
+  become: true
+  tasks:
+    - name: configured restic backups on the nfs host
+      when: role == 'control_plane'
+      block:
+        - name: Install restic on the nfs node
+          apt:
+            name: restic
+            state: present
+
+        - name: install restic service
+          template:
+            src: "restic_files/{{ item }}"
+            dest: "/etc/systemd/system/{{ item }}"
+          loop:
+            - restic.service
+            - restic-offsite.service
+            - restic.timer
+            - restic-offsite.timer
+
+        - name: reload systemd
+          systemd_service:
+            daemon_reload: true
+
+        - name: enable timers
+          systemd_service:
+            name: "{{ item }}"
+            state: started
+            enabled: true
+          loop:
+            - restic.timer
+            - restic-offsite.timer
