@@ -20,7 +20,7 @@ spec:
   values:
     apps:
       - name: glance
-        image: glanceapp/glance:v0.7.6
+        image: glanceapp/glance:v0.7.7
         volumeMounts:
           - name: glance-config
             mountPath: /app/config/glance.yml
