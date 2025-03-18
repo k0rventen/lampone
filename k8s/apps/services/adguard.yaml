@@ -13,10 +13,10 @@ spec:
         app: adguard
     spec:
       hostNetwork: true
-      nodeName: "drupelet-3"
+      nodeName: "drupelet-3" # pinned to a specific worker for now
       containers:
         - name: adguard
-          image: adguard/adguardhome
+          image: adguard/adguardhome:v0.107.57
           volumeMounts:
             - mountPath: "/opt/adguardhome/conf"
               name: adguard-data
