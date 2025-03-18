@@ -9,7 +9,7 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: ./k8s/apps/services
+      chart: ./k8s/apps/appchart
       version: "x.x.x"
       sourceRef:
         kind: GitRepository
