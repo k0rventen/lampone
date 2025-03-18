@@ -5,10 +5,5 @@ namespace: flux-system
 resources:
   - ./cloud/deploy.yaml
   - ./gitea/deploy.yaml
-
   - ./services/deploy.yaml
-  - ./services/immich.yaml
-  - ./services/octoprint.yaml
-  - ./services/ks.yaml
-
   - ./watchtower/deploy.yaml
