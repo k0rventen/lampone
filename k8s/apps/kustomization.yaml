@@ -9,6 +9,6 @@ resources:
   - ./services/deploy.yaml
   - ./services/immich.yaml
   - ./services/octoprint.yaml
-  - ./services/adguard.yaml
+  - ./services/ks.yaml
 
   - ./watchtower/deploy.yaml
