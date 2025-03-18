@@ -18,94 +18,93 @@ spec:
       interval: 10m
   targetNamespace: services
   values:
-    appchart:
-      apps:
-        - name: vaultwarden
-          image: vaultwarden/server:1.33.2
-          volumeMounts:
-            - name: vaultwarden-data
-              mountPath: /data
-          volumes:
-            - name: vaultwarden-data
-              persistentVolumeClaim:
-                claimName: vaultwarden-data
-          service: 80
-          pvc:
-            - vaultwarden-data
+    apps:
+      - name: vaultwarden
+        image: vaultwarden/server:1.33.2
+        volumeMounts:
+          - name: vaultwarden-data
+            mountPath: /data
+        volumes:
+          - name: vaultwarden-data
+            persistentVolumeClaim:
+              claimName: vaultwarden-data
+        service: 80
+        pvc:
+          - vaultwarden-data
 
-        - name: filebrowser
-          image: filebrowser/filebrowser:v2.32.0
-          volumeMounts:
-            - name: filebrowser-data
-              mountPath: /data
-            - name: filebrowser-config
-              mountPath: /.filebrowser.json
-              subPath: .filebrowser.json
-          volumes:
-            - name: filebrowser-data
-              persistentVolumeClaim:
-                claimName: filebrowser-data
-            - name: filebrowser-config
-              configMap:
-                name: filebrowser-config
-          service: 8080
-          pvc:
-            - filebrowser-data
+      - name: filebrowser
+        image: filebrowser/filebrowser:v2.32.0
+        volumeMounts:
+          - name: filebrowser-data
+            mountPath: /data
+          - name: filebrowser-config
+            mountPath: /.filebrowser.json
+            subPath: .filebrowser.json
+        volumes:
+          - name: filebrowser-data
+            persistentVolumeClaim:
+              claimName: filebrowser-data
+          - name: filebrowser-config
+            configMap:
+              name: filebrowser-config
+        service: 8080
+        pvc:
+          - filebrowser-data
 
-        - name: paperless-ngx
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.14.7
-          volumeMounts:
-            - name: paperless-data
-              mountPath: /usr/src/paperless/data
-            - name: paperless-media
-              mountPath: /usr/src/paperless/media
-            - name: paperless-export
-              mountPath: /usr/src/paperless/export
-            - name: paperless-consume
-              mountPath: /usr/src/paperless/consume
-          env:
-            - name: PAPERLESS_REDIS
-              value: redis://paperless-redis:6379
-            - name: PAPERLESS_OCR_LANGUAGE
-              value: fra
-            - name: PAPERLESS_BIND_ADDR
-              value: 0.0.0.0
-            - name: PAPERLESS_URL
-              value: https://paperless.cocointhe.cloud
+      - name: paperless-ngx
+        image: ghcr.io/paperless-ngx/paperless-ngx:2.14.7
+        volumeMounts:
+          - name: paperless-data
+            mountPath: /usr/src/paperless/data
+          - name: paperless-media
+            mountPath: /usr/src/paperless/media
+          - name: paperless-export
+            mountPath: /usr/src/paperless/export
+          - name: paperless-consume
+            mountPath: /usr/src/paperless/consume
+        env:
+          - name: PAPERLESS_REDIS
+            value: redis://paperless-redis:6379
+          - name: PAPERLESS_OCR_LANGUAGE
+            value: fra
+          - name: PAPERLESS_BIND_ADDR
+            value: 0.0.0.0
+          - name: PAPERLESS_URL
+            value: https://paperless.cocointhe.cloud
 
-          volumes:
-            - name: paperless-data
-              persistentVolumeClaim:
-                claimName: paperless-data
-            - name: paperless-media
-              persistentVolumeClaim:
-                claimName: paperless-media
-            - name: paperless-export
-              persistentVolumeClaim:
-                claimName: paperless-export
-            - name: paperless-consume
-              persistentVolumeClaim:
-                claimName: paperless-consume
+        volumes:
+          - name: paperless-data
+            persistentVolumeClaim:
+              claimName: paperless-data
+          - name: paperless-media
+            persistentVolumeClaim:
+              claimName: paperless-media
+          - name: paperless-export
+            persistentVolumeClaim:
+              claimName: paperless-export
+          - name: paperless-consume
+            persistentVolumeClaim:
+              claimName: paperless-consume
 
-          service: 8000
-          pvc:
-            - paperless-data
-            - paperless-media
-            - paperless-export
-            - paperless-consume
+        service: 8000
+        pvc:
+          - paperless-data
+          - paperless-media
+          - paperless-export
+          - paperless-consume
 
-        - name: paperless-redis
-          image: redis:7.2.5-bookworm
-          service: 6379
+      - name: paperless-redis
+        image: redis:7.2.5-bookworm
+        service: 6379
 
-      configmaps:
-        filebrowser-config:
-          .filebrowser.json: |
-            {
-              "port": 8080,
-              "baseURL": "",
-              "address": "",
-              "log": "stdout",
-              "database": "/data/filebrowser.db",
-              "root": "/data/srv"
-            }
+    configmaps:
+      filebrowser-config:
+        .filebrowser.json: |
+          {
+            "port": 8080,
+            "baseURL": "",
+            "address": "",
+            "log": "stdout",
+            "database": "/data/filebrowser.db",
+            "root": "/data/srv"
+          }
