@@ -34,6 +34,19 @@ spec:
               name: glance-config
         service: 8080
 
+      - name: grafana
+        image: grafana/grafana:11.5.2
+        service: 3000
+        volumeMounts:
+          - name: grafana-data
+            mountPath: /var/lib/grafana
+        volumes:
+          - name: grafana-data
+            persistentVolumeClaim:
+              claimName: grafana-data
+        pvc:
+          - grafana-data
+
       - name: whoami
         image: traefik/whoami:v1.11
         service: 80
