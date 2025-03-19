@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: gitea
-          image: gitea/gitea:1.23.4-rootless
+          image: gitea/gitea:1.23.5-rootless
           ports:
             - containerPort: 3000
           volumeMounts:
