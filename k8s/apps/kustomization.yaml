@@ -7,3 +7,18 @@ resources:
   - ./gitea/deploy.yaml
   - ./services/deploy.yaml
   - ./watchtower/deploy.yaml
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: test
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: test
+  path: ./k8s/apps/test
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
