@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: core-services
+  name: paperless
   namespace: flux-system
 spec:
   install:
@@ -19,38 +19,6 @@ spec:
   targetNamespace: services
   values:
     apps:
-      - name: vaultwarden
-        image: vaultwarden/server:1.33.2
-        volumeMounts:
-          - name: vaultwarden-data
-            mountPath: /data
-        volumes:
-          - name: vaultwarden-data
-            persistentVolumeClaim:
-              claimName: vaultwarden-data
-        service: 80
-        pvc:
-          - vaultwarden-data
-
-      - name: filebrowser
-        image: filebrowser/filebrowser:v2.32.0
-        volumeMounts:
-          - name: filebrowser-data
-            mountPath: /data
-          - name: filebrowser-config
-            mountPath: /.filebrowser.json
-            subPath: .filebrowser.json
-        volumes:
-          - name: filebrowser-data
-            persistentVolumeClaim:
-              claimName: filebrowser-data
-          - name: filebrowser-config
-            configMap:
-              name: filebrowser-config
-        service: 8080
-        pvc:
-          - filebrowser-data
-
       - name: paperless-ngx
         image: ghcr.io/paperless-ngx/paperless-ngx:2.14.7
         volumeMounts:
@@ -96,15 +64,3 @@ spec:
       - name: paperless-redis
         image: redis:7.2.5-bookworm
         service: 6379
-
-    configmaps:
-      filebrowser-config:
-        .filebrowser.json: |
-          {
-            "port": 8080,
-            "baseURL": "",
-            "address": "",
-            "log": "stdout",
-            "database": "/data/filebrowser.db",
-            "root": "/data/srv"
-          }

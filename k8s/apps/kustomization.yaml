@@ -7,4 +7,3 @@ resources:
   - ./gitea/deploy.yaml
   - ./services/deploy.yaml
   - ./watchtower/deploy.yaml
-  - ./test/deploy.yaml

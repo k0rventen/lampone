@@ -21,47 +21,15 @@ spec:
   chart:
     spec:
       chart: immich
-      version: "0.9.*"
+      version: "0.9.0"
       sourceRef:
         kind: HelmRepository
         name: immich
       interval: 1h
   releaseName: immich
   targetNamespace: immich
-
-  valuesFrom:
-    - kind: Secret
-      name: immich-config
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-data
-  namespace: immich
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: immich-config
-  namespace: flux-system
-stringData:
-  values.yaml: |
+  values:
     useDeprecatedPostgresChart: true
-    env:
-      REDIS_HOSTNAME: "immich-redis-master"
-      DB_HOSTNAME: "immich-postgresql"
-      DB_USERNAME: "immich"
-      DB_DATABASE_NAME: "immich"
-      DB_PASSWORD: "immich"
-      IMMICH_HOST: "0.0.0.0"
-      IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning:3003"
-
     image:
       tag: v1.129.0
 
@@ -76,12 +44,6 @@ stringData:
       image:
         repository: tensorchord/pgvecto-rs
         tag: pg14-v0.2.0
-      global:
-        postgresql:
-          auth:
-            username: immich
-            database: immich
-            password: immich
       primary:
         containerSecurityContext:
           readOnlyRootFilesystem: false
@@ -136,3 +98,43 @@ stringData:
           enabled: true
           size: 10Gi
           type: pvc
+
+  valuesFrom:
+    - kind: Secret
+      name: immich-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-data
+  namespace: immich
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: immich-config
+  namespace: flux-system
+stringData:
+  values.yaml: |
+    env:
+      REDIS_HOSTNAME: "immich-redis-master"
+      DB_HOSTNAME: "immich-postgresql"
+      DB_USERNAME: "immich"
+      DB_DATABASE_NAME: "immich"
+      DB_PASSWORD: "immich"
+      IMMICH_HOST: "0.0.0.0"
+      IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning:3003"
+
+    postgresql:
+      global:
+        postgresql:
+          auth:
+            username: immich
+            database: immich
+            password: immich
