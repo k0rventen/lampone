@@ -47,6 +47,9 @@ spec:
           - name: grafana-data
             persistentVolumeClaim:
               claimName: grafana-data
+          - name: grafana-config
+            configMap:
+              name: grafana-config
         pvc:
           - grafana-data
 
