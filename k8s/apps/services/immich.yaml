@@ -6,7 +6,6 @@ metadata:
 spec:
   interval: 1h
   url: https://immich-app.github.io/immich-charts
-
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -21,7 +20,7 @@ spec:
   chart:
     spec:
       chart: immich
-      version: "0.9.0"
+      version: 0.9.0
       sourceRef:
         kind: HelmRepository
         name: immich
@@ -32,7 +31,6 @@ spec:
     useDeprecatedPostgresChart: true
     image:
       tag: v1.129.0
-
     immich:
       metrics:
         enabled: false
@@ -60,13 +58,11 @@ spec:
               CREATE EXTENSION cube;
               CREATE EXTENSION earthdistance;
               CREATE EXTENSION vectors;
-
     redis:
       enabled: true
       architecture: standalone
       auth:
         enabled: false
-
     server:
       enabled: true
       image:
@@ -98,7 +94,6 @@ spec:
           enabled: true
           size: 10Gi
           type: pvc
-
   valuesFrom:
     - kind: Secret
       name: immich-config
@@ -114,27 +109,3 @@ spec:
   resources:
     requests:
       storage: 5Gi
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: immich-config
-  namespace: flux-system
-stringData:
-  values.yaml: |
-    env:
-      REDIS_HOSTNAME: "immich-redis-master"
-      DB_HOSTNAME: "immich-postgresql"
-      DB_USERNAME: "immich"
-      DB_DATABASE_NAME: "immich"
-      DB_PASSWORD: "immich"
-      IMMICH_HOST: "0.0.0.0"
-      IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning:3003"
-
-    postgresql:
-      global:
-        postgresql:
-          auth:
-            username: immich
-            database: immich
-            password: immich
