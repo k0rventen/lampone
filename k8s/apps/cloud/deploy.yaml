@@ -38,6 +38,9 @@ spec:
         image: grafana/grafana:11.5.2
         service: 3000
         volumeMounts:
+          - name: grafana-config
+            mountPath: /etc/grafana/grafana.ini
+            subPath: grafana.ini
           - name: grafana-data
             mountPath: /var/lib/grafana
         volumes:
@@ -62,6 +65,13 @@ spec:
         service: 8080
 
     configmaps:
+      grafana-config:
+        grafana.ini: |
+          [auth.anonymous]
+          enabled = true
+          org_name = Main Org.
+          org_role = Viewer
+          hide_version = true
       glance-config:
         custom.css: |-
           .header-container, .expand-toggle-button{
