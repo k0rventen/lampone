@@ -9,7 +9,10 @@
           apt:
             name: restic
             state: present
-
+        - name: jq
+          apt:
+            name: jq
+            state: present
         - name: install restic service
           template:
             src: "restic_files/{{ item }}"
@@ -19,6 +22,16 @@
             - restic-offsite.service
             - restic.timer
             - restic-offsite.timer
+
+        - name: install discord notify script
+          template:
+            src: restic_files/discord_notify.sh
+            dest: /usr/local/bin/discord_notify.sh
+            mode: "0755"
+        - name: install discord notify service
+          copy:
+            src: restic_files/discord_notify@.service
+            dest: /etc/systemd/system/discord_notify@.service
 
         - name: reload systemd
           systemd_service:

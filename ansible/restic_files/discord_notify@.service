@@ -1,0 +1,7 @@
+[Unit]
+Description=Sends systemd unit info through a discord webhook
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/discord_notify.sh %I

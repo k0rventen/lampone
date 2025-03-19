@@ -1,11 +1,13 @@
 [Unit]
 Description=Automated restic backups of nfs server
+OnFailure=discord_notify@%n.service
+
 [Install]
 WantedBy=default.target
 [Service]
 Type=simple
-WorkingDirectory={{ nfs.path }}
+WorkingDirectory=/nfs
 Environment="HOME=/root"
 ExecStart=restic backup -p %d/restic -e nfs-backups/ -r nfs-backups/ .
 
-{% include 'restic_credentials' %}
+{{ restic_systemd_creds }}
