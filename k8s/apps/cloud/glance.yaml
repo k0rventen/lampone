@@ -1,0 +1,145 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: glance
+  namespace: flux-system
+spec:
+  install:
+    createNamespace: true
+  interval: 24h
+  chart:
+    spec:
+      chart: ./k8s/apps/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 1h
+  targetNamespace: cloud
+  values:
+    apps:
+      - name: glance
+        image: glanceapp/glance:v0.7.7
+        volumeMounts:
+          - name: glance-config
+            mountPath: /app/config/glance.yml
+            subPath: glance.yml
+          - name: glance-config
+            mountPath: /app/assets/custom.css
+            subPath: custom.css
+        volumes:
+          - name: glance-config
+            configMap:
+              name: glance-config
+        service: 8080
+
+    configmaps:
+      glance-config:
+        custom.css: |-
+          .header-container, .expand-toggle-button{
+              display: none;
+          }
+        glance.yml: |-
+          server:
+            assets-path: /app/assets
+          theme:
+            background-color: 229 19 23
+            contrast-multiplier: 1.6
+            primary-color: 222 74 74
+            positive-color: 96 44 68
+            negative-color: 359 68 71
+            custom-css-file: /assets/custom.css
+          branding:
+            hide-footer: true
+          pages:
+          - name: Home
+            columns:
+              - size: full
+                widgets:
+                  - type: group
+                    widgets:
+                    - type: hacker-news
+                      cache: 1h
+                      collapse-after: 8
+                    - type: lobsters
+                      sort-by: hot
+                      collapse-after: 8
+                    - type: reddit
+                      cache: 1h
+                      subreddit: selfhosted
+                      collapse-after: 8
+                    - type: rss
+                      cache: 1h
+                      title: Ars Technica
+                      collapse-after: 8
+                      feeds:
+                      - url: https://feeds.arstechnica.com/arstechnica/index
+                    - type: rss
+                      cache: 1h
+                      title: Phoronix
+                      collapse-after: 8
+                      feeds:
+                      - url: https://www.phoronix.com/phoronix-rss.php
+                    - type: rss
+                      cache: 1h
+                      title: SE Unix & Linux
+                      collapse-after: 8
+                      feeds:
+                      - url: https://unix.stackexchange.com/feeds/week
+                  - type: videos
+                    cache: 1h
+                    style: grid-cards
+                    collapse-after-rows: 2
+                    channels:
+                      - UCXuqSBlHAE6Xw-yeJA0Tunw # LTT
+                      - UCdBK94H6oZT2Q7l0-b0xmMg # SC
+                      - UCeeFfhMcJa1kjtfZAGskOCA # TechLinked
+                      - UC3XTzVzaHQEd30rQbuvCtTQ # John Oliver
+                    playlists:
+                      - PLiZxWe0ejyv8CSMylrxb6Nx4Ii2RHbu_j # Stephen Colbert
+
+
+              - size: small
+                widgets:
+                  - type: monitor
+                    cache: 10m
+                    title: Services
+                    sites:
+                      - title: Grafana
+                        url: https://grafana.cocointhe.cloud
+                        icon: si:grafana
+                      - title: Immich
+                        url: https://immich.cocointhe.cloud
+                        icon: si:immich
+                      - title: Gitea
+                        url: https://gitea.cocointhe.cloud
+                        icon: si:gitea
+                      - title: Vaultwarden
+                        url: https://vaultwarden.cocointhe.cloud
+                        icon: si:vaultwarden
+                      - title: AdGuard
+                        url: https://adguard.cocointhe.cloud
+                        icon: si:adguard
+                      - title: Octoprint
+                        url: https://octoprint.cocointhe.cloud
+                        icon: si:octoprint
+                      - title: Paperless
+                        url: https://paperless.cocointhe.cloud
+                        icon: si:paperlessngx
+                      - title: Files
+                        url: https://files.cocointhe.cloud
+                        icon: si:files
+                  - type: monitor
+                    cache: 10m
+                    title: Links
+                    sites:
+                      - title: TinkerCAD
+                        url: https://www.tinkercad.com/dashboard
+                        icon: si:tinkercad
+                      - title: Printables
+                        url: https://www.printables.com/
+                        icon: si:printables
+                      - title: YouTube
+                        url: https://www.youtube.com/feed/subscriptions
+                        icon: si:youtube

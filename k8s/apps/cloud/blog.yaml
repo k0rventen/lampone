@@ -1,0 +1,30 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloud
+  namespace: flux-system
+spec:
+  install:
+    createNamespace: true
+  interval: 24h
+  chart:
+    spec:
+      chart: ./k8s/apps/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 1h
+  targetNamespace: cloud
+  values:
+    apps:
+      - name: blog
+        image: gitea.cocointhe.cloud/coco/k0rventen.github.io
+        imagePullSecret: registry-creds
+        service: 8080
+
+      - name: countdown
+        image: gitea.cocointhe.cloud/coco/countdown
+        imagePullSecret: registry-creds
+        service: 8080
