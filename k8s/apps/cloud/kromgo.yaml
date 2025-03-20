@@ -51,7 +51,7 @@ spec:
 
             - name: cluster_temperature
               query: round(avg(node_hwmon_temp_celsius{}), 0.1)
-               suffix: "°C"
+              suffix: "°C"
               colors:
                 - { color: "green", min: 0, max: 9999 }
               title: Temperature
