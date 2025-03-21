@@ -30,8 +30,8 @@ jobs:
       - name: Run flux-local diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.3.0
         with:
-          args: |
+          args: >-
             diff ks
-            --path pr/k8s/flux
-            --path-orig main/k8s/flux
+            --path /github/workspace/pr/k8s/flux
+            --path-orig /github/workspace/main/k8s/flux
             --all-namespaces
