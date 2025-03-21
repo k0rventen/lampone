@@ -9,9 +9,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@8d5f40dca5aa5d3c0fc3414457dda15a0ac92fa4
-      - uses: allenporter/flux-local/action/test@e2819444777b29cd26916996980b17b5d2df2d7c
+      - name: Run flux-local test
+        uses: docker://ghcr.io/allenporter/flux-local:v7.3.0
         with:
-          path: k8s/flux
-          enable-helm: true
+          args: test --enable-helm --all-namespaces --path k8s/flux -v
