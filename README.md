@@ -36,7 +36,7 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 <details>
 <summary>Software details and architecture</summary>
-![architecture](architecture.png)
+![architecture](./architecture.png)
 </details>
 
 
