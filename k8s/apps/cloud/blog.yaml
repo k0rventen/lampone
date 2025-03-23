@@ -9,7 +9,7 @@ spec:
   interval: 24h
   chart:
     spec:
-      chart: ./k8s/apps/appchart
+      chart: ./k8s/appchart
       version: "x.x.x"
       sourceRef:
         kind: GitRepository
