@@ -16,20 +16,27 @@ My self hosted cloud.
 
 <details>
 <summary>Hardware specs</summary>
-![](cluster.png)
+![cluster image](./3d/cluster.png)
 
 Hardware:
 - 3 raspberry pi 4 (8Go)
 - 1 gigabit ethernet tp link 5 ports switch
+- some m3 threaded inserts and screws
 - 1 1To lexar usb SSD
 - 1 3d printed rack
 - 1 [80mm fan](https://www.thermalright.com/product/tl-8015w/)
+
+
+The 3d files are available in `3d`. This is a remix of [this rack](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the stls that I remixed/designed, aka the vented sleds for the PI and the SSD, and the side fan mount.
+
+![files](./3d/files.png)
+
 </details>
 
 
 <details>
 <summary>Software details and architecture</summary>
-![](architecture.png)
+![architecture](architecture.png)
 </details>
 
 
