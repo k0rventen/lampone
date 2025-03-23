@@ -2,16 +2,6 @@
 
 My self hosted cloud.
 
-Tech stack:
-
-Hardware:
-- 3 raspberry pi 4 (8Go)
-- 1 gigabit ethernet tp link 5 ports switch
-- 1 1To lexar usb SSD
-- 1 3d printed rack
-- 1 82mm fan
-
-![](cluster.png)
 
 
 <div align="center">
@@ -23,6 +13,24 @@ Hardware:
 ![cluster version](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fkubernetes_version&style=for-the-badge&color=blue)
 
 </div>
+
+<details>
+<summary>Hardware specs</summary>
+![](cluster.png)
+
+Hardware:
+- 3 raspberry pi 4 (8Go)
+- 1 gigabit ethernet tp link 5 ports switch
+- 1 1To lexar usb SSD
+- 1 3d printed rack
+- 1 [80mm fan](https://www.thermalright.com/product/tl-8015w/)
+</details>
+
+
+<details>
+<summary>Software details and architecture</summary>
+![](architecture.png)
+</details>
 
 
 ## deployment
@@ -114,5 +122,3 @@ SetCredentialEncrypted=restic: \
 ```
 ansible-playbook -i inventory restic-install.yaml
 ```
-
-5.
