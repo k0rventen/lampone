@@ -17,6 +17,8 @@ jobs:
   diff:
     name: flux diff
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -35,3 +37,16 @@ jobs:
             --path /github/workspace/pr/k8s/flux
             --path-orig /github/workspace/main/k8s/flux
             --all-namespaces
+            --output-file flux.diff
+      - name: diff
+        id: diff
+        run: |
+          echo "diff=$(cat flux.diff)" >> "$GITHUB_OUTPUT"
+      - name: Add Comment
+        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
+        with:
+          message: |
+            Here is the diff to main that will be deployed:
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
