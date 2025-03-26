@@ -3,7 +3,8 @@
   "extends": [
     "config:recommended",
     "docker:pinDigests",
-    "helpers:pinGitHubActionDigests"
+    "helpers:pinGitHubActionDigests",
+    ":semanticCommits",
   ],
   "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
   "flux": {
