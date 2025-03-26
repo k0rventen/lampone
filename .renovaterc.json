@@ -20,7 +20,7 @@
       "customType": "regex",
       "fileMatch": ["inventory\\.yaml$"],
       "matchStrings": ["k3s_version:\\s*(?<currentValue>.*?)\\n"],
-      "depNameTemplate": "k3s",
+      "depNameTemplate": "k3s-io/k3s",
       "datasourceTemplate": "github-releases"
     }]
 }
