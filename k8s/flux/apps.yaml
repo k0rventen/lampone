@@ -13,10 +13,6 @@ spec:
     name: flux-system
   path: ./k8s/apps
   prune: true
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   patches:
     - # decryption config passed to childrens
       patch: |-
