@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  targetNamespace: cloud
+  targetNamespace: ingress
   path: ./k8s/infra/ingress
   prune: true
   sourceRef:
