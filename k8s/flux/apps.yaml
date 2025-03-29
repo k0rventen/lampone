@@ -11,7 +11,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./k8s/apps
+  path:
+    - ./k8s/apps/deploy.yaml
   prune: true
   patches:
     - # decryption config passed to childrens
