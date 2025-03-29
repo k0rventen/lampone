@@ -1,0 +1,62 @@
+# this deploys a GitOpsToolKit kustomization
+# for each folder, in its own ns
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ingress
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: cloud
+  path: ./k8s/infra/ingress
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: gitea
+  path: ./k8s/infra/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certificates
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cert-manager
+  interval: 10m0s
+  targetNamespace: services
+  path: ./k8s/infra/certificates
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: internal
+  namespace: flux-system
+spec:
+  interval: 10m
+  targetNamespace: watchtower
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./k8s/infra/internal
+  prune: true
+  timeout: 1m
