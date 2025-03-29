@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: certificates
+    - name: cert-manager
   interval: 10m0s
   targetNamespace: ingress
   path: ./k8s/infra/ingress
@@ -23,7 +23,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  targetNamespace: gitea
+  targetNamespace: cert-manager
   path: ./k8s/infra/cert-manager
   prune: true
   sourceRef:
