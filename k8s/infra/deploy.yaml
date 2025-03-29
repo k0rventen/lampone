@@ -58,6 +58,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./k8s/infra/internal
+  path: ./k8s/infra/system
   prune: true
   timeout: 1m
