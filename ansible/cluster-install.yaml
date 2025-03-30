@@ -2,11 +2,6 @@
 - name: Bootstrap k3s cluster
   hosts: all
   become: true
-  vars:
-    nfs:
-      path: "/nfs"
-      network: "192.168.100.0/24"
-      options: "rw,sync,no_subtree_check,no_root_squash"
   tasks:
     - name: Install curl for all nodes
       apt:
@@ -16,26 +11,29 @@
 
     - name: Install k3s server on the master node if not already installed
       shell: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} sh -s - --write-kubeconfig-mode 644 --disable-helm-controller --disable=traefik --disable=local-storage --disable=metrics-server
+        curl -sfL https://get.k3s.io | \
+        INSTALL_K3S_VERSION={{ k3s_version }} \
+        K3S_TOKEN="{{ k3s_token }}" \
+        sh -s - \
+        --write-kubeconfig-mode 644 \
+        --disable-helm-controller \
+        --disable=traefik \
+        --disable=local-storage \
+        --disable=metrics-server
       args:
         creates: /usr/local/bin/k3s
-      when: role == 'control_plane'
-
-    - name: Fetch K3s server token
-      shell: cat /var/lib/rancher/k3s/server/node-token
-      register: k3s_server_token
       when: role == 'control_plane'
 
     - name: Install k3s agent on worker nodes if not already installed
       shell: |
         curl -sfL https://get.k3s.io | \
         INSTALL_K3S_VERSION={{ k3s_version }} \
-        K3S_URL=https://{{ hostvars[k3s_server_node].cluster_ip }}:6443 \
-        K3S_TOKEN="{{ hostvars[k3s_server_node].k3s_server_token.stdout }}" \
+        K3S_URL=https://{{ cluster_cp_ip }}:6443 \
+        K3S_TOKEN="{{ k3s_token }}" \
         sh -s -
       args:
         creates: /usr/local/bin/k3s
-      when: role == 'agent'
+      when: role == 'worker'
 
     - name: Configure NFS server (only on server node)
       block:

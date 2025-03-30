@@ -44,7 +44,7 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 I try to adhere to gitops/automation principles.
 Some things aren't automated but it's mainly toil (for now).
-90% of the infrastructure should be deployable by following these instructions (assuming data and encryption keys are known).
+95% of the infrastructure should be deployable by following these instructions (assuming data and encryption keys are known).
 
 Requirements:
 - ansible-playbook
@@ -129,3 +129,30 @@ SetCredentialEncrypted=restic: \
 ```
 ansible-playbook -i inventory restic-install.yaml
 ```
+
+## Staging / tests env
+
+A staging environment can be deployed using vagrant:
+
+Prerequisites:
+```
+
+sudo apt install
+```
+
+Then in `staging/`
+```
+# launch
+vagrant up
+
+# add the nodes ssh config
+vagrant ssh-config > .ssh/config
+
+# get the kubectl config
+vagrant ssh -c "kubectl config view --raw" staging-master > .kube/configs/staging
+
+# test
+kubectl get no
+```
+
+Then bootstrap the cluster using flux from []()

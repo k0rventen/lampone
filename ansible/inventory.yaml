@@ -1,38 +1,27 @@
-lampone:
-    hosts:
+all:
+  children:
+    lampone:
+      hosts:
         drupelet-1:
-            ansible_host: 192.168.1.1
-            cluster_ip: 192.168.100.1
-            role: control_plane
+          role: control_plane
         drupelet-2:
-            ansible_host: 192.168.1.2
-            cluster_ip: 192.168.100.2
-            role: worker
+          role: worker
         drupelet-3:
-            ansible_host: 192.168.1.3
-            cluster_ip: 192.168.100.3
-            role: worker
-    vars:
-        k3s_version: v1.31.6+k3s1
-        discord_webhook: ENC[AES256_GCM,data:GOuedORFeEngJGyMFKW9PA0jZxF6HdolBXqHkmLKHu62ZxGiGH+gy8mPySqE33eNBOeE0VuRIvbU2+OTT5xNg7PAWkQcOQ/V1Q89mqrQjWojXNcRgazKJ0Cz2C9ovAro1g7FC/D06z0xNufW3hrxcByR8nzrMwmLzw==,iv:2jkSL1LRRwt5y8lTRwmUOoxR0PWwUbNVc3EhZ2j+0+4=,tag:ZTW3gDVnAruFzuN53/vMxw==,type:str]
-        restic_systemd_creds: ENC[AES256_GCM,data:j43wn4XED68VkHiHQ/MftASyNvEIjKiADF6CK5j1d/xrRmr2xq1hbBD2y04UkXQ2xdr81Xgpj2dUphgTHxZt7iqA5p9gXp0whmfYYWQp5H6jcJBaxaIgq9PsBUivE9TE3S6O9TwJlxvYDxKfF5xFVr0jfk9U9qo3F60yBSqnWy5gkvFacM17KBkKdxfiHiZpAajh8TSvgQujipveuizMo6D+jCmBtTg4CG5wRcrhRY3dgtKTHvqdyqjtIzsEPz/zepmRxw==,iv:VIP1UmEfpFjfQCV6T6F3ZtZoDrxrkd8TRZi1KQcFWDA=,tag:8HMEUeOpDksFPGKM9VhDZw==,type:str]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBxalJIOXpjaEhzY2RDQkN0
-            QWxnYURWUGw1UVkveHZzVGxEUngvaGhhTjNNCnNONVcrL1pGMUFEUGtLaWR2Vk9w
-            bk82U3VreDJDejRTMEJ2NXRnNUNCeDgKLS0tIHpuMS9rc1ZYSUhRdTMranJ4YXdm
-            ZkFmSmptN0hZN3ZXbXI4eG1WWk44U2MKHKn0DNlhEh7y5tBhAVe6ypnD0N7cJKPE
-            gyASISix2ETWiYziTZnml/xtHF/gv0bPDWIptDvTzhtINp76RHJ71Q==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-03-19T23:02:54Z"
-    mac: ENC[AES256_GCM,data:hYsza0uD/eBcWYFQV4slgVzKpe4L70R6r3kvaxF6dKXJgPEk/wm47OVwt5EmxeZSMtuHcwMWH/uWGdIvdg8FdEEZ3YRVYxZwVajztqAOOpGtP2Z7iAOTwSTzAu6eBRMq/xj3wB02+MiY7SJSRFgkKxkHPwexP1bK6wBDOe4LRJo=,iv:cugIC8qBShxLUL6CVfDVWdvCquCd8bRtqyWb2QCqCFQ=,tag:AIl+n1J703G3aIAw7LACGQ==,type:str]
-    pgp: []
-    encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$)
-    version: 3.9.4
+          role: worker
+    staging:
+      hosts:
+        staging-master:
+          role: control_plane
+      vars:
+        nfs:
+          network: "192.168.56.0/24"
+          options: "rw,sync,no_subtree_check,no_root_squash"
+          path: "/nfs"
+  vars:
+    k3s_version: v1.31.6+k3s1
+    cluster_cp_ip: 192.168.100.1
+    k3s_token: randomtokenforclusterjoin
+    nfs:
+      path: "/nfs"
+      network: "192.168.100.0/24"
+      options: "rw,sync,no_subtree_check,no_root_squash"
