@@ -2,6 +2,7 @@
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
+![cluster image](./3d/cluster.gif)
 
 
 <div align="center">
@@ -16,7 +17,6 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 <details>
 <summary>Hardware specs</summary>
-![cluster image](./3d/cluster.png)
 
 Hardware:
 - 3 raspberry pi 4 (8Go)
