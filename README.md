@@ -1,6 +1,6 @@
 # lampone
 
-My self hosted cloud.
+My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 
 
@@ -36,7 +36,32 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 <details>
 <summary>Software details and architecture</summary>
-![architecture](./architecture.png)
+
+Here is a top view diagram of the main components:
+
+![architecture](./arch.png)
+
+This is the repo that governs almost all the cluster. The bootstrapping is done using ansible, from 3 ssh-available machines (pi4 in this case).
+
+From here, Flux will create everything that is declared in `k8s/`, decrypt what's secret using a private key, and keep the stack in sync.
+
+In `k8s/` there are 2 main folders:
+- `infra` that represents what's needed for the cluster to function:
+  - a storageclass through a nfs provisionner,
+  - an IngressController with Traefik (actually 2, one private one public)
+  - cert-manager for pulling certs for my domain
+  - cloudflare tunnel for exposing part of my services to the outside world
+  - tailscale (not deployed usnig gitops - yet) for accessing my private services from wherever
+
+- an `apps` folder, that's composed of the actual services running on the cluster:
+  - [adguard](https://github.com/AdguardTeam/AdGuardHome) for DNS/DHCP
+
+  - [gitea](https://github.com/go-gitea/gitea) for local git and CI/CD
+  - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) for my important files
+  - [immich](https://github.com/immich-app/immich) for photos backups and sync
+  - [vaultwarden](https://github.com/dani-garcia/vaultwarden) as my passwords manager
+  - [octoprint](https://github.com/OctoPrint/OctoPrint) for controller my 3D printer
+  - and some other stuff like monitoring, file sharing, a blog etc..
 </details>
 
 
@@ -137,7 +162,7 @@ A staging environment can be deployed using vagrant:
 Prerequisites:
 ```
 
-sudo apt install
+sudo apt install virtualbox vagrant --no-install-recommends
 ```
 
 Then in `staging/`
@@ -146,7 +171,7 @@ Then in `staging/`
 vagrant up
 
 # add the nodes ssh config
-vagrant ssh-config > .ssh/config
+vagrant ssh-config >> .ssh/config
 
 # get the kubectl config
 vagrant ssh -c "kubectl config view --raw" staging-master > .kube/configs/staging
@@ -155,4 +180,4 @@ vagrant ssh -c "kubectl config view --raw" staging-master > .kube/configs/stagin
 kubectl get no
 ```
 
-Then bootstrap the cluster using flux from []()
+Then bootstrap the cluster using flux from [this section](#deploying-the-services).
