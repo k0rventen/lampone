@@ -2,7 +2,7 @@
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
-![cluster image](./3d/cluster.gif)
+![cluster](./cluster.gif)
 
 
 <div align="center">
