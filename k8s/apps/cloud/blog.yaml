@@ -28,3 +28,7 @@ spec:
         image: gitea.cocointhe.cloud/coco/countdown
         imagePullSecret: registry-creds
         service: 8080
+
+      - name: landingpage
+        image: gitea.cocointhe.cloud/coco/landingpage
+        service: 8080
