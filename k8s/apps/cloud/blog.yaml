@@ -30,5 +30,5 @@ spec:
         service: 8080
 
       - name: landingpage
-        image: gitea.cocointhe.cloud/coco/landingpage
+        image: gitea.cocointhe.cloud/coco/landing-page
         service: 8080
