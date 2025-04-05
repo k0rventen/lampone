@@ -2,10 +2,12 @@
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
-![cluster](./cluster.gif)
-
 
 <div align="center">
+
+![cluster](./cluster.gif)
+
+<br>
 
 ![cluster uptime](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_uptime_days&style=for-the-badge&color=blue)
 ![cluster cpu](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_cpu_usage&style=for-the-badge)
@@ -16,7 +18,7 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 </div>
 
 <details>
-<summary>Hardware specs</summary>
+<summary>### Hardware specs</summary>
 
 Hardware:
 - 3 raspberry pi 4 (8Go)
@@ -35,7 +37,7 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 
 <details>
-<summary>Software details and architecture</summary>
+<summary>### Software details and architecture</summary>
 
 Here is a top view diagram of the main components:
 

@@ -29,8 +29,6 @@ spec:
   targetNamespace: immich
   values:
     useDeprecatedPostgresChart: true
-    image:
-      tag: v1.129.0
     immich:
       metrics:
         enabled: false
@@ -67,6 +65,7 @@ spec:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-server
+        tag: &immich_version v1.131.2
         pullPolicy: IfNotPresent
       resources:
         limits:
@@ -79,6 +78,7 @@ spec:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-machine-learning
+        tag: *immich_version
         pullPolicy: IfNotPresent
       resources:
         limits:
