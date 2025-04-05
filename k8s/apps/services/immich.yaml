@@ -65,7 +65,7 @@ spec:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-server
-        tag: &immich_version v1.129.0
+        tag: &immich_version v1.131.2@sha256:29836cf73146057ac388546021fff3e00c923e22a28587cceb5108a5e537987d
         pullPolicy: IfNotPresent
       resources:
         limits:
