@@ -18,7 +18,7 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 </div>
 
 <details>
-<summary>### Hardware specs</summary>
+<summary><h3>Hardware specs</h3></summary>
 
 Hardware:
 - 3 raspberry pi 4 (8Go)
@@ -37,7 +37,7 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 
 <details>
-<summary>### Software details and architecture</summary>
+<summary<h3>Software details and architecture</h3></summary>
 
 Here is a top view diagram of the main components:
 
