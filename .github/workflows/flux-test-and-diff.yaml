@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v7.3.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.3.0@sha256:81870d4e24a3691e0ef9a258505100b194e550e1f8ffeb5e696fdbaab1913429
         with:
           args: test --enable-helm --all-namespaces --path k8s/flux -v
   diff:
@@ -22,19 +22,19 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: "${{ github.event.repository.default_branch }}"
           path: main
           token: ${{ secrets.GIT_TOKEN }}
       - name: Checkout PR
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           path: pr
           token: ${{ secrets.GIT_TOKEN }}
 
       - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v7.3.0
+        uses: docker://ghcr.io/allenporter/flux-local:v7.3.0@sha256:81870d4e24a3691e0ef9a258505100b194e550e1f8ffeb5e696fdbaab1913429
         with:
           args: >-
             diff ks
