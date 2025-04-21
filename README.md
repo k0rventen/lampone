@@ -37,7 +37,7 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 
 <details>
-<summary<h3>Software details and architecture</h3></summary>
+<summary><h3>Software details and architecture</h3></summary>
 
 Here is a top view diagram of the main components:
 
@@ -62,7 +62,7 @@ In `k8s/` there are 2 main folders:
   - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) for my important files
   - [immich](https://github.com/immich-app/immich) for photos backups and sync
   - [vaultwarden](https://github.com/dani-garcia/vaultwarden) as my passwords manager
-  - [octoprint](https://github.com/OctoPrint/OctoPrint) for controller my 3D printer
+  - [octoprint](https://github.com/OctoPrint/OctoPrint) for controlling my 3D printer
   - and some other stuff like monitoring, file sharing, a blog etc..
 </details>
 
