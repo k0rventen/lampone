@@ -65,7 +65,7 @@ spec:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-server
-        tag: &immich_version v1.131.3@sha256:7e5b6729b12b5e5cc5d98bcc6f7c27f723fabae4ee77696855808ebd5200bbf8
+        tag: v1.131.3
         pullPolicy: IfNotPresent
       resources:
         limits:
@@ -78,7 +78,7 @@ spec:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-machine-learning
-        tag: *immich_version
+        tag: v1.131.3
         pullPolicy: IfNotPresent
       resources:
         limits:
