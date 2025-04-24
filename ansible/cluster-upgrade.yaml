@@ -27,7 +27,7 @@
           service:
             name: k3s-agent
             state: restarted
-          when: role == 'agent'
+          when: role == 'worker'
         - name: Restart k3s service
           service:
             name: k3s

@@ -1,5 +1,5 @@
 - name: Install and configure restic for nfs backups
-  hosts: all
+  hosts: lampone
   become: true
   tasks:
     - name: configured restic backups on the nfs host
