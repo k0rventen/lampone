@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: gitea-act-runner
-          image: vegardit/gitea-act-runner:dind-0.2.11@sha256:02ab7bbb1423d790d7fdf39b62851b4422243858e282738744930270bf2e2a99
+          image: vegardit/gitea-act-runner:dind-0.2.11@sha256:6e59daffeaf0be4c2588853a67cb23335a34a8f0ae393983f61f658bc62a4890
           env:
             - name: GITEA_INSTANCE_URL
               value: "http://gitea:3000"
