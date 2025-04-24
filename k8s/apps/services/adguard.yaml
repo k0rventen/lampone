@@ -22,6 +22,15 @@ spec:
               name: adguard-data
             - mountPath: "/opt/adguardhome/work"
               name: adguard-data
+          livenessProbe:
+            exec:
+              command:
+                - nslookup
+                - cocointhe.cloud
+                - 192.168.1.3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 1
       volumes:
         - name: adguard-data
           persistentVolumeClaim:
