@@ -81,7 +81,7 @@ spec:
                 - { color: red, min: 76, max: 9999 }
             - name: nfs_disk_usage
               title: NFS Usage
-              query: round((1 - node_filesystem_free_bytes{device="/dev/sda1"} / node_filesystem_size_bytes{device="/dev/sda1"})  * 100)
+              query: round((1 - node_filesystem_free_bytes{mountpoint="/nfs"} / node_filesystem_size_bytes{mountpoint="/nfs"})  * 100)
               suffix: "%"
               colors:
                 - { color: green, min: 0, max: 50 }
