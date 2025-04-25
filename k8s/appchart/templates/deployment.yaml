@@ -70,6 +70,46 @@ spec:
 {{- end }}
 {{- end }}
 
+---
+{{- if .ingress }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .name }}
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: {{ .ingress.domain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ .name }}
+            port:
+              number: {{ .service }}
+        path: /
+        pathType: Prefix
+---
+{{- if ( default .ingress.public false) }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .name }}-tunnel
+spec:
+  ingressClassName: traefik-tunnel
+  rules:
+  - host: {{ .ingress.domain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ .name }}
+            port:
+              number: {{ .service }}
+        path: /
+        pathType: Prefix
+{{- end }}
+{{- end }}
 {{- end }}
 
 ---

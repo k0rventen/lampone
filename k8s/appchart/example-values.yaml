@@ -15,9 +15,10 @@ apps:
         persistentVolumeClaim:
           claimName: data
     service: 8080
-    pvc: data
+    pvc:
+      - data
     ingress:
-      class: traefik # or traefik-tunnel to be public
+      public: true # default to false
       domain: app.domain.com
 
 configmaps:
