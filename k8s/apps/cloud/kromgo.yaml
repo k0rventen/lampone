@@ -22,6 +22,10 @@ spec:
       - name: kromgo
         image: ghcr.io/kashalls/kromgo:v0.6.0@sha256:4b908ea0be5acd61e67ce38d8f1342d0731296b00b8ca2c35533aa519d804cc6
         service: 8080
+        ingress:
+          public: true
+          domain: stats.cocointhe.cloud
+
         env:
           - name: PROMETHEUS_URL
             value: http://watchtower-prometheus-server.watchtower.svc.cluster.local

@@ -23,12 +23,25 @@ spec:
         image: gitea.cocointhe.cloud/coco/k0rventen.github.io
         imagePullSecret: registry-creds
         service: 8080
+        ingress:
+          public: true
+          domain: blog.cocointhe.cloud
 
-      - name: countdown
-        image: gitea.cocointhe.cloud/coco/countdown
-        imagePullSecret: registry-creds
-        service: 8080
+      # - name: countdown
+      #   image: gitea.cocointhe.cloud/coco/countdown
+      #   imagePullSecret: registry-creds
+      #   service: 8080
 
       - name: landingpage
         image: gitea.cocointhe.cloud/coco/landing-page
         service: 8080
+        ingress:
+          public: true
+          domain: cocointhe.cloud
+
+      - name: echo
+        image: traefik/whoami
+        service: 80
+        ingress:
+          public: true
+          domain: echo.cocointhe.cloud

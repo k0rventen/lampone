@@ -22,6 +22,10 @@ spec:
       - name: grafana
         image: grafana/grafana:11.6.1@sha256:52c3e20686b860c6dc1f623811565773cf51eefa378817a4896dfc863c3c82c8
         service: 3000
+        ingress:
+          public: true
+          domain: solar.cocointhe.cloud
+
         volumeMounts:
           - name: grafana-config
             mountPath: /etc/grafana/grafana.ini

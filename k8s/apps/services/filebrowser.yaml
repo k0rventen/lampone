@@ -35,6 +35,8 @@ spec:
             configMap:
               name: filebrowser-config
         service: 8080
+        ingress:
+          domain: files.cocointhe.cloud
         pvc:
           - filebrowser-data
     configmaps:

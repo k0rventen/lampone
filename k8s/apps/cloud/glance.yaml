@@ -33,6 +33,9 @@ spec:
             configMap:
               name: glance-config
         service: 8080
+        ingress:
+          public: true
+          domain: news.cocointhe.cloud
 
     configmaps:
       glance-config:
