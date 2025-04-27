@@ -2,7 +2,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: vaultwarden
-  namespace: flux-system
 spec:
   install:
     createNamespace: true
@@ -29,5 +28,7 @@ spec:
             persistentVolumeClaim:
               claimName: vaultwarden-data
         service: 80
+        ingress:
+          domain: vaultwarden.cocointhe.cloud
         pvc:
           - vaultwarden-data

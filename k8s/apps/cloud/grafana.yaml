@@ -2,7 +2,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: grafana
-  namespace: flux-system
 spec:
   interval: 24h
   url: https://grafana.github.io/helm-charts
@@ -11,7 +10,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: grafana
-  namespace: flux-system
 spec:
   install:
     createNamespace: true
@@ -22,8 +20,7 @@ spec:
       version: "8.13.1"
       sourceRef:
         kind: HelmRepository
-        name: promtail
-        namespace: flux-system
+        name: grafana
       interval: 10m
   targetNamespace: cloud
   values:
@@ -60,6 +57,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grafana
+  namespace: cloud
+
 spec:
   ingressClassName: traefik
   rules:
@@ -81,10 +80,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grafana-tunnel
+  namespace: cloud
 spec:
   ingressClassName: traefik-tunnel
   rules:
-    - host: grafana.cocointhe.cloud
+    - host: solar.cocointhe.cloud
       http:
         paths:
           - backend:
