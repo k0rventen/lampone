@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: loki
-          image: grafana/loki:main
+          image: grafana/loki:main@sha256:ae0d78305c9c06512dfdee24b518eee82716269707c5e02ce62462c415a2f0c2
           args:
             - -config.file=/etc/loki/local-config.yaml
             - -querier.parallelise-shardable-queries=false
