@@ -15,7 +15,7 @@ spec:
       nodeName: "drupelet-2" # pin to the node attached to the 3d printer
       containers:
         - name: octoprint
-          image: octoprint/octoprint:1.11.0
+          image: octoprint/octoprint:1.11.0@sha256:912bef0c4e8bb17f999a9defb41475afa410f2e16be8f8792a6f68ad7915aa9a
           securityContext:
             privileged: true
           env:
