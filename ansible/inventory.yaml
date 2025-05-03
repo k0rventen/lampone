@@ -21,7 +21,7 @@ all:
           options: "rw,sync,no_subtree_check,no_root_squash"
           path: "/nfs"
   vars:
-    k3s_version: v1.32.3+k3s1
+    k3s_version: v1.32.4+k3s1
     cluster_cp_ip: 192.168.100.1
     k3s_token: randomtokenforclusterjoin
     nfs:
