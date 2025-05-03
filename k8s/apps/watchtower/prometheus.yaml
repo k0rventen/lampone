@@ -35,3 +35,7 @@ spec:
         static_configs:
           - targets:
               - beem-exporter:8000
+      - job_name: traefik-tunnel
+        static_configs:
+          - targets:
+              - traefik-tunnel-metrics.ingress.svc.cluster.local:9100
