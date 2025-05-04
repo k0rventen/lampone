@@ -20,16 +20,11 @@ spec:
     apps:
       - name: blog
         image: gitea.cocointhe.cloud/coco/k0rventen.github.io
-        imagePullSecret: registry-creds
         service: 8080
+        anubis: true
         ingress:
           public: true
           domain: blog.cocointhe.cloud
-
-      # - name: countdown
-      #   image: gitea.cocointhe.cloud/coco/countdown
-      #   imagePullSecret: registry-creds
-      #   service: 8080
 
       - name: landingpage
         image: gitea.cocointhe.cloud/coco/landing-page

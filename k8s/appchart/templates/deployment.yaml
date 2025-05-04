@@ -26,6 +26,19 @@ spec:
           volumeMounts:
             {{- toYaml .volumeMounts | nindent 12 }}
           {{- end }}
+        {{- if ( default .anubis false) }}
+        - name: anubis
+          image: ghcr.io/techarohq/anubis:latest
+          imagePullPolicy: Always
+          env:
+            - name: "TARGET"
+              value: "http://localhost:{{ .service }}"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+        {{- end }}
+
       {{- if .volumes }}
       volumes:
         {{- toYaml .volumes | nindent 8 }}
@@ -50,6 +63,13 @@ spec:
       name: {{ .service | quote }}
       port: {{ .service }}
       targetPort: {{ .service }}
+    {{- if ( default .anubis false) }}
+    - protocol: TCP
+      name: "anubis"
+      port: 8923
+      targetPort: 8923
+
+    {{- end }}
 {{- end }}
 
 ---
@@ -108,7 +128,7 @@ spec:
           service:
             name: {{ .name }}
             port:
-              number: {{ .service }}
+              number: {{ ternary ":8923" .service (default .anubis false) }}
         path: /
         pathType: Prefix
 {{- end }}
