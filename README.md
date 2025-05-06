@@ -2,9 +2,10 @@
 
 <div align="center">
 
+![logo](./resources/logo.png)
 <h1>lampone</h1>
 
-![logo](./logo.png)
+![cluster](./resources/cluster.gif)
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
@@ -23,11 +24,8 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 </div>
 
 <details>
-<summary><h3>Hardware</h3></summary>
+<summary><h2>Hardware</h2></summary>
 
-What the cluster really looks like:
-
-![cluster](./cluster.gif)
 
 
 - 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
@@ -47,11 +45,11 @@ The 3d files are available in `3d`. This is a remix of [this rack](https://maker
 
 
 <details>
-<summary><h3>Software details and architecture</h3></summary>
+<summary><h2>Software</h2></summary>
 
 Here is a top view diagram of the main components:
 
-![architecture](./arch.png)
+![architecture](./resources/arch.png)
 
 This is the repo that governs almost all the cluster. The bootstrapping is done using ansible, from 3 ssh-available machines (pi4 in this case).
 
