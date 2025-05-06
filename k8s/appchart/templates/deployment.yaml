@@ -28,7 +28,7 @@ spec:
           {{- end }}
         {{- if ( default false .anubis ) }}
         - name: anubis
-          image: ghcr.io/techarohq/anubis:latest
+          image: ghcr.io/techarohq/anubis:latest@sha256:da801311ec5a2c8a6a814c0d7a713aa43551f1a034326a7171b8840751181aed
           imagePullPolicy: Always
           env:
             - name: "TARGET"

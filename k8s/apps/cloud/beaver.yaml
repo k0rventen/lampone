@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: beaver
-        image: daya0576/beaverhabits:latest
+        image: daya0576/beaverhabits:latest@sha256:35241da0c2d7d9f55e5f6672236b9cb6839760189c79347af1763b89b6167202
         env:
           - name: HABITS_STORAGE
             value: DATABASE
