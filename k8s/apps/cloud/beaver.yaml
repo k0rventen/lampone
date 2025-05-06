@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: beaver
+spec:
+  install:
+    createNamespace: true
+  interval: 24h
+  chart:
+    spec:
+      chart: ./k8s/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 1h
+  targetNamespace: cloud
+  values:
+    apps:
+      - name: beaver
+        image: daya0576/beaverhabits:latest
+        env:
+          - name: HABITS_STORAGE
+            value: DATABASE
+          - name: MAX_USER_COUNT
+            value: "1"
+          - name: INDEX_SHOW_HABIT_COUNT
+            value: "true"
+        volumeMounts:
+          - name: beaver-data
+            mountPath: /app/.user/
+        volumes:
+          - name: beaver-data
+            persistentVolumeClaim:
+              claimName: beaver-data
+        pvc:
+          - beaver-data
+        service: 8080
+        anubis: true
+        ingress:
+          public: true
+          domain: beaver.cocointhe.cloud
