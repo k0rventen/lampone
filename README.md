@@ -1,11 +1,12 @@
-# lampone
-
-My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 
 <div align="center">
 
-![cluster](./cluster.gif)
+<h1>lampone</h1>
+
+![logo](./logo.png)
+
+My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 <br>
 
@@ -22,9 +23,13 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 </div>
 
 <details>
-<summary><h3>Hardware specs</h3></summary>
+<summary><h3>Hardware</h3></summary>
 
-Hardware:
+What the cluster really looks like:
+
+![cluster](./cluster.gif)
+
+
 - 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
 - 1 [gigabit ethernet 5 ports switch](https://www.tp-link.com/home-networking/soho-switch/tl-sg105/)
 - 1 [1To lexar ES3 usb SSD](https://www.lexar.com/products/Lexar-ES3-Portable-SSD/)
@@ -71,6 +76,9 @@ In `k8s/` there are 2 main folders:
   - [kromgo](https://github.com/kashalls/kromgo) for exposing stats publicly
   - [octoprint](https://github.com/OctoPrint/OctoPrint) for controlling my 3D printer
   - and some other stuff like monitoring, a blog , static sites, etc..
+
+- there is also an `appchart` folder. It's a Helm chart that ease the deployment of simple services.
+
 
 </details>
 
