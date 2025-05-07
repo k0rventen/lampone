@@ -32,10 +32,6 @@ spec:
     persistence:
       enabled: true
       size: 100Mi
-    datasources:
-      datasources.yaml:
-        apiVersion: 1
-
     grafana.ini:
       auth.anonymous:
         enabled: true
@@ -46,13 +42,12 @@ spec:
         check_for_updates: false
         reporting_enabled: false
       news:
-        news_feed_enabled: true
+        news_feed_enabled: false
       metrics:
         enabled: false
+
 ---
-# dashboards configmaps
----
-# ingresses for private and public facing traefik
+# private ingress for
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -76,6 +71,7 @@ spec:
     - hosts:
         - grafana.cocointhe.cloud
 ---
+# public ingress only for solar data
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

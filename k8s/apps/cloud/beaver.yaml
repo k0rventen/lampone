@@ -37,7 +37,6 @@ spec:
         pvc:
           - beaver-data
         service: 8080
-        anubis: true
         ingress:
           public: true
           domain: beaver.cocointhe.cloud
