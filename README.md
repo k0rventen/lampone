@@ -3,9 +3,8 @@
 <div align="center">
 
 ![logo](./resources/logo.png)
-<h1>lampone</h1>
 
-![cluster](./resources/cluster.gif)
+<h1>lampone</h1>
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
@@ -23,10 +22,15 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 </div>
 
-<details>
-<summary><h2>Hardware</h2></summary>
 
 
+## Hardware
+
+This is what the cluster looks like:
+
+![cluster](./resources/cluster.gif)
+
+What it's made of:
 
 - 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
 - 1 [gigabit ethernet 5 ports switch](https://www.tp-link.com/home-networking/soho-switch/tl-sg105/)
@@ -35,17 +39,14 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 - 3 25cms cat6 ethernet cables
 - a very short usb-c 10gbps cable
 - some m3 threaded inserts and screws
-- a 3d printed rack
+- a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/3d)
 
-The 3d files are available in `3d`. This is a remix of [this rack](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the stls that I remixed/designed, aka the vented sleds for the PI and the SSD, and the side fan mount.
-
-![files](./3d/files.png)
+The rack is a remix of [this one](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the stls that I remixed/designed, aka the vented sleds for the PI4 and the SSD, and the side fan mount.
 
 </details>
 
 
-<details>
-<summary><h2>Software</h2></summary>
+## Software
 
 Here is a top view diagram of the main components:
 
@@ -78,8 +79,6 @@ In `k8s/` there are 2 main folders:
 - there is also an `appchart` folder. It's a Helm chart that ease the deployment of simple services.
 
 
-</details>
-
 
 ## deployment
 
@@ -105,7 +104,7 @@ with passwordless sudo (`<user> ALL=(ALL) NOPASSWD: ALL` in visudo).
 
 ```
 cd ansible
-ansible-playbook -i inventory.yaml cluster-install.yaml
+ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 ```
 
 
@@ -131,7 +130,7 @@ flux bootstrap github \
               --path=./k8s/flux
 ```
 
-3. Things should start to deploy !
+3. Things should start to deploy ! :magic:
 
 
 ## k3s update
@@ -189,7 +188,7 @@ SetCredentialEncrypted=restic: \
         ...
 ```
 
-4. Get the discord webhook token and set the `discord_webhook` key in the inventory accordingly.
+4. [Create a discord webhook for your channel](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and set the `discord_webhook` key in the inventory accordingly.
 
 5. Deploy the restic config using ansible:
 
@@ -200,29 +199,33 @@ ansible-playbook -i inventory restic-install.yaml
 <details>
 <summary><h3> Staging / tests env (WIP)</h3></summary>
 
-A staging environment can be deployed using vagrant:
-
-Prerequisites:
+A staging environment can be deployed using [vagrant](https://developer.hashicorp.com/vagrant/downloads):
 ```
-
+brew tap hashicorp/tap
+brew install hashicorp/tap/vagrant
 sudo apt install virtualbox vagrant --no-install-recommends
 ```
 
-Then in `staging/`
+Then create the staging env:
 ```
 # launch
 vagrant up
 
 # add the nodes ssh config
-vagrant ssh-config >> .ssh/config
+vagrant ssh-config >> $HOME/.ssh/config
+
+# deploy the cluster
+cd ansible
+ansible-playbook -i inventory.yaml -l staging cluster-install.yaml
 
 # get the kubectl config
-vagrant ssh -c "kubectl config view --raw" staging-master > .kube/configs/staging
+cd ..
+vagrant ssh -c "kubectl config view --raw" staging-master > $HOME/.kube/configs/staging
 
 # test
-kubectl get no
+kubectl get nodes
 ```
 
-Then bootstrap the cluster using flux from [this section](#deploying-the-services).
+Then bootstrap the cluster using flux from [this section](#deploying-the-services), using a develop branch.
 
 </details>
