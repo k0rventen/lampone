@@ -27,7 +27,7 @@ spec:
           domain: blog.cocointhe.cloud
 
       - name: landingpage
-        image: gitea.cocointhe.cloud/coco/landing-page@sha256:810edfcde79d3d7c23fb5f9a48c82e6ea3bfb479a5467d68cb3c947970a26876
+        image: gitea.cocointhe.cloud/coco/landing-page@sha256:84222530a6620e663d2b0c280e093e668fcfe328a1b1e1295c383133499f8cb7
         service: 8080
         ingress:
           public: true
