@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mazicorn
+spec:
+  install:
+    createNamespace: true
+  interval: 24h
+  chart:
+    spec:
+      chart: ./k8s/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 1h
+  targetNamespace: cloud
+  values:
+    apps:
+      - name: mazicorn
+        image: gitea.cocointhe.cloud/coco/mazicorn
+        service: 8080
+        ingress:
+          public: true
+          domain: mazicorn.cocointhe.cloud
