@@ -11,13 +11,15 @@ spec:
       labels:
         app: gitea-act-runner
     spec:
+      hostname: gitea-runner
       containers:
         - name: gitea-act-runner
-          hostname: gitea-act-runner
-          image: vegardit/gitea-act-runner:dind-0.2.11@sha256:6e59daffeaf0be4c2588853a67cb23335a34a8f0ae393983f61f658bc62a4890
+          image: gitea/act_runner:0.2.11-dind-rootless
           env:
             - name: GITEA_INSTANCE_URL
               value: "http://gitea:3000"
+            - name: DOCKER_HOST
+              value: unix:///var/run/user/1000/docker.sock
             - name: GITEA_RUNNER_LABELS
               value: "ubuntu-latest:docker://gitea.cocointhe.cloud/coco/base"
             - name: GITEA_RUNNER_REGISTRATION_TOKEN
