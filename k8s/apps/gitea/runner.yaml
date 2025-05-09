@@ -13,12 +13,13 @@ spec:
     spec:
       containers:
         - name: gitea-act-runner
+          hostname: gitea-act-runner
           image: vegardit/gitea-act-runner:dind-0.2.11@sha256:6e59daffeaf0be4c2588853a67cb23335a34a8f0ae393983f61f658bc62a4890
           env:
             - name: GITEA_INSTANCE_URL
               value: "http://gitea:3000"
             - name: GITEA_RUNNER_LABELS
-              value: "ubuntu-latest:docker://docker.gitea.com/runner-images:ubuntu-latest-slim"
+              value: "ubuntu-latest:docker://gitea.cocointhe.cloud/coco/base"
             - name: GITEA_RUNNER_REGISTRATION_TOKEN
               valueFrom:
                 secretKeyRef:
