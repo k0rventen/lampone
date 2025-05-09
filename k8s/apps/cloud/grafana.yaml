@@ -17,7 +17,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: "8.15.0"
+      version: "9.0.0"
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -28,7 +28,7 @@ spec:
       port: 3000
     image:
       repository: grafana/grafana
-      tag: 11.6.1@sha256:52c3e20686b860c6dc1f623811565773cf51eefa378817a4896dfc863c3c82c8
+      tag: 12.0.0@sha256:263cbefd5d9b179893c47c415daab4da5c1f3d6770154741eca4f45c81119884
     persistence:
       enabled: true
       size: 100Mi
