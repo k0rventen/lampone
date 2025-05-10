@@ -20,6 +20,9 @@ spec:
     apps:
       - name: beaver-notifier
         image: gitea.cocointhe.cloud/coco/beaver-notifier:2025.05.10.4acf5eb
+        env:
+          - name: TZ
+            value: Europe/Paris
         extras:
           envFrom:
             - secretRef:
