@@ -23,12 +23,14 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 </div>
 
 
-
 ## Hardware
 
 This is what the cluster looks like:
 
+<div align="center">
+
 ![cluster](./resources/cluster.gif)
+</div>
 
 What it's made of:
 
@@ -83,17 +85,37 @@ In `k8s/` there are 2 main folders:
 ## deployment
 
 I try to adhere to gitops/automation principles.
-Some things aren't automated but it's mainly toil (things during setup, ).
+Some things aren't automated but it's mainly toil (one-time-things during setup, critical upgrades, some provisionning..).
 95% of the infrastructure should be deployable by following these instructions (assuming data and encryption keys are known).
 
 Requirements and basic stack:
-- ansible: infrastructure automation
-- flux: cluster state mgmt
-- sops + age: encryption
-- git: change management
+- [ansible](https://docs.ansible.com/): infrastructure automation
+- [flux](https://fluxcd.io/flux/): cluster state mgmt
+- [sops](https://github.com/getsops/sops) + [age](https://github.com/FiloSottile/age/): encryption
+- [git](https://git-scm.com/): change management
 
 ```
 brew install git ansible fluxcd/tap/flux sops age
+```
+
+### SOPS setup
+
+This assume you have the decryption key `age.agekey`, and the env var configured:
+
+```
+SOPS_AGE_KEY_FILE=age.agekey
+```
+
+If you want to encrypt an already created file (eg a k8s Secret spec):
+
+```
+sops encrypt -i <file.yaml>
+```
+
+If you want to edit inline a encrypted file (eg modify a value in a encrypted Secret/Configmap) using $EDITOR:
+
+```
+sops k8s/apps/services/beaver/beaver-config.yaml
 ```
 
 
@@ -108,7 +130,7 @@ ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 ```
 
 
-## Deploying the services
+## Deploying the stack
 
 1. Get a github token and set an env var:
 
@@ -207,7 +229,7 @@ sudo apt install virtualbox vagrant --no-install-recommends
 ```
 
 Then create the staging env:
-```
+```sh
 # launch
 vagrant up
 
@@ -226,6 +248,6 @@ vagrant ssh -c "kubectl config view --raw" staging-master > $HOME/.kube/configs/
 kubectl get nodes
 ```
 
-Then bootstrap the cluster using flux from [this section](#deploying-the-services), using a develop branch.
+Then bootstrap the cluster using flux from [this section](#deploying-the-services), ideally using a develop branch.
 
 </details>
