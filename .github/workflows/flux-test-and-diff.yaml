@@ -20,11 +20,11 @@ jobs:
         with:
           ref: "main"
           path: main
-      - uses: astral-sh/setup-uv@v5
-      - name: install flux-local
-        run: uv pip install flux-local
-        env:
-          UV_SYSTEM_PYTHON: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip" # caching pip dependencies
+      - run: pip install flux-local
       - uses: fluxcd/flux2/action@main
       - uses: azure/setup-helm@v4.3.0
       - uses: syntaqx/setup-kustomize@v1
@@ -59,7 +59,7 @@ jobs:
         run: |
           {
           echo 'ks_diff<<EOF'
-          cat pr/ks.diff | grep -v Unable to find Secret
+          cat pr/ks.diff | grep -v "Unable to find Secret"
           echo EOF
           } >> "$GITHUB_OUTPUT"
 
