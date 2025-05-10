@@ -17,12 +17,29 @@ apps:
       - name: data
         persistentVolumeClaim:
           claimName: data
+    extras:
+      envFrom:
+        - secretRef:
+            name: test-secret
     service: 8080
+    anubis: true
     pvc:
       - data
     ingress:
       public: true # default to false
       domain: app.domain.com
+
+  - name: simple
+    image: traefik/whoami
+    extras:
+      envFrom:
+        - secretRef:
+            name: test-secret
+    service: 8080
+    pvc:
+      - data
+    ingress:
+      domain: lol.domain.com
 
 configmaps:
   conf:
