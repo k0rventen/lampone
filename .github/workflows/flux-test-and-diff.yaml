@@ -14,7 +14,7 @@ jobs:
       - name: Run flux-local test
         uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
         with:
-          args: test --enable-helm --all-namespaces --path k8s/flux -v
+          args: test --enable-helm --all-namespaces --path k8s/flux -vv
   diff:
     name: flux diff
     runs-on: ubuntu-latest
@@ -30,31 +30,49 @@ jobs:
       - name: Checkout PR
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
-          path: pr
           token: ${{ secrets.GIT_TOKEN }}
 
-      - name: Run flux-local diff
+      - name: Run flux-local ks diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
         with:
           args: >-
             diff ks
-            --path /github/workspace/pr/k8s/flux
+            --path /github/workspace/k8s/flux
             --path-orig /github/workspace/main/k8s/flux
             --all-namespaces
-            --output-file flux.diff
+            --output-file ks.diff
+      - name: Run flux-local hr diff
+        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
+        with:
+          args: >-
+            diff hr
+            --path /github/workspace/k8s/flux
+            --path-orig /github/workspace/main/k8s/flux
+            --all-namespaces
+            --output-file hr.diff
       - name: diff
         id: diff
         run: |
           {
-          echo 'diff<<EOF'
-          cat flux.diff
+          echo 'ks_diff<<EOF'
+          cat ks.diff
+          echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+          {
+          echo 'hr_diff<<EOF'
+          cat hr.diff
           echo EOF
           } >> "$GITHUB_OUTPUT"
       - name: Add Comment
         uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc
         with:
           message: |
-            Here is the diff to main that will be deployed:
+            Kustomisations changes:
             ```diff
-            ${{ steps.diff.outputs.diff }}
+            ${{ steps.diff.outputs.ks_diff }}
+            ```
+            HelmRelease changes:
+            ```diff
+            ${{ steps.diff.outputs.hr_diff }}
             ```
