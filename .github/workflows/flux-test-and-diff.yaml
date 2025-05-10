@@ -5,74 +5,79 @@ on:
   pull_request:
     branches: ["main"]
 jobs:
-  test:
-    name: flux test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
-        with:
-          args: test --enable-helm --all-namespaces --path k8s/flux -vv
   diff:
     name: flux diff
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-      - name: Checkout main
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          ref: "${{ github.event.repository.default_branch }}"
-          path: main
-          token: ${{ secrets.GIT_TOKEN }}
       - name: Checkout PR
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
-          token: ${{ secrets.GIT_TOKEN }}
+          ref: "better-ci"
+          path: pr
+      - name: Checkout main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          ref: "main"
+          path: main
+      - uses: astral-sh/setup-uv@v5
+      - name: install flux-local
+        run: uv pip install flux-local
+        env:
+          UV_SYSTEM_PYTHON: 1
+      - uses: fluxcd/flux2/action@main
+      - uses: azure/setup-helm@v4.3.0
+      - uses: syntaqx/setup-kustomize@v1
 
-      - name: Run flux-local ks diff
-        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
-        with:
-          args: >-
-            diff ks
-            --path /github/workspace/k8s/flux
-            --path-orig /github/workspace/main/k8s/flux
-            --all-namespaces
+      - name: flux-tests
+        run: |
+          cd pr
+          flux-local test --enable-helm --all-namespaces --path k8s/flux -vv
+      - name: flux diff KS
+        run: |
+          cd pr
+          flux-local diff ks \
+            --path $PWD/k8s/flux \
+            --path-orig $PWD/../main/k8s/flux \
+            --all-namespaces \
             --output-file ks.diff
-      - name: Run flux-local hr diff
-        uses: docker://ghcr.io/allenporter/flux-local:v7.5.0@sha256:2111f5e96e65bfdb7cee71f3384cdfae0de1a6a2ce5b95d0fa6de8142c3314d1
-        with:
-          args: >-
-            diff hr
-            --path /github/workspace/k8s/flux
-            --path-orig /github/workspace/main/k8s/flux
-            --all-namespaces
+      - name: flux diff HR
+        run: |
+          cd pr
+          flux-local diff hr \
+            --path $PWD/k8s/flux \
+            --path-orig $PWD/../main/k8s/flux \
+            --all-namespaces \
             --output-file hr.diff
+
+      - name: remove hr
+        run: |
+          cat pr/hr.diff
+
       - name: diff
         id: diff
         run: |
           {
           echo 'ks_diff<<EOF'
-          cat ks.diff
+          cat pr/ks.diff | grep -v Unable to find Secret
           echo EOF
           } >> "$GITHUB_OUTPUT"
 
           {
           echo 'hr_diff<<EOF'
-          cat hr.diff
+          cat pr/hr.diff
           echo EOF
           } >> "$GITHUB_OUTPUT"
       - name: Add Comment
         uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc
         with:
           message: |
-            Kustomisations changes:
+            Kustomisations level changes:
             ```diff
             ${{ steps.diff.outputs.ks_diff }}
             ```
-            HelmRelease changes:
+            HelmRelease level changes:
             ```diff
             ${{ steps.diff.outputs.hr_diff }}
             ```
