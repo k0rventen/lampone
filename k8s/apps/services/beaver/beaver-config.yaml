@@ -1,0 +1,24 @@
+apiVersion: v1
+data:
+  BEAVER_URL: ENC[AES256_GCM,data:GiJSRj/sSSApynt7VFO8ZxRhq0961BLntj1e7nWu,iv:2JxzDxSDJesyseYbnpAOPoomCo/N0pkNirX1Kw4DUUQ=,tag:iVfQHP0QOrlbXT+TowAESg==,type:str]
+  DISCORD_WEBHOOK: ENC[AES256_GCM,data:bmZKdiAFxtXF5+3vf4g/dTkUehzwattcvDAmG2YIXJcPV7jHFpkwZZLb1iKfg4yTSyzSmPcwCl92/uBnGq02SeLbZuOA679NgZWcCPkOSvpQCTSKzCrSNMEE00RHiKwG8RCH5yPNo0JEIjlsDUDGAGA1x8ARoEHmcg==,iv:vkTmtI8xwAVC8A5FsIa9gsIv149Ii3sejtTO1AYatKU=,tag:Vu56CpLiq2CwADTsB1beHw==,type:str]
+  USER: ENC[AES256_GCM,data:ZBhq0qqHEeyR7r4V1wQwlM7Bjg==,iv:okN+Wr/Hpm3z+uqGUoLNVNtADCczsMDSQbojiIlK3nQ=,tag:mCjoc6+PY/wIIvivYmx1xw==,type:str]
+  PASS: ENC[AES256_GCM,data:ibgH1w==,iv:dzjRIrcGfV7AqT3hFajDQZyePJTzQLLf4pCFfZ1OO78=,tag:FsQYpgctbUvXfKXSuvPaYQ==,type:str]
+kind: Secret
+metadata:
+  name: beaver-notifier-config
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhWE54VDNIdmFmMUUyTUgy
+        MEliaU1WUlFnRytJd0I4cWFxTTdOZExkOFJzCngxSjF0eEVLR0hsaDdBbkdWVXE4
+        M0FNeGRSNWNVeUQ2Sno4RXZoMHA2TDAKLS0tIHhFcHQza3ZkMG0wSFljZmdaUnFi
+        RW9YU2FVbnB0a2k5NnBXM3FFdGovVlkKaroNXj5qgbneEz4nuVftBjzFWjvgd+Z7
+        VO9m0vJTvLMlRJVD8bFKwNqoR3/kIyaNI9bM0jOpTPYrhpwOtGS5MA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-05-10T15:55:39Z"
+  mac: ENC[AES256_GCM,data://+eSCnQA1OB9PWan0wEfnxzAcVDRyGfdWIY9z4SstGzKXkV1KtwQcIly5m/qnvtC/AVwolnGkO4Epw9CjPvQFPnt+swaKoyr9KFptJFpCn2tQ4eZNogsuYyxG3INnPYwMJty6U5e/2KuD0kHOK8zBpbcQonz+AJGpTQhSHyffM=,iv:8V2QhXkMH2ierR/B00M9sq5/J1718J9WjgWWew58g1E=,tag:/Ius2/xbzWFIveGWXBeQ3Q==,type:str]
+  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$)
+  version: 3.10.2
