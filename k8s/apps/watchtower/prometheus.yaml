@@ -29,7 +29,7 @@ spec:
     alertmanager:
       enabled: false
     kube-state-metrics:
-      enabled: false
+      enabled: true
     extraScrapeConfigs: |
       - job_name: beem-exporter
         static_configs:
