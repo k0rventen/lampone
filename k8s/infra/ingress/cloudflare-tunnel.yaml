@@ -1,0 +1,30 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: cloudflare
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://cloudflare.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudflare-tunnel-remote
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: cloudflare-tunnel-remote
+      version: "0.1.*"
+      sourceRef:
+        kind: HelmRepository
+        name: cloudflare
+        namespace: flux-system
+      interval: 1h
+  releaseName: cf-tunnel
+  targetNamespace: ingress
+  valuesFrom:
+    - kind: Secret
+      name: cloudflare-tunnel-config
