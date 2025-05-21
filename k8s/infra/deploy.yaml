@@ -39,8 +39,9 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager
+    - name: ingress
   interval: 10m0s
-  targetNamespace: services
+  targetNamespace: ingress
   path: ./k8s/infra/certificates
   prune: true
   sourceRef:
