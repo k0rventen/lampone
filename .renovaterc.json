@@ -6,22 +6,35 @@
     "helpers:pinGitHubActionDigests",
     ":semanticCommits"
   ],
-  "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
+  "ignorePaths": [
+    "k8s/flux/flux-system/gotk-components.yaml"
+  ],
   "flux": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["inventory\\.yaml$"],
-      "matchStrings": ["k3s_version:\\s*(?<currentValue>.*?)\\n"],
+      "managerFilePatterns": [
+        "/inventory\\.yaml$/"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s*(?<currentValue>.*?)\\n"
+      ],
       "depNameTemplate": "k3s-io/k3s",
       "datasourceTemplate": "github-releases"
-    }]
+    }
+  ]
 }
