@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: beaver-notifier
-        image: gitea.cocointhe.cloud/coco/beaver-notifier:2025.05.10.4acf5eb
+        image: gitea.cocointhe.cloud/coco/beaver-notifier:2025.05.10.4acf5eb@sha256:5af716f3948cb3f02ddaa26e1aee806ee2494fe3933295aef35c1923cd3f4a21
         extras:
           envFrom:
             - secretRef:
