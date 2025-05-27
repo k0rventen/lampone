@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "docker:pinDigests", ":semanticCommits"],
+  "extends": ["config:base", "docker:pinDigests", ":semanticCommits"],
   "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
   "flux": {
     "fileMatch": ["k8s/.+\\.ya?ml$"]
@@ -17,6 +17,10 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchUpdateTypes": ["digest"],
+      "enabled": false
     }
   ],
   "customManagers": [
