@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tailscale
+spec:
+  selector:
+    matchLabels:
+      app: tailscale
+  template:
+    metadata:
+      labels:
+        app: tailscale
+    spec:
+      hostNetwork: true
+      containers:
+        - name: tailscale
+          image: tailscale/tailscale:latest
+          env:
+            - name: TS_HOSTNAME
+              value: lampone
+            - name: TS_AUTHKEY
+              valueFrom:
+                secretKeyRef:
+                  name: tailscale-authkey
+                  key: TS_AUTHKEY
+            - name: TS_ROUTES
+              value: 192.168.1.0/24
+            - name: TS_STATE_DIR
+              value: /etc/ts
+            - name: TS_KUBE_SECRET
+              value: ""
+          volumeMounts:
+            - mountPath: "/etc/ts"
+              name: tailscale-data
+      volumes:
+        - name: tailscale-data
+          persistentVolumeClaim:
+            claimName: tailscale-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tailscale-data
+spec:
+  resources:
+    requests:
+      storage: 100Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
