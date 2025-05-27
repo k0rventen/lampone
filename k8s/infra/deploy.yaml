@@ -52,6 +52,39 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: tailscale
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: tailscale
+  path: ./k8s/infra/tailscale/operator
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+# we must split the tailscale resources and depend on the operator
+# because the crds won't be deployed the first time it's applied and the ks will fail
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tailscale-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: tailscale
+  interval: 10m0s
+  targetNamespace: tailscale
+  path: ./k8s/infra/tailscale/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: system
   namespace: flux-system
 spec:
