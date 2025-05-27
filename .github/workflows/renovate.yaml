@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Run Renovate
-        uses: renovatebot/github-action@6312f35b96c47b1e3cd516f42616ce96145a0982
+        uses: renovatebot/github-action@799d90a817f493a0b5c6643e4413f9cb0fcd0616
         with:
           token: ${{ secrets.RENOVATE_TOKEN }} #PAT
         env:
