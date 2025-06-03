@@ -36,8 +36,8 @@ spec:
     postgresql:
       enabled: true
       image:
-        repository: tensorchord/pgvecto-rs
-        tag: pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52
+        repository: ghcr.io/immich-app/postgres
+        tag: 14-vectorchord0.4.1-pgvectors0.2.0
       primary:
         containerSecurityContext:
           readOnlyRootFilesystem: false
@@ -48,12 +48,7 @@ spec:
           requests:
             cpu: 100m
             memory: 256Mi
-        initdb:
-          scripts:
-            create-extensions.sql: |
-              CREATE EXTENSION cube;
-              CREATE EXTENSION earthdistance;
-              CREATE EXTENSION vectors;
+
     redis:
       enabled: true
       architecture: standalone
