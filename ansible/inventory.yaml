@@ -32,5 +32,3 @@ all:
       path: "/nfs"
       network: "192.168.100.0/24"
       options: "rw,sync,no_subtree_check,no_root_squash"
-    restic_systemd_creds: XXX
-    discord_webhook: XXX

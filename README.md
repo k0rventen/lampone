@@ -170,16 +170,16 @@ I try to follow a 3-2-1 backup rule. The 'live' data is on the nfs ssd.
 It's backed up daily onto the same ssd (mainly for rollbacks and potential local re-deployments).
 For disaster-recovery situations, it's also backed up daily onto a HDD offsite, which can be accessed through my tailnet.
 
-The backup tool is [restic](https://restic.net/) . It's installed and configured onto the nfs server using ansible. There is a 'sidecar' unit that sends a report through discord if the backup fails.
+The backup tool is [restic](https://restic.net/) . It's deployed as a cronjob in the cluster. The image used runs a custom script that runs both the local restic backup as well as the remote one (which requires commands before and after to mount the external disk.). Here are the commands used to create the restic repos before deploying the cronjob:
 
-1. Init the local repo
+1. local repo
 
 ```
 cd /nfs
 restic init nfs-backups
 ```
 
-2. Init the remote repo
+2. remote repo
 
 Create a `mnt-backup.mount` systemd service on the remote server to mount/umount the backup disk
 ```
@@ -202,21 +202,6 @@ Init the repo from the nfs server (this assumes passwordless ssh auth):
 restic init -r sftp:<remote_server_ip>:/mnt/backup/nfs-backups
 ```
 
-3. Create a systemd cred with the repo password (on the nfs server) and set the value of `restic_systemd_creds` in the ansible inventory:
-```
-> systemd-ask-password -n | sudo systemd-creds encrypt --name=restic -p - -
-🔐 Password: *************************
-SetCredentialEncrypted=restic: \
-        ...
-```
-
-4. [Create a discord webhook for your channel](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and set the `discord_webhook` key in the inventory accordingly.
-
-5. Deploy the restic config using ansible:
-
-```
-ansible-playbook -i inventory restic-install.yaml
-```
 
 <details>
 <summary><h3> Staging / tests env (WIP)</h3></summary>

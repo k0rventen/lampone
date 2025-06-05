@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restic-backup
+spec:
+  schedule: "0 4 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          nodeName: drupelet-1
+          hostname: drupelet-1
+          containers:
+            - image: gitea.cocointhe.cloud/coco/restic
+              name: restic-backup
+              envFrom:
+                - secretRef:
+                    name: restic-config
+              volumeMounts:
+                - name: key-volume
+                  mountPath: /tmp/key
+                - mountPath: /nfs
+                  name: nfs-root
+                  readOnly: false
+          volumes:
+            - name: key-volume
+              secret:
+                secretName: sshkey
+            - name: nfs-root
+              hostPath:
+                path: /nfs
+                type: Directory
