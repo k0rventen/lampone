@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: mazicorn
-        image: gitea.cocointhe.cloud/coco/mazicorn
+        image: gitea.cocointhe.cloud/coco/mazicorn@sha256:33c5c7f2236bfb8a242a8e4c4f802a7eeb70310ae5244a84800e922b1c6d5539
         service: 8080
         ingress:
           public: true
