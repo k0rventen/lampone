@@ -1,33 +1,53 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "docker:pinDigests", ":semanticCommits"],
-  "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
+  "extends": [
+    "config:recommended",
+    "docker:pinDigests",
+    ":semanticCommits"
+  ],
+  "ignorePaths": [
+    "k8s/flux/flux-system/gotk-components.yaml"
+  ],
   "flux": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
   },
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch"],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "branch"
     },
     {
-      "matchUpdateTypes": ["digest"],
+      "matchUpdateTypes": [
+        "digest"
+      ],
       "enabled": false
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["inventory\\.yaml$"],
-      "matchStrings": ["k3s_version:\\s*(?<currentValue>.*?)\\n"],
+      "managerFilePatterns": [
+        "/inventory\\.yaml$/"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s*(?<currentValue>.*?)\\n"
+      ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "semver-coerced",
       "datasourceTemplate": "custom.k3s"
