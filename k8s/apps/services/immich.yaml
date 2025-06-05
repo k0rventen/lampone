@@ -36,8 +36,9 @@ spec:
     postgresql:
       enabled: true
       image:
-        repository: ghcr.io/immich-app/postgres
-        tag: 14-vectorchord0.4.1-pgvectors0.2.0
+        registry: ghcr.io
+        repository: immich-app/postgres
+        tag: 14-vectorchord0.3.0-pgvectors0.2.1
       primary:
         containerSecurityContext:
           readOnlyRootFilesystem: false
