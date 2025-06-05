@@ -1,6 +1,0 @@
-[Unit]
-Description=Run local backup every day at 2 AM
-[Timer]
-OnCalendar=02:00
-[Install]
-WantedBy=timers.target
