@@ -17,7 +17,7 @@ metadata:
 spec:
   providerRef:
     name: discord
-  eventSeverity: error
+  eventSeverity: info
   eventSources:
     - kind: GitRepository
       name: "*"
@@ -25,6 +25,9 @@ spec:
       name: "*"
     - kind: HelmRelease
       name: "*"
+  exclusionList:
+    - "Dependencies do not meet ready condition"
+    - "stored artifact for commit"
 ---
 apiVersion: v1
 data:
