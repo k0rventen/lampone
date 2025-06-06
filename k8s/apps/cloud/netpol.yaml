@@ -17,6 +17,10 @@ spec:
           podSelector:
             matchLabels:
               app.kubernetes.io/name: traefik
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              app: notification-controller
   egress:
     - to:
         - namespaceSelector: {}
