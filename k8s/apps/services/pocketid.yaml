@@ -27,11 +27,11 @@ spec:
           - name: APP_URL
             value: https://pocketid.cocointhe.cloud
           - name: TRUST_PROXY
-            value: yes
+            value: "yes"
           - name: PUID
-            value: 1000
+            value: "1000"
           - name: PGID
-            value: 1000
+            value: "1000"
 
         volumes:
           - name: pocketid-data
