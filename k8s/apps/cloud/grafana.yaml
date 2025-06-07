@@ -45,6 +45,9 @@ spec:
         news_feed_enabled: false
       metrics:
         enabled: false
+      server:
+        domain: grafana.cocointhe.cloud
+        root_url: https://grafana.cocointhe.cloud/
 
 ---
 # private ingress for
