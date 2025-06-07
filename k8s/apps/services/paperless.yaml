@@ -38,7 +38,10 @@ spec:
             value: 0.0.0.0
           - name: PAPERLESS_URL
             value: https://paperless.cocointhe.cloud
-
+        extras:
+          envFrom:
+            - secretRef:
+                name: paperless-oidc-config
         volumes:
           - name: paperless-data
             persistentVolumeClaim:
