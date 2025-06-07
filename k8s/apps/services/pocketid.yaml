@@ -27,7 +27,7 @@ spec:
           - name: APP_URL
             value: https://pocketid.cocointhe.cloud
           - name: TRUST_PROXY
-            value: "yes"
+            value: "true"
           - name: PUID
             value: "1000"
           - name: PGID
