@@ -41,7 +41,7 @@ What it's made of:
 - 3 25cms cat6 ethernet cables
 - a very short usb-c 10gbps cable
 - some m3 threaded inserts and screws
-- a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/3d)
+- a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/resources/3d)
 
 The rack is a remix of [this one](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the stls that I remixed/designed, aka the vented sleds for the PI4 and the SSD, and the side fan mount.
 
