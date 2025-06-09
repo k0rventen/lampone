@@ -27,6 +27,10 @@ spec:
       interval: 1h
   releaseName: traefik
   targetNamespace: ingress
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
   values:
     globalArguments: []
     tlsStore:
@@ -36,6 +40,8 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
+      spec:
+        externalTrafficPolicy: Local
     ingressClass:
       enabled: true
       isDefaultClass: true
