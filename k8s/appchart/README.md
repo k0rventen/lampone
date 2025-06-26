@@ -32,6 +32,15 @@ spec:
 
 ```
 
+## testing
+
+```
+helm template -f example-values.yaml . | k apply -f - --dry-run=server
+```
+
+
 ## changelog
 
+1.4.0: add `deploymentSpec` key for adding extra config at the deployment level
+1.3.0: add annotation so flux avoid reconciliation on ingresses when modified by klipper
 1.2.0: added `extras` key that allows settings arbitrary container-level specs
