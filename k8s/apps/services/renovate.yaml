@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+spec:
+  schedule: "@daily"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: renovate
+              image: renovate/renovate:41.1.4
+              args:
+                - k0rventen/lampone
+              envFrom:
+                - secretRef:
+                    name: renovate-env
+          restartPolicy: Never
