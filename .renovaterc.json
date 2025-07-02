@@ -1,34 +1,56 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "docker:pinDigests", ":semanticCommits"],
-  "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
-  "ignoreDeps": ["ghcr.io/immich-app/postgres"],
+  "extends": [
+    "config:recommended",
+    "docker:pinDigests",
+    ":semanticCommits"
+  ],
+  "ignorePaths": [
+    "k8s/flux/flux-system/gotk-components.yaml"
+  ],
+  "ignoreDeps": [
+    "ghcr.io/immich-app/postgres"
+  ],
   "flux": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "fileMatch": [
+      "k8s/.+\\.ya?ml$"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "fileMatch": [
+      "k8s/.+\\.ya?ml$"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "fileMatch": [
+      "k8s/.+\\.ya?ml$"
+    ]
   },
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch"],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchUpdateTypes": ["digest"],
+      "matchUpdateTypes": [
+        "digest"
+      ],
       "enabled": false
     }
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["inventory\\.yaml$"],
-      "matchStrings": ["k3s_version:\\s*(?<currentValue>.*?)\\n"],
+      "fileMatch": [
+        "inventory\\.yaml$"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s*(?<currentValue>.*?)\\n"
+      ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "semver-coerced",
       "datasourceTemplate": "custom.k3s"
