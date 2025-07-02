@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: filebrowser
-        image: ghcr.io/gtsteffaniak/filebrowser:0.7.10-beta
+        image: ghcr.io/gtsteffaniak/filebrowser:0.7.11-beta@sha256:768471134e2294eb9a8a26d83a06b8132c2cd6b25418ed6b36753af4036775ce
         volumeMounts:
           - name: filebrowser-data
             mountPath: /data
@@ -31,8 +31,8 @@ spec:
             persistentVolumeClaim:
               claimName: filebrowser-data
           - name: filebrowser-config
-            configMap:
-              name: filebrowser-config
+            secret:
+              secretName: filebrowser-config
         service: 8080
         ingress:
           domain: files.cocointhe.cloud
