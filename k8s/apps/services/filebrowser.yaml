@@ -31,8 +31,8 @@ spec:
             persistentVolumeClaim:
               claimName: filebrowser-data
           - name: filebrowser-config
-            configMap:
-              name: filebrowser-config
+            secret:
+              secretName: filebrowser-config
         service: 8080
         ingress:
           domain: files.cocointhe.cloud
