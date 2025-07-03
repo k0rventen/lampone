@@ -112,3 +112,34 @@ spec:
   path: ./k8s/infra/system
   prune: true
   timeout: 1m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: system-upgrade
+  namespace: flux-system
+spec:
+  interval: 10m
+  targetNamespace: system-upgrade
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./k8s/infra/system-upgrade
+  prune: true
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: system-upgrade-plans
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: system-upgrade
+  interval: 10m0s
+  targetNamespace: system-upgrade
+  path: ./k8s/infra/system-upgrade-plans
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
