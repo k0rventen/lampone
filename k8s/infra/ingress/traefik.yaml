@@ -46,6 +46,14 @@ spec:
       enabled: true
       isDefaultClass: true
       name: "traefik"
+    providers:
+      kubernetesCRD:
+        enabled: true
+      kubernetesIngress:
+        enabled: true
+        ingressClass: "traefik"
+        publishedService:
+          enabled: false
 ---
 # specific traefik for routing traffic from the cloudflare tunnel
 # only listens for ingressclass 'traefik-tunnel'
