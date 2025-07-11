@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:41.28.1@sha256:68fce2fbe8afa7135aa120abf0599201c4fb70bde5c8e56b44921a5b4fdda765
+              image: renovate/renovate:41.31.0@sha256:a1e39bb1f8055949ca6d200d8511ca75e43831fbeced24bf53e47b399421b113
               args:
                 - k0rventen/lampone
               envFrom:
