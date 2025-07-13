@@ -38,14 +38,11 @@ What it's made of:
 - 1 [gigabit ethernet 5 ports switch](https://www.tp-link.com/home-networking/soho-switch/tl-sg105/)
 - 1 [1To lexar ES3 usb SSD](https://www.lexar.com/products/Lexar-ES3-Portable-SSD/)
 - 1 [80mm fan](https://www.thermalright.com/product/tl-8015w/)
-- 3 25cms cat6 ethernet cables
-- a very short usb-c 10gbps cable
-- some m3 threaded inserts and screws
+- 3 very short cat6 ethernet cables
 - a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/resources/3d)
+- some m3 threaded inserts and screws
 
 The rack is a remix of [this one](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the stls that I remixed/designed, aka the vented sleds for the PI4 and the SSD, and the side fan mount.
-
-</details>
 
 
 ## Software
@@ -60,23 +57,30 @@ From here, Flux will create everything that is declared in `k8s/`, decrypt what'
 
 In `k8s/` there are 2 main folders:
 - `infra` that represents what's needed for the cluster to function:
-  - a storageclass through a nfs provisionner,
-  - an IngressController with Traefik (actually 2, one private one public)
-  - cert-manager for pulling certs for my domain
-  - cloudflare tunnel for exposing part of my services to the outside world
-  - tailscale (not deployed using gitops - yet) for accessing my private services from wherever
+  - a NFS provisionner as a storageclass,
+  - an IngressController with [Traefik](https://github.com/traefik/traefik), one private (listens on local lan), one "public" (routes specific subdomains from cloudflare),
+  - [cert-manager](https://github.com/cert-manager/cert-manager) for certificates management of my domain,
+  - [cloudflare tunnel](https://github.com/cloudflare/cloudflared) for exposing part of my services to the outside world,
+  - [tailscale-operator](https://github.com/tailscale/tailscale/tree/main/cmd/k8s-operator/deploy) for accessing my private services from wherever (using a subnet route) and for my cluster services to access my offsite backup server
+  - [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) for managing k8s upgrades directly in the cluster using CRDs.
+  - [renovate](https://github.com/renovatebot/renovate) cronjob to create PR for components updates (w/ auto merging when it's a patch level update)
+  - [restic](https://github.com/restic/restic) cronjob that create the local backup (if an app fails and borks its files) and remote backup (if the server catches fire)
 
-- an `apps` folder, that's composed of the actual services running on the cluster:
+
+- `apps`, the actual services running on the cluster:
   - [adguard](https://github.com/AdguardTeam/AdGuardHome) for DNS/DHCP
   - [gitea](https://github.com/go-gitea/gitea) for local git and CI/CD
   - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) for my important files
   - [immich](https://github.com/immich-app/immich) for photos backups and sync
   - [vaultwarden](https://github.com/dani-garcia/vaultwarden) as my passwords manager
-  - [filebrowser](https://github.com/filebrowser/filebrowser) for file sharing
+  - [filebrowser](https://github.com/gtsteffaniak/filebrowser) for file sharing
   - [glance](https://github.com/glanceapp/glance) as my internet homepage
-  - [kromgo](https://github.com/kashalls/kromgo) for exposing stats publicly
+  - [kromgo](https://github.com/kashalls/kromgo) for exposing prom stats publicly
   - [octoprint](https://github.com/OctoPrint/OctoPrint) for controlling my 3D printer
-  - and some other stuff like monitoring, a blog , static sites, etc..
+  - [pocketid](https://github.com/pocket-id/pocket-id) as an OIDC provider
+  - [atuin](https://github.com/atuinsh/atuin) for my centralized shell history
+  - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring
+  - and some other stuff like a blog , static sites, etc..
 
 - there is also an `appchart` folder. It's a Helm chart that ease the deployment of simple services.
 
@@ -85,7 +89,7 @@ In `k8s/` there are 2 main folders:
 ## deployment
 
 I try to adhere to gitops/automation principles.
-Some things aren't automated but it's mainly toil (one-time-things during setup, critical upgrades, some provisionning..).
+Some things aren't automated but it's mainly toil (one-time-things during setup).
 95% of the infrastructure should be deployable by following these instructions (assuming data and encryption keys are known).
 
 Requirements and basic stack:
@@ -115,7 +119,7 @@ sops encrypt -i <file.yaml>
 If you want to edit inline a encrypted file (eg modify a value in a encrypted Secret/Configmap) using $EDITOR:
 
 ```
-sops k8s/apps/services/beaver/beaver-config.yaml
+sops <file.yaml>
 ```
 
 
@@ -153,15 +157,6 @@ flux bootstrap github \
 ```
 
 3. Things should start to deploy ! :magic:
-
-
-## k3s update
-
-To update the cluster, set the `k3s_version` in the ansible inventory (should be updated by renovate), then:
-```
-ansible-playbook -i inventory.yaml cluster-update.yaml
-```
-Follow along with `k get nodes -w`.
 
 
 ## backup strategy
