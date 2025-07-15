@@ -86,7 +86,7 @@ spec:
       name: "traefik-tunnel"
     providers:
       kubernetesCRD:
-        enabled: false
+        enabled: true
       kubernetesIngress:
         ingressClass: "traefik-tunnel"
     websecure:
