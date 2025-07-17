@@ -21,7 +21,7 @@ spec:
   values:
     apps:
       - name: uptime-kuma
-        image: louislam/uptime-kuma:1
+        image: louislam/uptime-kuma:1@sha256:431fee3be822b04861cf0e35daf4beef6b7cb37391c5f26c3ad6e12ce280fe18
         service: 3001
         volumeMounts:
           - name: uptime-kuma-data
@@ -32,34 +32,6 @@ spec:
               claimName: uptime-kuma-data
         ingress:
           domain: uptime.cocointhe.cloud
+          public: true
         pvc:
           - uptime-kuma-data
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: kuma-dashboard-redirect
-spec:
-  redirectRegex:
-    regex: uptime\.cocointhe\.cloud\/?$
-    replacement: https://uptime.cocointhe.cloud/status/uptime
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: watchtower-kuma-dashboard-redirect@kubernetescrd
-  name: uptime-kuma-tunnel
-spec:
-  ingressClassName: traefik-tunnel
-  rules:
-  - host: uptime.cocointhe.cloud
-    http:
-      paths:
-      - backend:
-          service:
-            name: uptime-kuma
-            port:
-              number: 3001
-        path: /
-        pathType: Prefix
