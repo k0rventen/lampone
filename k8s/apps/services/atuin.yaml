@@ -58,7 +58,7 @@ spec:
           strategy:
             type: Recreate # This is important to ensure duplicate pods don't run and cause corruption
 
-        image: postgres:14
+        image: postgres:14@sha256:c0aab7962b283cf24a0defa5d0d59777f5045a7be59905f21ba81a20b1a110c9
         service: 5432
         volumeMounts:
           - name: atuin-postgres-data
