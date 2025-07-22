@@ -61,6 +61,21 @@ spec:
                 - { color: "orange", min: 56, max: 65 }
                 - { color: "red", min: 66, max: 99 }
 
+            - name: cluster_power_draw
+              title: Power draw
+              query: round(5 + 3 * (3 + (4* avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])))),.1)
+              suffix: "W"
+
+            - name: availability_sli
+              title: Avail. SLI (7d)
+              query: round(avg_over_time((sum(probe_success{job="blackbox-exporter-http",instance="https://news.cocointhe.cloud"}) or vector(0))[7d:15s]) * 100,.1)
+              suffix: "%"
+              colors:
+                - { color: "red", min: 0, max: 94 }
+                - { color: "orange", min: 95, max: 98 }
+                - { color: "green", min: 99, max: 100 }
+
+
             - name: cluster_cpu_usage
               title: CPU Usage
               query: round(avg(100 * avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)))
@@ -90,7 +105,7 @@ spec:
 
             - name: cluster_uptime_days
               title: Uptime
-              query: round((time() - max(kube_node_created{})) / 86400)
+              query: round((time() - max(kube_node_created{node="drupelet-1"})) / 86400)
               suffix: "d"
               colors:
                 - { color: "green", min: 0, max: 180 }
