@@ -1,0 +1,90 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2049
+      targetPort: 2049
+  selector:
+    app: nfs-server
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      name: nfs-server
+      labels:
+        app: nfs-server
+    spec:
+      nodeName: "drupelet-1" # pinned to node w/ attached storage
+      initContainers:
+        - name: nfs-modules
+          image: busybox:1.36.1-uclibc@sha256:97e3873d1f61ba651b632e4755fc52e1d90c9f6e4f01d9b720f37af5efed17e5
+          args:
+            - "modprobe"
+            - "nfsd"
+          securityContext:
+            capabilities:
+              add:
+                - "SYS_MODULE"
+          volumeMounts:
+            - mountPath: /lib/modules
+              name: modules
+              readOnly: true
+      containers:
+        - name: nfs-server
+          image: ghcr.io/k0rventen/docker-nfs-server:v0.2.1
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+          ports:
+            - name: nfsv4
+              containerPort: 2049
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /nfs
+              name: data
+            - name: nfs-exports
+              mountPath: /etc/exports
+              subPath: exports
+              readOnly: true
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c 
+              - "mkdir -p tmpmnt && mount -t nfs -o nfsvers=4.2 127.0.0.1:/ tmpmnt/ && touch tmpmnt/healthcheck && umount tmpmnt/"
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 1
+      volumes:
+        - name: nfs-exports
+          configMap:
+            name: nfs-exports
+        - name: data
+          hostPath:
+            path: /nfs
+            type: Directory
+        - name: modules
+          hostPath:
+            path: /lib/modules
+            type: Directory
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nfs-exports
+data:
+  exports: |
+    /nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)
