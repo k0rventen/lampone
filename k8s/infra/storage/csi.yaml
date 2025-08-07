@@ -28,7 +28,7 @@ spec:
       name: nfs-csi
       parameters:
         server: nfs-server.nfs-system
-        share: /nfs
+        share: /
         subDir: "${pvc.metadata.namespace}-${pvc.metadata.name}"
         onDelete: retain
         mountPermissions: "0777"
