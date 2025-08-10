@@ -40,5 +40,6 @@ spec:
         service: 1411
         ingress:
           domain: pocketid.cocointhe.cloud
+          public: true
         pvc:
           - pocketid-data
