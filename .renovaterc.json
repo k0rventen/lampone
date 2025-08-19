@@ -14,7 +14,13 @@
       "automergeType": "pr"
     },
     { "matchUpdateTypes": ["digest"], "enabled": false },
-    { "matchPackageNames": ["k3s"], "automerge": false }
+    { "matchPackageNames": ["k3s"], "automerge": false },
+    { "matchPackageNames": ["renovate/renovate"], "automerge": true, "matchUpdateTypes": ["patch","minor"]},
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/.*immich-app/immich-.*/"],
+      "groupName": "immich"
+    }
   ],
   "customManagers": [
     {
