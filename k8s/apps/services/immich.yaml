@@ -103,3 +103,27 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+
+# private ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: immich
+  namespace: immich
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: immich.cocointhe.cloud
+      http:
+        paths:
+          - backend:
+              service:
+                name: immich-server
+                port:
+                  number: 2283
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - immich.cocointhe.cloud
