@@ -1,0 +1,41 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+spec:
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: ./k8s/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 10m
+  targetNamespace: services
+  values:
+    apps:
+      - name: n8n
+        image: ghcr.io/n8n-io/n8n:1.104.0
+        env:
+          - name: N8N_PORT
+            value: "5678"
+          - name: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+            value: "true"
+          - name: N8N_LISTEN_ADDRESS
+            value: 0.0.0.0
+        volumeMounts:
+          - name: n8n-data
+            mountPath: /home/node/.n8n
+        volumes:
+          - name: n8n-data
+            persistentVolumeClaim:
+              claimName: n8n-data
+        service: 5678
+        ingress:
+          domain: n8n.cocointhe.cloud
+        pvc:
+          - n8n-data
