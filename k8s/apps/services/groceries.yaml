@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: groceries
-        image: gitea.cocointhe.cloud/coco/groceries
+        image: gitea.cocointhe.cloud/coco/groceries:2025.08.19.ddf57df
         extras:
           envFrom:
             - secretRef:
