@@ -21,7 +21,7 @@ spec:
             - name: DOCKER_HOST
               value: unix:///var/run/user/1000/docker.sock
             - name: GITEA_RUNNER_LABELS
-              value: "ubuntu-latest:docker://gitea.cocointhe.cloud/coco/base"
+              value: "ubuntu-latest:docker://gitea.cocointhe.cloud/coco/ci-runner"
             - name: GITEA_RUNNER_REGISTRATION_TOKEN
               valueFrom:
                 secretKeyRef:
