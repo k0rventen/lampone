@@ -1,0 +1,39 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bytestash
+spec:
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: ./k8s/appchart
+      version: "x.x.x"
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 10m
+  targetNamespace: services
+  values:
+    apps:
+      - name: bytestash
+        image: ghcr.io/jordan-dalby/bytestash
+        extras:
+          envFrom:
+            - secretRef:
+                name: bytestash-config
+        volumeMounts:
+          - name: bytestash-data
+            mountPath: /data/snippets
+        volumes:
+          - name: bytestash-data
+            persistentVolumeClaim:
+              claimName: bytestash-data
+        service: 5000
+        pvc:
+          - bytestash-data
+        ingress:
+          domain: bytestash.cocointhe.cloud
+          public: true
