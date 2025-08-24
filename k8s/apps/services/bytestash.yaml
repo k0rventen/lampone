@@ -19,7 +19,7 @@ spec:
   values:
     apps:
       - name: bytestash
-        image: ghcr.io/jordan-dalby/bytestash:1.5.8
+        image: ghcr.io/jordan-dalby/bytestash:1.5.8@sha256:f57d694a727bfbe1daf72acd3d98620b2ff9b1e4f4aafbacc5cda89c31da3512
         extras:
           envFrom:
             - secretRef:
