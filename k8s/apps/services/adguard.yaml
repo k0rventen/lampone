@@ -12,7 +12,6 @@ spec:
         app: adguard
     spec:
       hostNetwork: true
-      nodeName: "drupelet-3" # pinned to a specific worker for now
       containers:
         - name: adguard
           image: adguard/adguardhome:v0.107.65@sha256:d765078d2140b464ce837128a4f536f80b4c9ab7fd5b6833ae690b72fae40897
@@ -26,10 +25,10 @@ spec:
               command:
                 - nslookup
                 - cocointhe.cloud
-                - 192.168.1.3
-            initialDelaySeconds: 30
+                - 192.168.1.10
+            initialDelaySeconds: 10
             periodSeconds: 10
-            failureThreshold: 1
+            failureThreshold: 3
       volumes:
         - name: adguard-data
           persistentVolumeClaim:
@@ -47,3 +46,19 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: adguard-dns
+  name: adguard-dns
+spec:
+  loadBalancerIP: 192.168.1.10
+  ports:
+  - port: 53
+    protocol: UDP
+    targetPort: 53
+  selector:
+    app: adguard
+  type: LoadBalancer
