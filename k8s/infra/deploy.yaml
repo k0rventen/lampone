@@ -158,3 +158,17 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kube-vip
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: kube-vip
+  path: ./k8s/infra/kube-vip
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

@@ -11,7 +11,7 @@ spec:
       labels:
         app: adguard
     spec:
-      hostNetwork: true
+      hostNetwork: true # for the dhcp server
       containers:
         - name: adguard
           image: adguard/adguardhome:v0.107.65@sha256:d765078d2140b464ce837128a4f536f80b4c9ab7fd5b6833ae690b72fae40897
@@ -54,7 +54,6 @@ metadata:
     app: adguard-dns
   name: adguard-dns
 spec:
-  loadBalancerIP: 192.168.1.10
   ports:
   - port: 53
     protocol: UDP

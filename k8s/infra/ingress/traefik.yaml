@@ -42,7 +42,6 @@ spec:
       type: LoadBalancer
       spec:
         externalTrafficPolicy: Local
-        loadBalancerIP: 192.168.1.10 
     ingressClass:
       enabled: true
       isDefaultClass: true
