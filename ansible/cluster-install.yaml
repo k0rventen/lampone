@@ -34,26 +34,3 @@
       args:
         creates: /usr/local/bin/k3s
       when: role == 'worker'
-
-    - name: Configure NFS server (only on server node)
-      block:
-        - name: Create /nfs directory
-          file:
-            path: /nfs
-            state: directory
-            owner: nobody
-            group: nogroup
-            mode: "0777"
-
-        - name: Ensure NFS exports are configured
-          lineinfile:
-            path: /etc/exports
-            line: "{{ nfs.path }} {{ nfs.network }}({{ nfs.options }})"
-            create: yes
-
-        - name: Install nfs-kernel-server
-          apt:
-            name: nfs-kernel-server
-            state: present
-
-      when: role == 'control_plane'
