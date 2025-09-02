@@ -46,7 +46,7 @@ spec:
           value: 192.168.1.10
         - name: prometheus_server
           value: ""
-        image: ghcr.io/kube-vip/kube-vip:v1.0.0
+        image: ghcr.io/kube-vip/kube-vip:v1.0.0@sha256:4f256554a83a6d824ea9c5307450a2c3fd132e09c52b339326f94fefaf67155c
         imagePullPolicy: IfNotPresent
         name: kube-vip
         resources: {}
