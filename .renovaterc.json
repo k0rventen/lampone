@@ -10,12 +10,12 @@
     {
       "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "pr"
+      "automerge": true
     },
     { "matchUpdateTypes": ["digest"], "enabled": false },
+    { "matchUpdateTypes": ["pin"], "enabled": true },
     { "matchPackageNames": ["k3s"], "automerge": false },
-    { "matchPackageNames": ["renovate/renovate"], "automerge": true, "matchUpdateTypes": ["patch","minor"]},
+    { "matchPackageNames": ["renovate/renovate"], "automerge": true, "matchUpdateTypes": ["patch","minor"],"schedule": ["* * 1 * *"]},
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/.*immich-app/immich-.*/"],
