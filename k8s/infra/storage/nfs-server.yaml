@@ -45,7 +45,7 @@ spec:
               readOnly: true
       containers:
         - name: nfs-server
-          image: ghcr.io/k0rventen/docker-nfs-server:v0.2.2@sha256:0cb6943b145752541bcb9a700805e4c922016fdcb0361e6ba06126de4bfe0c8f
+          image: ghcr.io/k0rventen/docker-nfs-server:v0.3.0@sha256:a38e758bf45416b051f0f6d96802b52b9c666b292899c005e553d9379e43f837
           imagePullPolicy: Always
           securityContext:
             privileged: true
