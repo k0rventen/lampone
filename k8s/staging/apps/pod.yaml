@@ -1,0 +1,39 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: podinfo
+  namespace: staging
+spec:
+  interval: 1h
+  url: https://stefanprodan.github.io/podinfo
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: podinfo
+  namespace: staging
+spec:
+  chart:
+    spec:
+      chart: podinfo
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: podinfo
+      version: '*'
+  interval: 30m
+  releaseName: podinfo
+  targetNamespace: podinfo
+  install:
+    createNamespace: true
+  values:
+    ui:
+      message: "Deployed by Flux to virtual cluster"
+    ingress:
+      enabled: true
+      hosts:
+        - host: podinfo.cocointhe.cloud
+          paths:
+            - path: /
+              pathType: Prefix
