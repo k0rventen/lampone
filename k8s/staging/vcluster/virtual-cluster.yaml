@@ -41,7 +41,7 @@ spec:
       insecure: true
       # Specify the secret where the KubeConfig is stored
       secret:
-        name: vcluster-staging-flux-kubeconfig
+        name: vcluster-staging-kubeconfig
     sync:
       fromHost:
         ingressClasses:
