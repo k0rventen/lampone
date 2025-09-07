@@ -19,7 +19,7 @@ spec:
   chart:
     spec:
       chart: vcluster
-      version: "0.27.x"
+      version: "0.27.0"
       sourceRef:
         kind: HelmRepository
         name: vcluster
@@ -47,13 +47,6 @@ spec:
       fromHost:
         ingressClasses:
           enabled: true
-          # only expose the internal ingress class
-          selector:
-            matchExpressions:
-              - key: kubernetes.io/ingress.class
-                operator: In
-                values:
-                  - traefik
         storageClasses:
           enabled: true
       toHost:

@@ -30,10 +30,3 @@ spec:
   values:
     ui:
       message: "Deployed by Flux to virtual cluster"
-    ingress:
-      enabled: true
-      hosts:
-        - host: podinfo.cocointhe.cloud
-          paths:
-            - path: /
-              pathType: Prefix
