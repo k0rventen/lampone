@@ -15,6 +15,7 @@ metadata:
   namespace: staging
 spec:
   interval: 10m
+  timeout: 20m
   chart:
     spec:
       chart: vcluster
@@ -46,6 +47,13 @@ spec:
       fromHost:
         ingressClasses:
           enabled: true
+          # only expose the internal ingress class
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/ingress.class
+                operator: In
+                values:
+                  - traefik
         storageClasses:
           enabled: true
       toHost:
