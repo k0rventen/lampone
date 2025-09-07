@@ -33,23 +33,19 @@ spec:
   patches:
     - patch: |-
         - op: add
-          path: /spec
+          path: /spec/kubeConfig/secretRef
           value:
-            kubeConfig:
-              secretRef:
-                name: vcluster-staging-kubeconfig
-                key: config
+            name: vcluster-staging-kubeconfig
+            key: config
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
     - patch: |-
         - op: add
-          path: /spec
+          path: /spec/kubeConfig/secretRef
           value:
-            kubeConfig:
-              secretRef:
-                name: vcluster-staging-kubeconfig
-                key: config
+            name: vcluster-staging-kubeconfig
+            key: config
       target:
         group: helm.toolkit.fluxcd.io
         kind: HelmRelease
