@@ -34,15 +34,14 @@ spec:
         enabled: true
 
     exportKubeConfig:
-      # Set a meaningful context name
       context: vcluster
-      # Use a server URL that matches the TLS SAN
       server: https://vcluster.staging.svc.cluster.local:443
-      # Skip TLS verification when Flux connects to the vCluster
       insecure: true
-      # Specify the secret where the KubeConfig is stored
       secret:
         name: vcluster-staging-kubeconfig
+    telemetry:
+      enabled: false
+
     sync:
       fromHost:
         ingressClasses:
