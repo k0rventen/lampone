@@ -34,9 +34,9 @@ spec:
   values:
     globalArguments: []
     tlsStore:
-      default:
-        defaultCertificate:
-          secretName: wildcard-cocointhe-cloud-tls
+      certificates:
+        - secretName: wildcard-cocointhe-cloud-tls
+        - secretName: wildcard-staging-cocointhe-cloud-tls
     service:
       enabled: true
       type: LoadBalancer
