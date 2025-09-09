@@ -61,7 +61,7 @@ jobs:
           # Message formatting based on diff
 
           {
-            echo "DIFF_MSG<<EOF"
+            echo "diff<<EOF"
             if [[ -s "ks.diff" ]]; then
             echo "Here is the diff to main:"
             echo "\`\`\`diff"
