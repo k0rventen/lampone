@@ -38,7 +38,7 @@ spec:
       image:
         registry: ghcr.io
         repository: immich-app/postgres
-        tag: 14-vectorchord0.3.0-pgvectors0.2.1
+        tag: 14-vectorchord0.3.0-pgvectors0.2.1@sha256:a8efd51c01f75663afa7ff3aec8e142901f0e4b394c1538ad5c4fb548086ff6f
       primary:
         containerSecurityContext:
           readOnlyRootFilesystem: false
