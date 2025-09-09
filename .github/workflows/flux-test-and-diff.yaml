@@ -34,7 +34,7 @@ jobs:
           path: pr
           token: ${{ secrets.GIT_TOKEN }}
 
-      - name: Run flux-local diff
+      - name: Run flux-local ks diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.9.0@sha256:33b53dc87bda4d970c83a2aac71d98414ae5b361d81cc1d92e3995282020a20c
         with:
           args: >-
@@ -42,20 +42,39 @@ jobs:
             --path /github/workspace/pr/k8s/flux
             --path-orig /github/workspace/main/k8s/flux
             --all-namespaces
-            --output-file flux.diff
+            --output-file ks.diff
+      - name: Run flux-local hr diff
+        uses: docker://ghcr.io/allenporter/flux-local:v7.9.0@sha256:33b53dc87bda4d970c83a2aac71d98414ae5b361d81cc1d92e3995282020a20c
+        with:
+          args: >-
+            diff hr
+            --path /github/workspace/pr/k8s/flux
+            --path-orig /github/workspace/main/k8s/flux
+            --all-namespaces
+            --output-file hr.diff
       - name: diff
         id: diff
         run: |
+          # merge the 2 diff files
+          cat hr.diff >> ks.diff
+
+          # Message formatting based on diff
+
           {
-          echo 'diff<<EOF'
-          cat flux.diff
-          echo EOF
+            echo "DIFF_MSG<<EOF"
+            if [[ -s "ks.diff" ]]; then
+            echo "Here is the diff to main:"
+            echo "\`\`\`diff"
+            cat ks.diff
+            echo "\`\`\`"
+            else
+              echo "No diff to main detected."
+            fi
+            echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
       - name: Add Comment
         uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc
         with:
           message: |
-            Here is the diff to main that will be deployed:
-            ```diff
             ${{ steps.diff.outputs.diff }}
-            ```
