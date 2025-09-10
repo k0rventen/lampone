@@ -8,11 +8,11 @@ spec:
   interval: 24h
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.4.1"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 1h
   targetNamespace: cloud
