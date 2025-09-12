@@ -17,7 +17,7 @@ spec:
   values:
     apps:
       - name: pyramid-push
-        image: gitea.cocointhe.cloud/coco/pyramidpush:2025.09.12.52477da
+        image: gitea.cocointhe.cloud/coco/pyramidpush:2025.09.12.52477da@sha256:9dfac4ce64f19bd047077b9c69d39374556b2797d380c17d176400fa99ec1388
         service: 80
         ingress:
           public: true
