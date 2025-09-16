@@ -14,7 +14,7 @@ spec:
           nodeName: drupelet-1
           hostname: drupelet-1
           containers:
-            - image: gitea.cocointhe.cloud/coco/restic@sha256:30eb3c51b947c567b06772be6b6f95fea1974b70e26aed9af5337926c3a3f8c1
+            - image: gitea.cocointhe.cloud/coco/restic:2025.09.16-495b71b
               name: restic-backup
               envFrom:
                 - secretRef:
