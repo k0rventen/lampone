@@ -39,7 +39,7 @@ spec:
             value: 0.0.0.0
           - name: PAPERLESS_URL
             value: https://paperless.cocointhe.cloud
-        extras:
+        containerSpec:
           envFrom:
             - secretRef:
                 name: paperless-oidc-config

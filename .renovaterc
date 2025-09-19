@@ -30,7 +30,13 @@
       "groupName": "immich"},
     
     // do not automerge k3s as it upgrades the nodes
-    { "matchPackageNames": ["k3s"], "automerge": false }
+    { "matchPackageNames": ["k3s"], "automerge": false },
+
+    // wait 3 days before deploying any update
+    {
+      "matchPackageNames":[".*"],
+      "minimumReleaseAge": 3
+    }
   ],
 
   // k3s stable release fetcher (instead of latest github release)
