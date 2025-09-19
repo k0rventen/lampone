@@ -6,20 +6,21 @@ spec:
   install:
     createNamespace: true
   interval: 10m
+  timeout: 20m
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 10m
   targetNamespace: services
   values:
     apps:
       - name: paperless-ngx
-        image: ghcr.io/paperless-ngx/paperless-ngx:2.18.3@sha256:6dbe57d8198fa117158ba9e867e2d45280b65e9c37ea54c1df7b34c4085a564c
+        image: ghcr.io/paperless-ngx/paperless-ngx:2.18.4@sha256:3421ebe06ed27662d014046cf5089e612de853aae0c676a2bc72f73b38080e57
         volumeMounts:
           - name: paperless-data
             mountPath: /usr/src/paperless/data
@@ -38,7 +39,7 @@ spec:
             value: 0.0.0.0
           - name: PAPERLESS_URL
             value: https://paperless.cocointhe.cloud
-        extras:
+        containerSpec:
           envFrom:
             - secretRef:
                 name: paperless-oidc-config

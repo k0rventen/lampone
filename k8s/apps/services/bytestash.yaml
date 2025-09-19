@@ -8,11 +8,11 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 10m
   targetNamespace: services
@@ -20,7 +20,7 @@ spec:
     apps:
       - name: bytestash
         image: ghcr.io/jordan-dalby/bytestash:1.5.8@sha256:f57d694a727bfbe1daf72acd3d98620b2ff9b1e4f4aafbacc5cda89c31da3512
-        extras:
+        containerSpec:
           envFrom:
             - secretRef:
                 name: bytestash-config

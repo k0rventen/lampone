@@ -10,11 +10,11 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 10m
   targetNamespace: services
@@ -34,7 +34,7 @@ spec:
             value: "8888"
           - name: ATUIN_OPEN_REGISTRATION
             value: "false"
-        extras:
+        containerSpec:
           args:
             - server
             - start
@@ -69,7 +69,7 @@ spec:
               claimName: atuin-postgres-data
         pvc:
           - atuin-postgres-data
-        extras:
+        containerSpec:
           lifecycle:
             preStop:
               exec:

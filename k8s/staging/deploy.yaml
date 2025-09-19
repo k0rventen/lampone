@@ -1,0 +1,51 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: staging-vcluster
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: staging
+  path: ./k8s/staging/vcluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: staging-apps
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: staging-vcluster
+  interval: 10m0s
+  targetNamespace: staging
+  path: ./k8s/staging/apps
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  patches:
+    - patch: |
+        - op: add
+          path: /spec/kubeConfig
+          value:
+            secretRef:
+              name: vcluster-staging-kubeconfig
+              key: config
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
+    - patch: |
+        - op: add
+          path: /spec/kubeConfig
+          value:
+            secretRef:
+              name: vcluster-staging-kubeconfig
+              key: config
+      target:
+        group: helm.toolkit.fluxcd.io
+        kind: HelmRelease

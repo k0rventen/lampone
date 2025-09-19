@@ -20,7 +20,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: "37.0.0"
+      version: "37.1.1"
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -35,8 +35,9 @@ spec:
     globalArguments: []
     tlsStore:
       default:
-        defaultCertificate:
-          secretName: wildcard-cocointhe-cloud-tls
+        certificates:
+          - secretName: wildcard-cocointhe-cloud-tls
+          - secretName: wildcard-staging-cocointhe-cloud-tls
     service:
       enabled: true
       type: LoadBalancer
@@ -68,7 +69,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: "37.0.0"
+      version: "37.1.1"
       sourceRef:
         kind: HelmRepository
         name: traefik

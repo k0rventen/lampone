@@ -26,6 +26,20 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 </div>
 
+- [Hardware](#hardware)
+  - [Bill of materials](#bill-of-materials)
+  - [3D printed parts](#3d-printed-parts)
+- [Software](#software)
+  - [Requirements](#requirements)
+  - [OS](#os)
+  - [Creating the cluster](#creating-the-cluster)
+  - [Deploying the stack](#deploying-the-stack)
+- [SOPS setup](#sops-setup)
+- [OIDC-based ssh access w/ opkssh](#oidc-based-ssh-access-w-opkssh)
+- [Staging env](#staging-env)
+- [Backup strategy](#backup-strategy)
+
+
 
 ## Hardware
 
@@ -36,6 +50,8 @@ This is what the cluster looks like:
 ![cluster](./resources/cluster.png)
 </div>
 
+### Bill of materials
+
 What it's made of:
 
 - 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
@@ -45,6 +61,8 @@ What it's made of:
 - 3 very short cat6 ethernet cables
 - a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/resources/3d)
 - some m3 threaded inserts and screws
+
+### 3D printed parts
 
 The rack is a remix of [this one](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the [stls here](https://github.com/k0rventen/lampone/tree/main/resources/3d) that I remixed/designed, aka the vented sleds for the PI4 and the SSD, and the side fan mount.
 
@@ -89,17 +107,12 @@ In `k8s/` there are 2 main folders:
   - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring
   - and some other stuff like a blog , static sites, etc..
 
-- there is also an `appchart` folder. It's a Helm chart that ease the deployment of simple services.
-
-
-
-## Deployment
 
 I try to adhere to gitops/automation principles.
 Some things aren't automated but it's mainly toil (one-time-things during setup etc..).
 99% of the infrastructure should be deployable by following these instructions (assuming data and encryption keys are known).
 
-Requirements and basic stack:
+### Requirements
 - [ansible](https://docs.ansible.com/): infrastructure automation
 - [flux](https://fluxcd.io/flux/): cluster state mgmt
 - [sops](https://github.com/getsops/sops) + [age](https://github.com/FiloSottile/age/): encryption
@@ -111,7 +124,7 @@ brew install git ansible fluxcd/tap/flux sops age
 
 ### OS
 
-The 3 rasps are running [Raspberry Pi OS Lite 64b](https://www.raspberrypi.com/software/operating-systems/). From there unnecessary packages are removed (dphys-swapfile, avahi-daemon ,modemmanager and some others). 
+The 3 rasps are running standard [Raspberry Pi OS Lite 64b](https://www.raspberrypi.com/software/operating-systems/). From there unnecessary packages are removed (dphys-swapfile, avahi-daemon, modemmanager and some others). 
 
 
 ### Creating the cluster
@@ -185,6 +198,30 @@ Whenever possible, authentification is managed through my OIDC provider (pocketI
     Add a provider in `/etc/opk/providers`, then add a user to the policy with `sudo opkssh add local_user oidc_email  https://oidc-provider`. This means that the user with `oidc_email` will be able to log in as `local_user`.
 
 4. On the client, do a `opkssh login` then ssh should be seamless.
+
+## Staging env
+
+My staging environment is managed through [vcluster](https://github.com/loft-sh/vcluster). 
+A virtual cluster is deployed inside my actual cluster, and has access to the ingressclass and storageclass of the underlying cluster. The flux controller can deploy resources in the vcluster by specifying the kubeconfig to use if necessary (see the `staging/deploy.yaml` file).
+
+This allows a isolated cluster for testing things like new versions of various software, deploying new CRDs or testing RBAC rules or NetPols, and other cluster-wide changes without impacting the production environment. 
+
+Quick commands:
+
+```bash
+# connect and switch kubeconfig
+vcluster connect vcluster
+
+# disconnect
+vcluster disconnect
+
+# destroy
+vcluster delete vcluster
+
+# and recreate from scratch 
+flux reconcile hr -n staging vcluster
+```
+
 
 ## Backup strategy
 

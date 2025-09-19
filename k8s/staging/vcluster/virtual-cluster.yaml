@@ -1,0 +1,53 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: vcluster
+  namespace: staging
+spec:
+  interval: 1h
+  url: https://charts.loft.sh
+---
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vcluster
+  namespace: staging
+spec:
+  interval: 10m
+  timeout: 20m
+  chart:
+    spec:
+      chart: vcluster
+      version: "0.28.0"
+      sourceRef:
+        kind: HelmRepository
+        name: vcluster
+        namespace: staging
+  values:
+    # Configure TLS SAN for the certificate
+    controlPlane:
+      proxy:
+        extraSANs:
+          - "vcluster.staging.svc.cluster.local"
+      coredns:
+        enabled: true
+
+    exportKubeConfig:
+      context: vcluster
+      server: https://vcluster.staging.svc.cluster.local:443
+      insecure: true
+      secret:
+        name: vcluster-staging-kubeconfig
+    telemetry:
+      enabled: false
+
+    sync:
+      fromHost:
+        ingressClasses:
+          enabled: true
+        storageClasses:
+          enabled: true
+      toHost:
+        ingresses:
+          enabled: true

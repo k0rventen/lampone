@@ -8,19 +8,19 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 10m
   targetNamespace: services
   values:
     apps:
       - name: groceries
-        image: gitea.cocointhe.cloud/coco/groceries:2025.08.19.ddf57df@sha256:bedab630f6473bf82e0a3692621bb6d012ee33c6967946612f286b51c320f99b
-        extras:
+        image: gitea.cocointhe.cloud/coco/groceries:2025.08.29.bb1b520@sha256:5c9eba69e20c196b6608a0dcbe5b26d06f7cd4e4d0d2ba6b8b19f82a9451822c
+        containerSpec:
           envFrom:
             - secretRef:
                 name: groceries-config

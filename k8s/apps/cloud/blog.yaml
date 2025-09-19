@@ -8,11 +8,11 @@ spec:
   interval: 24h
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 1h
   targetNamespace: cloud
@@ -32,10 +32,3 @@ spec:
         ingress:
           public: true
           domain: cocointhe.cloud
-
-      - name: echo
-        image: traefik/whoami@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375b41c84dfc4f2475937ab
-        service: 80
-        ingress:
-          public: true
-          domain: echo.cocointhe.cloud

@@ -8,18 +8,18 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: ./k8s/appchart
-      version: "x.x.x"
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
-        kind: GitRepository
-        name: flux-system
+        kind: HelmRepository
+        name: appchart
         namespace: flux-system
       interval: 10m
   targetNamespace: services
   values:
     apps:
       - name: filebrowser
-        image: ghcr.io/gtsteffaniak/filebrowser:0.8.3-beta@sha256:344632f3df4e9d8b59be276f702523707522d1138057c3f67dfae064c6405484
+        image: ghcr.io/gtsteffaniak/filebrowser:0.8.6-beta@sha256:2d3bf4bd4365c6f64e7b4280b1c457c0f7d6f7b96489ff29021cf5e8301268a6
         volumeMounts:
           - name: filebrowser-data
             mountPath: /data
