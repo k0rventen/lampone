@@ -31,6 +31,8 @@
     
     // do not automerge k3s as it upgrades the nodes
     { "matchPackageNames": ["k3s"], "automerge": false },
+    // do not change the versionning on the UpgradePlan Images as they will automatically use the one matching the version of the plan
+    { "matchPackageNames":["rancher/k3s-upgrade"],"enabled": false}
 
     // wait 3 days before deploying any update
     {
