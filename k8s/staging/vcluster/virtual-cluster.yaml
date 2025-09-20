@@ -4,7 +4,6 @@ metadata:
   name: vcluster
   namespace: staging
 spec:
-  interval: 1h
   url: https://charts.loft.sh
 ---
 
@@ -32,7 +31,6 @@ spec:
       coredns:
         enabled: true
       statefulSet:
-        nodeSelector: drupelet-1
         persistence:
           volumeClaim:
             storageClass: local-path
