@@ -37,7 +37,7 @@
     // wait 3 days before deploying any update
     {
       "matchPackageNames":[".*"],
-      "minimumReleaseAge": 3
+      "minimumReleaseAge": "3 days"
     }
   ],
 
