@@ -1,2 +1,3 @@
 *.tgz
 *.agekey
+k8s/staging/apps/*
