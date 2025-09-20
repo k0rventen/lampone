@@ -25,14 +25,22 @@ spec:
         name: vcluster
         namespace: staging
   values:
-    # Configure TLS SAN for the certificate
     controlPlane:
       proxy:
         extraSANs:
           - "vcluster.staging.svc.cluster.local"
       coredns:
         enabled: true
-
+      statefulSet:
+        nodeSelector: drupelet-1
+        persistence:
+          volumeClaim:
+            storageClass: local-path
+    integrations:
+      metricsServer:
+        enabled: true
+        nodes: true
+        pods: true
     exportKubeConfig:
       context: vcluster
       server: https://vcluster.staging.svc.cluster.local:443
