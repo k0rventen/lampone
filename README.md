@@ -77,7 +77,9 @@ The Kubernetes cluster is deployed with [k3s](https://github.com/k3s-io/k3s).
 
 The cluster state is handled by [fluxcd](https://fluxcd.io/), based on what's in this repo.
 
-In `k8s/` there are 2 main folders:
+In `k8s/` there are 4 folders:
+- `flux`, the entrypoint used by the flux controller for synchronizing the cluster. Main 'apps' are declared here.
+  The interval for the source GitRepo is set to `1m`, so changes will be picked up within a minute or so.
 - `infra` represents what's needed for the cluster to function:
   - a [nfs-server](https://github.com/k0rventen/docker-nfs-server) + [csi-nfs-driver](https://github.com/kubernetes-csi/csi-driver-nfs) for handling persistent volumes,
   - an IngressController with [Traefik](https://github.com/traefik/traefik), one private (listens on local lan), one "public" (routes specific subdomains from cloudflare),
@@ -86,8 +88,8 @@ In `k8s/` there are 2 main folders:
   - [cloudflare tunnel](https://github.com/cloudflare/cloudflared) for exposing part of my services to the outside world,
   - [tailscale-operator](https://github.com/tailscale/tailscale/tree/main/cmd/k8s-operator/deploy) for accessing my private services from wherever (using a subnet route) and for my cluster services to access my offsite backup server
   - [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) for managing k8s upgrades directly in the cluster using CRDs.
-  - a [renovate](https://github.com/renovatebot/renovate) cronjob to create PR for components updates (w/ auto merging when it's a patch level update)
-  - a [restic](https://github.com/restic/restic) cronjob that create the local backup (if an app fails and borks its files) and remote backup (if the server catches fire)
+  - a [renovate](https://github.com/renovatebot/renovate) cronjob to create PR for components updates (w/ auto merging when it's a patch level update and other rules)
+  - a [restic](https://github.com/restic/restic) cronjob that create the local backup (if an app fails and borks its files) and remote backup (if the server catches on fire)
 
 
 - `apps`, the actual services running on the cluster:
@@ -107,6 +109,7 @@ In `k8s/` there are 2 main folders:
   - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring
   - and some other stuff like a blog , static sites, etc..
 
+- `staging`, where I do all my pre production testing using a virtual cluster using [vcluster](https://www.vcluster.com/docs/vcluster/), see [here](#staging-env).
 
 I try to adhere to gitops/automation principles.
 Some things aren't automated but it's mainly toil (one-time-things during setup etc..).
@@ -215,7 +218,7 @@ vcluster connect vcluster
 # disconnect
 vcluster disconnect
 
-# destroy
+# destroy the vcluster
 vcluster delete vcluster
 
 # and recreate from scratch 
