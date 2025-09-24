@@ -13,6 +13,10 @@ metadata:
 spec:
   interval: 10m
   timeout: 5m
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
   chart:
     spec:
       chart: csi-driver-nfs
@@ -25,8 +29,6 @@ spec:
   values:
     externalSnapshotter:
       enabled: true
-    volumeSnapshotClass:
-      create: true
     storageClass:
       create: true
       annotations:
