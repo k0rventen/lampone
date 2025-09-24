@@ -29,6 +29,11 @@ spec:
   values:
     externalSnapshotter:
       enabled: true
+      customResourceDefinitions:
+        enabled: true
+    volumeSnapshotClass:
+      create: false
+      name: nfs-csi-snapshots
     storageClass:
       create: true
       annotations:
