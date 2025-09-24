@@ -27,6 +27,8 @@ spec:
       create: true
     externalSnapshotter:
       enabled: true
+    volumeSnapshotClass:
+      create: true
       annotations:
         storageclass.kubernetes.io/is-default-class: "true"
       name: nfs-csi
