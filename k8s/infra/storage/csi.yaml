@@ -32,7 +32,7 @@ spec:
       customResourceDefinitions:
         enabled: true
     volumeSnapshotClass:
-      create: false
+      create: true
       name: nfs-csi-snapshots
     storageClass:
       create: true
