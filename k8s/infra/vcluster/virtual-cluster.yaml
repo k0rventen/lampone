@@ -25,9 +25,6 @@ spec:
         namespace: staging
   values:
     controlPlane:
-      proxy:
-        extraSANs:
-          - "vcluster.staging.svc.cluster.local"
       coredns:
         enabled: true
       statefulSet:
@@ -39,12 +36,6 @@ spec:
         enabled: true
         nodes: true
         pods: true
-    exportKubeConfig:
-      context: vcluster
-      server: https://vcluster.staging.svc.cluster.local:443
-      insecure: true
-      secret:
-        name: vcluster-staging-kubeconfig
     telemetry:
       enabled: false
 
