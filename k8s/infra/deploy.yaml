@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager
-  interval: 10m0s
+  interval: 1h
   targetNamespace: ingress
   path: ./k8s/infra/ingress
   prune: true
@@ -22,7 +22,7 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: cert-manager
   path: ./k8s/infra/cert-manager
   prune: true
@@ -40,7 +40,7 @@ spec:
   dependsOn:
     - name: cert-manager
     - name: ingress
-  interval: 10m0s
+  interval: 1h
   targetNamespace: ingress
   path: ./k8s/infra/certificates
   prune: true
@@ -55,7 +55,7 @@ metadata:
   name: tailscale
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: tailscale
   path: ./k8s/infra/tailscale/operator
   prune: true
@@ -73,7 +73,7 @@ metadata:
 spec:
   dependsOn:
     - name: tailscale
-  interval: 10m0s
+  interval: 1h
   targetNamespace: tailscale
   path: ./k8s/infra/tailscale/config
   prune: true
@@ -90,7 +90,7 @@ metadata:
 spec:
   dependsOn:
     - name: tailscale-config
-  interval: 10m0s
+  interval: 1h
   targetNamespace: backups
   path: ./k8s/infra/backups
   prune: true
@@ -105,7 +105,7 @@ metadata:
   name: storage
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: nfs-system
   path: ./k8s/infra/storage
   prune: true
@@ -120,7 +120,7 @@ metadata:
   name: system
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 1h
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -134,7 +134,7 @@ metadata:
   name: system-upgrade
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 1h
   targetNamespace: system-upgrade
   sourceRef:
     kind: GitRepository
@@ -151,7 +151,7 @@ metadata:
 spec:
   dependsOn:
     - name: system-upgrade
-  interval: 10m0s
+  interval: 1h
   targetNamespace: system-upgrade
   path: ./k8s/infra/system-upgrade-plans
   prune: true
@@ -165,7 +165,7 @@ metadata:
   name: kube-vip
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: kube-vip
   path: ./k8s/infra/kube-vip
   prune: true
@@ -179,9 +179,23 @@ metadata:
   name: staging-vcluster
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: staging
   path: ./k8s/infra/vcluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: goldilocks-vpa
+  namespace: flux-system
+spec:
+  interval: 1h
+  targetNamespace: goldilocks
+  path: ./k8s/infra/vpa
   prune: true
   sourceRef:
     kind: GitRepository
