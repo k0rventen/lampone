@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: blog
+  name: landingpage
 spec:
   install:
     createNamespace: true
@@ -18,10 +18,9 @@ spec:
   targetNamespace: cloud
   values:
     apps:
-      - name: blog
-        image: gitea.cocointhe.cloud/coco/k0rventen.github.io@sha256:3fa1356afb28e4bb9c4f1368532cd232afe14f46027cd9ebfbd5bb9568827ccf
+      - name: landingpage
+        image: gitea.cocointhe.cloud/coco/landing-page@sha256:84222530a6620e663d2b0c280e093e668fcfe328a1b1e1295c383133499f8cb7
         service: 8080
-        anubis: true
         ingress:
           public: true
-          domain: blog.cocointhe.cloud
+          domain: cocointhe.cloud
