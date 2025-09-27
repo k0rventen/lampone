@@ -27,10 +27,10 @@ spec:
     controlPlane:
       coredns:
         enabled: true
-      statefulSet:
-        persistence:
-          volumeClaim:
-            storageClass: local-path
+      # statefulSet:
+      #   persistence:
+      #     volumeClaim:
+      #       storageClass: local-path
     integrations:
       metricsServer:
         enabled: true
