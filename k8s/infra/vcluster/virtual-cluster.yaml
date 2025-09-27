@@ -4,6 +4,7 @@ metadata:
   name: vcluster
   namespace: staging
 spec:
+  interval: 24h
   url: https://charts.loft.sh
 ---
 

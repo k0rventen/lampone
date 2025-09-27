@@ -6,7 +6,7 @@ metadata:
   name: cloud
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: cloud
   path: ./k8s/apps/cloud
   prune: true
@@ -20,7 +20,7 @@ metadata:
   name: gitea
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: gitea
   path: ./k8s/apps/gitea
   prune: true
@@ -35,7 +35,7 @@ metadata:
   name: services
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1h
   targetNamespace: services
   path: ./k8s/apps/services
   prune: true
@@ -50,7 +50,7 @@ metadata:
   name: watchtower
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 1h
   targetNamespace: watchtower
   sourceRef:
     kind: GitRepository
