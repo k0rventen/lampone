@@ -8,7 +8,7 @@
   "flux": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "helm-values": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "kubernetes": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "2 days",
   "packageRules": [
     // allow minor updates if not 0.x
     {
