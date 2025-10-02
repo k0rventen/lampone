@@ -5,7 +5,7 @@ metadata:
   name: server-plan
   namespace: system-upgrade
 spec:
-  version: v1.33.4-k3s1
+  version: v1.33.5-k3s1
 
   concurrency: 1
   cordon: true
@@ -27,7 +27,7 @@ metadata:
   name: agent-plan
   namespace: system-upgrade
 spec:
-  version: v1.33.4-k3s1
+  version: v1.33.5-k3s1
 
   concurrency: 1
   cordon: true
