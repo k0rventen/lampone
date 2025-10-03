@@ -1,21 +1,81 @@
-# allows only traffic from the traefik instances.
-
+# we deny all egress traffic by default
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-from-traefik-to-www
-  namespace: cloud
+  name: deny-all
 spec:
   podSelector: {}
   policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: traefik
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              app: notification-controller
+  - Egress
+---
+# allow dns to coredns for all
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+---
+# glance -> web
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-glance-web
+spec:
+  podSelector:
+    matchLabels:
+      app: glance
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+---
+# grafana -> prom
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-grafana
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+---
+# kromgo-> prom
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-kromgo
+spec:
+  podSelector:
+    matchLabels:
+      app: kromgo
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
