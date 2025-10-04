@@ -13,7 +13,6 @@ spec:
         name: appchart
         namespace: flux-system
       interval: 1h
-  targetNamespace: cloud
   values:
     apps:
       - name: landingpage

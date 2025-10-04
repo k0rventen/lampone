@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: kromgo
 spec:
-  install:
-    createNamespace: true
   interval: 24h
   chart:
     spec:
@@ -15,7 +13,6 @@ spec:
         name: appchart
         namespace: flux-system
       interval: 1h
-  targetNamespace: cloud
   values:
     apps:
       - name: kromgo
@@ -24,7 +21,6 @@ spec:
         ingress:
           public: true
           domain: stats.cocointhe.cloud
-
         env:
           - name: PROMETHEUS_URL
             value: http://watchtower-prometheus-server.watchtower.svc.cluster.local
