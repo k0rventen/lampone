@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: paperless
 spec:
-  install:
-    createNamespace: true
   interval: 10m
   timeout: 20m
   chart:
@@ -16,7 +14,6 @@ spec:
         name: appchart
         namespace: flux-system
       interval: 10m
-  targetNamespace: services
   values:
     apps:
       - name: paperless-ngx
