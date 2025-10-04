@@ -7,7 +7,6 @@ spec:
   interval: 24h
   url: https://charts.loft.sh
 ---
-
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -28,10 +27,18 @@ spec:
     controlPlane:
       coredns:
         enabled: true
-      # statefulSet:
-      #   persistence:
-      #     volumeClaim:
-      #       storageClass: local-path
+      statefulSet:
+        persistence:
+          dataVolume: 
+          - name: data
+            emptyDir: {}
+            # persistentVolumeClaim:
+            #  claimName: vcluster-data
+          volumeClaim:
+            enabled: false
+        scheduling:
+          nodeSelector:
+            kubernetes.io/hostname: drupelet-3 # set on a worker to avoid overloading the master with 2 cp
     integrations:
       metricsServer:
         enabled: true
@@ -49,3 +56,30 @@ spec:
       toHost:
         ingresses:
           enabled: true
+---
+# # local path on the node 
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: vcluster-data
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 10Gi
+#   storageClassName: manual
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: vcluster-pv
+# spec:
+#   capacity:
+#     storage: 10Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   hostPath:
+#     path: /opt/vcluster-data
+#   storageClassName: manual
