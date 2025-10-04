@@ -21,7 +21,7 @@ spec:
           - name: GRIST_OIDC_SP_HOST
             value: ENC[AES256_GCM,data:KregCPWHp8gpyEVFXKigxr970EGrfTkuTLVMs9Y=,iv:KSzMyVcxDBdfL+LaGApHRsZDBgAur4gbiYe6jXem5f4=,tag:Kr7Ti9umeB+tHiD2vwo60g==,type:str]
           - name: GRIST_OIDC_IDP_ISSUER
-            value: ENC[AES256_GCM,data:btPANWOBm8xRKJxJk8+NueYr2c0U9zunKwrctjf9ZAWB/3YN6pQfyqPSScYbbzG7l9tFS6sM2CqLRw4cgOUVNlk=,iv:JIB8c4sm9if+b9mXMponPLkwfd86D5yJEOImNTJUeuQ=,tag:FnOYdwq2xLrDeu6L5o+ieQ==,type:str]
+            value: ENC[AES256_GCM,data:WeBO6xYfPNY+SkVQqHOI1h/TIt8WP+SvWlWY4klUH5/oIXu+PnG7weqWeSudJsK4U2JQhMHiuaW10vFXOI0D,iv:FQutPAH28zbgvdVXnWdmOgbelqC7A1IveuqLdpzf+zc=,tag:jsPXV14MEdBAN24Al0qJ8g==,type:str]
           - name: GRIST_OIDC_IDP_SCOPES
             value: ENC[AES256_GCM,data:g6FNL7P+CnKbXVf1mTpssoHN5q8=,iv:EBJrmQmo8YBVetgg64c3mZbiOZUk5UoIlxcN3haE4Kg=,tag:K+HxCyyK2FQ5aXBeel9eDA==,type:str]
           - name: GRIST_OIDC_IDP_CLIENT_ID
@@ -31,7 +31,7 @@ spec:
           - name: GRIST_SESSION_SECRET
             value: ENC[AES256_GCM,data:gCQM3nUWFMEUnXo2fTzcmu48R2aYCF6VvxcwwIGMrYWCSKpYnyv707MBymF4vJu6JINaLnTDCadeGm24Gdf/AQ==,iv:jacTpo9r3bIbYvmYG5kqIWK+Gle/Oh6ets57dvM5zMw=,tag:ZIfYo0/pR5CFQn7gbztf+w==,type:str]
           - name: GRIST_FORCE_LOGIN
-            value: ENC[AES256_GCM,data:xQSGSg==,iv:0ia+gJPT37k5R5OlHNwNzM7LgEMv3a3NXOZIIHeW0EI=,tag:HCykVInxaZHzk5rsE2mlfQ==,type:str]
+            value: ENC[AES256_GCM,data:kkjncw==,iv:iUt3Okqqo49rUfeM3AvVQFEpr+I6xTUn/Way+AithQE=,tag:onEbUeprjUGJFaDgb8GEcw==,type:str]
           - name: GRIST_OIDC_SP_IGNORE_EMAIL_VERIFIED
             value: ENC[AES256_GCM,data:kkjncw==,iv:iUt3Okqqo49rUfeM3AvVQFEpr+I6xTUn/Way+AithQE=,tag:onEbUeprjUGJFaDgb8GEcw==,type:str]
         volumeMounts:
@@ -58,7 +58,7 @@ sops:
         SGdQUzJoOXlaeW1RVlRmSk1FbWZucUUKFrYzXDsOdQ4H777Gy9bD/Qs1xymhxGMl
         0WvR7YDsJw3bNxIjZcNsn5Ni3Rv4lmGu846hrW8n0dakuC0LOXq2GQ==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-04T16:24:17Z"
-  mac: ENC[AES256_GCM,data:dqgFwrunDzObs4n+1YWJ3pASl+BhqqMgwJ/mBcRfUGG8ecemszSpPxiO+R+7PcoCoZd49j6KohHMj+CmtbKBn1s+8ukbuksWJH7Q9gO1TB/fXcnyrLdMibIRw10NFKFGxJCEYapkDt8Ln9xkZQAz48w0Wqu55BwDvCfUw0OtL7U=,iv:Bqb5TbCHTvDhIwRM2bCXvtaq09gWyzj6YXdU02mVI9Q=,tag:dOJiqDilwov22VkdTrMQ+A==,type:str]
+  lastmodified: "2025-10-04T18:20:35Z"
+  mac: ENC[AES256_GCM,data:m4YlFDIfS0JtMN54gESIcfeTwJAWN8DYXWdfs7l53UnHazjmSeTAsRWeAMoYlbU8htTtkhV23dkMO2XLFQkdvOUDo0iERSXjSSt5GONwc9i1OXGYGBrN8ZYl1enfvFj5EdH9sQDYlpwghW08hcLGwXZg6H4FO4rErnUPoQBFUGM=,iv:/D7016Kav2LFBhAnfPgjOwau+OwV7Kk4fdvhbQK14IM=,tag:HOlvAVETgj/agbVABmeWmg==,type:str]
   encrypted_regex: ^value$
   version: 3.11.0
