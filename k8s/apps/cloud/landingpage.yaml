@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: landingpage
 spec:
-  install:
-    createNamespace: true
   interval: 24h
   chart:
     spec:

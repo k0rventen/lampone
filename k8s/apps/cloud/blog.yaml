@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: blog
 spec:
-  install:
-    createNamespace: true
   interval: 24h
   chart:
     spec:
