@@ -11,8 +11,6 @@ kind: HelmRelease
 metadata:
   name: promtail
 spec:
-  install:
-    createNamespace: true
   interval: 10m
   chart:
     spec:
@@ -22,7 +20,6 @@ spec:
         kind: HelmRepository
         name: promtail
       interval: 10m
-  targetNamespace: watchtower
   values:
     config:
       clients:

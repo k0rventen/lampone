@@ -1,52 +1,34 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
 metadata:
   name: loki
 spec:
-  selector:
-    matchLabels:
-      app: loki
-  template:
-    metadata:
-      labels:
-        app: loki
+  interval: 10m
+  chart:
     spec:
-      containers:
-        - name: loki
-          image: grafana/loki:main@sha256:ae0d78305c9c06512dfdee24b518eee82716269707c5e02ce62462c415a2f0c2
+      chart: appchart
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 10m
+  values:
+    apps:
+      - name: loki
+        image: grafana/loki:3.5.5
+        containerSpec:
           args:
             - -config.file=/etc/loki/local-config.yaml
             - -querier.parallelise-shardable-queries=false
             - -reporting.enabled=false
-          ports:
-            - containerPort: 3100
-          volumeMounts:
-            - mountPath: "/loki"
-              name: loki-storage
-      volumes:
-        - name: loki-storage
-          persistentVolumeClaim:
-            claimName: loki-data
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: loki
-spec:
-  selector:
-    app: loki
-  ports:
-    - port: 3100
-      targetPort: 3100
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: loki-data
-spec:
-  resources:
-    requests:
-      storage: 100Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
+        volumeMounts:
+          - name: loki-data
+            mountPath: /loki
+        volumes:
+          - name: loki-data
+            persistentVolumeClaim:
+              claimName: loki-data
+        service: 3100
+        pvc:
+          - loki-data
