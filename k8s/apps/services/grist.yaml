@@ -1,0 +1,67 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grist
+spec:
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: appchart
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 10m
+  targetNamespace: services
+  values:
+    apps:
+      - name: grist
+        image: gristlabs/grist:1.7.4
+        env:
+          - name: GRIST_OIDC_SP_HOST
+            value: ENC[AES256_GCM,data:KregCPWHp8gpyEVFXKigxr970EGrfTkuTLVMs9Y=,iv:KSzMyVcxDBdfL+LaGApHRsZDBgAur4gbiYe6jXem5f4=,tag:Kr7Ti9umeB+tHiD2vwo60g==,type:str]
+          - name: GRIST_OIDC_IDP_ISSUER
+            value: ENC[AES256_GCM,data:btPANWOBm8xRKJxJk8+NueYr2c0U9zunKwrctjf9ZAWB/3YN6pQfyqPSScYbbzG7l9tFS6sM2CqLRw4cgOUVNlk=,iv:JIB8c4sm9if+b9mXMponPLkwfd86D5yJEOImNTJUeuQ=,tag:FnOYdwq2xLrDeu6L5o+ieQ==,type:str]
+          - name: GRIST_OIDC_IDP_SCOPES
+            value: ENC[AES256_GCM,data:g6FNL7P+CnKbXVf1mTpssoHN5q8=,iv:EBJrmQmo8YBVetgg64c3mZbiOZUk5UoIlxcN3haE4Kg=,tag:K+HxCyyK2FQ5aXBeel9eDA==,type:str]
+          - name: GRIST_OIDC_IDP_CLIENT_ID
+            value: ENC[AES256_GCM,data:X4+50462ajIlaQDwU5sv2e30/7J/t9hc2V8T5JjSu2KqCZFw,iv:zdwnRriovX8gsCpc0pptuLHehdt1Ih3wqGDVeKbVIXA=,tag:NGYIFH7T9W1aZpGsL+fTvw==,type:str]
+          - name: GRIST_OIDC_IDP_CLIENT_SECRET
+            value: ENC[AES256_GCM,data:TRH5c8Px6SHOMHxH0BRPW+I0/tydwwY5+X+VcG4sRa0=,iv:z2zTLjgo1yNJJ3czmPg/xzYCgO2YO2JS+oacWrKy4go=,tag:76I8WKh243JM5HVJQbZwIA==,type:str]
+          - name: GRIST_SESSION_SECRET
+            value: ENC[AES256_GCM,data:gCQM3nUWFMEUnXo2fTzcmu48R2aYCF6VvxcwwIGMrYWCSKpYnyv707MBymF4vJu6JINaLnTDCadeGm24Gdf/AQ==,iv:jacTpo9r3bIbYvmYG5kqIWK+Gle/Oh6ets57dvM5zMw=,tag:ZIfYo0/pR5CFQn7gbztf+w==,type:str]
+          - name: GRIST_FORCE_LOGIN
+            value: ENC[AES256_GCM,data:xQSGSg==,iv:0ia+gJPT37k5R5OlHNwNzM7LgEMv3a3NXOZIIHeW0EI=,tag:HCykVInxaZHzk5rsE2mlfQ==,type:str]
+          - name: GRIST_OIDC_SP_IGNORE_EMAIL_VERIFIED
+            value: ENC[AES256_GCM,data:kkjncw==,iv:iUt3Okqqo49rUfeM3AvVQFEpr+I6xTUn/Way+AithQE=,tag:onEbUeprjUGJFaDgb8GEcw==,type:str]
+        volumeMounts:
+          - name: grist-data
+            mountPath: /persist
+        volumes:
+          - name: grist-data
+            persistentVolumeClaim:
+              claimName: grist-data
+        service: 8484
+        pvc:
+          - grist-data
+        ingress:
+          domain: grist.cocointhe.cloud
+          public: true
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBNldCSmFIcFVxOUg4YWRm
+        eVRZZGhaRHBqUmR3QUZUK2NjUHN3NHNKS0NvCnBQSSsyenB4ZDYxT1B2TmNWSk9E
+        elNZSlJzck43SmhjNjVNSTI0c1ArdTgKLS0tIExnKzBMY2x2WDhUaXoydzZuYXZO
+        SGdQUzJoOXlaeW1RVlRmSk1FbWZucUUKFrYzXDsOdQ4H777Gy9bD/Qs1xymhxGMl
+        0WvR7YDsJw3bNxIjZcNsn5Ni3Rv4lmGu846hrW8n0dakuC0LOXq2GQ==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-10-04T16:24:17Z"
+  mac: ENC[AES256_GCM,data:dqgFwrunDzObs4n+1YWJ3pASl+BhqqMgwJ/mBcRfUGG8ecemszSpPxiO+R+7PcoCoZd49j6KohHMj+CmtbKBn1s+8ukbuksWJH7Q9gO1TB/fXcnyrLdMibIRw10NFKFGxJCEYapkDt8Ln9xkZQAz48w0Wqu55BwDvCfUw0OtL7U=,iv:Bqb5TbCHTvDhIwRM2bCXvtaq09gWyzj6YXdU02mVI9Q=,tag:dOJiqDilwov22VkdTrMQ+A==,type:str]
+  encrypted_regex: ^value$
+  version: 3.11.0
