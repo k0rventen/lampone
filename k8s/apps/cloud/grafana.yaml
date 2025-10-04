@@ -62,7 +62,7 @@ spec:
         paths:
           - backend:
               service:
-                name: cloud-grafana
+                name: grafana
                 port:
                   number: 3000
             path: /
@@ -80,12 +80,12 @@ metadata:
 spec:
   ingressClassName: traefik-tunnel
   rules:
-    - host: solar.cocointhe.cloud
+    - host: grafana.cocointhe.cloud
       http:
         paths:
           - backend:
               service:
-                name: cloud-grafana
+                name: grafana
                 port:
                   number: 3000
             path: /
