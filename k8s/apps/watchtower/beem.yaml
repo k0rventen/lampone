@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: beem-exporter
 spec:
-  install:
-    createNamespace: true
   interval: 10m
   chart:
     spec:
@@ -15,12 +13,10 @@ spec:
         name: appchart
         namespace: flux-system
       interval: 10m
-  targetNamespace: watchtower
   values:
     apps:
       - name: beem-exporter
         image: gitea.cocointhe.cloud/coco/beem-exporter@sha256:2f85c3eff3128b44c9b6fc9145fc265ef7863212efce86c4e716d3b4b0893f00
-        imagePullSecret: registry-creds
         service: 8000
         env:
           - name: EMAIL

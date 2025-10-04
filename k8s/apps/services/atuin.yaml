@@ -5,8 +5,6 @@ kind: HelmRelease
 metadata:
   name: atuin
 spec:
-  install:
-    createNamespace: true
   interval: 1h
   chart:
     spec:
@@ -50,7 +48,7 @@ spec:
 
         service: 8888
         ingress:
-          public: true
+          public: false
           domain: atuin.cocointhe.cloud
 
       - name: atuin-postgres
