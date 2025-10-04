@@ -23,7 +23,7 @@ spec:
           domain: stats.cocointhe.cloud
         env:
           - name: PROMETHEUS_URL
-            value: http://watchtower-prometheus-server.watchtower.svc.cluster.local
+            value: http://prometheus-server.watchtower.svc.cluster.local
         volumeMounts:
           - name: kromgo-config
             mountPath: /kromgo/config.yaml
