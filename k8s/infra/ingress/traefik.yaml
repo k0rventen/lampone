@@ -101,8 +101,6 @@ spec:
     service:
       enabled: true
       type: ClusterIP
-      spec:
-        externalTrafficPolicy: Local
     ingressClass:
       enabled: true
       isDefaultClass: false
