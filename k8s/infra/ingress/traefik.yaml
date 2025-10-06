@@ -7,7 +7,7 @@ spec:
   interval: 24h
   url: https://traefik.github.io/charts
 ---
-# traefik w/ tls from cert-manager secret
+# LAN traefik for all services 
 # is default ingressclass
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -32,7 +32,8 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    globalArguments: []
+    checkNewVersion: false
+    sendAnonymousUsage: false
     tlsStore:
       default:
         certificates:
@@ -43,11 +44,17 @@ spec:
       type: LoadBalancer
       spec:
         externalTrafficPolicy: Local
+    logs:
+      general:
+        level: "ERROR"  
     experimental:
       plugins:
         traefikoidc:
           moduleName: github.com/lukaszraczylo/traefikoidc
           version: v0.7.5
+        sablier:
+          moduleName: "github.com/sablierapp/sablier"
+          version: "v1.10.1"
     ingressClass:
       enabled: true
       isDefaultClass: true
@@ -60,9 +67,16 @@ spec:
         ingressClass: "traefik"
         publishedService:
           enabled: false
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
 ---
-# specific traefik for routing traffic from the cloudflare tunnel
-# only listens for ingressclass 'traefik-tunnel'
+# specific traefik for routing traffic from WAN
+# only listens for ingressclass 'traefik-tunnel' and exposed internally
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -82,31 +96,46 @@ spec:
   releaseName: traefik-tunnel
   targetNamespace: ingress
   values:
-    globalArguments: []
+    checkNewVersion: false
+    sendAnonymousUsage: false
     service:
       enabled: true
       type: ClusterIP
+      spec:
+        externalTrafficPolicy: Local
     ingressClass:
       enabled: true
       isDefaultClass: false
       name: "traefik-tunnel"
+    logs:
+      general:
+        level: "ERROR"  
+    tlsStore:
+      default:
+        certificates:
+          - secretName: wildcard-cocointhe-cloud-tls
     providers:
       kubernetesCRD:
         enabled: true
       kubernetesIngress:
         ingressClass: "traefik-tunnel"
-    websecure:
-      expose:
-        default: false
-    metrics:
-      prometheus:
-        service:
-          enabled: true
-        entryPoint: metrics
-        addServicesLabels: true
-        addRoutersLabels: true
-        headerLabels:
-          useragent: "User-Agent"
-          clientip: "Cf-Connecting-Ip"
-          clientcountry: "Cf-Ipcountry"
-          domain: "X-Forwarded-Host"
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+    # metrics disabled for now
+    # metrics:
+    #   prometheus:
+    #     service:
+    #       enabled: true
+    #     entryPoint: metrics
+    #     addServicesLabels: true
+    #     addRoutersLabels: true
+    #     headerLabels:
+    #       useragent: "User-Agent"
+    #       clientip: "Cf-Connecting-Ip"
+    #       clientcountry: "Cf-Ipcountry"
+    #       domain: "X-Forwarded-Host"
