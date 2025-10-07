@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: rathole
-        image: gitea.cocointhe.cloud/coco/rathole:2025.10.06.a89edfc
+        image: gitea.cocointhe.cloud/coco/rathole:2025.10.06.a89edfc@sha256:8806c02ece928153c0293a776a23e0c41a4312ed332b71655568cf23442f630a
         containerSpec:
           args:
             - --client
