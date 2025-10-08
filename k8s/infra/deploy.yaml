@@ -139,7 +139,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./k8s/infra/system-upgrade
+  path: ./k8s/infra/system-upgrade/controller
   prune: true
   timeout: 10m
 ---
@@ -153,7 +153,7 @@ spec:
     - name: system-upgrade
   interval: 1h
   targetNamespace: system-upgrade
-  path: ./k8s/infra/system-upgrade-plans
+  path: ./k8s/infra/system-upgrade/plans
   prune: true
   sourceRef:
     kind: GitRepository
@@ -196,6 +196,20 @@ spec:
   interval: 1h
   targetNamespace: goldilocks
   path: ./k8s/infra/vpa
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kyverno
+  namespace: flux-system
+spec:
+  interval: 1h
+  targetNamespace: goldilocks
+  path: ./k8s/infra/kyverno
   prune: true
   sourceRef:
     kind: GitRepository
