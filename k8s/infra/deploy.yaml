@@ -208,7 +208,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  targetNamespace: goldilocks
+  targetNamespace: kyverno
   path: ./k8s/infra/kyverno
   prune: true
   sourceRef:
