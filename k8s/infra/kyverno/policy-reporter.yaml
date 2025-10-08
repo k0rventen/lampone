@@ -1,0 +1,71 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: policy-reporter
+spec:
+  interval: 24h
+  url: https://kyverno.github.io/policy-reporter
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBNL1YzUFBaL05vRERzSkF1
+        d0NnT1pYR2k4VWFrLzFzaThQYnE1S0VvUENvCmUraVM5TUtaRm9GbWtEazQ1eG5N
+        NGw5SXR3eU5oK2VXa1l4bzd5TVM4Q28KLS0tIGRiZ1c0ZTFnUXNiUzlCLzV0QWk0
+        cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
+        okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-10-10T16:12:27Z"
+  mac: ENC[AES256_GCM,data:lOcC54W6saWFc2JoWJehypQY6JQZzPojjUVJOCtFuW/nN9x2uLThxl9b33kLd9sPiMokwmVwVvTICXJRDVW5Xyx6oq87gkR+wS9Mmq3jLIFGOSz8yj0t9q+Uzn+v9vaaJ4cJEoK/qsFhuEWen/V/XC5p7VKBEzTcFbu9gX3eZJs=,iv:KIvTub856W2rfzHm3PKvu5/cIL/nqMfi1TLfsHbQymo=,tag:4f1uUxyCvSpeXnJUpQ/lCg==,type:str]
+  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
+  version: 3.11.0
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: policy-reporter
+  namespace: kyverno
+spec:
+  interval: 10m
+  timeout: 20m
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  chart:
+    spec:
+      chart: policy-reporter
+      version: "3.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: policy-reporter
+  values:
+    sourceFilters:
+    - selector:
+        source: "Kyverno Event"
+    - selector:
+        source: "kyverno"
+
+    ui:
+      enabled: true
+    target:
+      discord:
+        webhook: ENC[AES256_GCM,data:frWXGz8m1yeUldV1ZI0Y+cCxV5Qsa0vCTLTr1ysMdvfVO6FO0j+Blq9AHqzpOc20hckRpO56KmNjWGuOeGtM4MC22EO9Wkdz09Mt+k17Avs5EzBLdCyw7C7/3Anky+Tqltwf8Dd8t7aTYr1nF1Oc6P28qD9uh+HFsA==,iv:p4rUoiXmHvREfEL2qRHc1B+7II2BVL4NXl9OxCotzzM=,tag:2tMBOjP63yfJGrSYjggTGA==,type:str]
+        skipExistingOnStartup: true
+        minimumPriority: info
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBNL1YzUFBaL05vRERzSkF1
+        d0NnT1pYR2k4VWFrLzFzaThQYnE1S0VvUENvCmUraVM5TUtaRm9GbWtEazQ1eG5N
+        NGw5SXR3eU5oK2VXa1l4bzd5TVM4Q28KLS0tIGRiZ1c0ZTFnUXNiUzlCLzV0QWk0
+        cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
+        okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-10-10T16:12:27Z"
+  mac: ENC[AES256_GCM,data:lOcC54W6saWFc2JoWJehypQY6JQZzPojjUVJOCtFuW/nN9x2uLThxl9b33kLd9sPiMokwmVwVvTICXJRDVW5Xyx6oq87gkR+wS9Mmq3jLIFGOSz8yj0t9q+Uzn+v9vaaJ4cJEoK/qsFhuEWen/V/XC5p7VKBEzTcFbu9gX3eZJs=,iv:KIvTub856W2rfzHm3PKvu5/cIL/nqMfi1TLfsHbQymo=,tag:4f1uUxyCvSpeXnJUpQ/lCg==,type:str]
+  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
+  version: 3.11.0
