@@ -52,9 +52,6 @@ spec:
         traefikoidc:
           moduleName: github.com/lukaszraczylo/traefikoidc
           version: v0.7.5
-        sablier:
-          moduleName: "github.com/sablierapp/sablier"
-          version: "v1.10.1"
     ingressClass:
       enabled: true
       isDefaultClass: true
