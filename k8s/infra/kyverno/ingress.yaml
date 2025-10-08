@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: ingress-oidc@kubernetescrd
+  name: kyverno-ui
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: kyverno.cocointhe.cloud
+    http:
+      paths:
+      - backend:
+          service:
+            name: policy-reporter-ui
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - kyverno.cocointhe.cloud

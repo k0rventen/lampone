@@ -1,0 +1,42 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: policy-reporter
+spec:
+  interval: 24h
+  url: https://kyverno.github.io/policy-reporter
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: policy-reporter
+  namespace: kyverno
+spec:
+  interval: 10m
+  timeout: 20m
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  chart:
+    spec:
+      chart: policy-reporter
+      version: "3.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: policy-reporter
+  values:
+    sourceFilters:
+    - selector:
+        source: "Kyverno Event"
+    - selector:
+        source: "kyverno"
+
+    ui:
+      enabled: true
+    target:
+      discord:
+        webhook: 'https://discord.com/api/webhooks/1423741217874772171/Lmgsr8Ro62R-6YYBiwrBM6sK2oPg665JcjGG6HHB9GCckJ1DMjSz5JoLgeMDav886OWy'
+        skipExistingOnStartup: true
+        minimumPriority: info
