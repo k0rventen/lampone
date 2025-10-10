@@ -63,7 +63,7 @@ spec:
         - 172.16.0.0/12
         - 192.168.0.0/16
 ---
-# grafana -> prom
+# grafana -> prom and grafana->panel and plugins
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -80,6 +80,12 @@ spec:
       podSelector:
         matchLabels:
           app.kubernetes.io/name: prometheus
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 443
 ---
 # kromgo-> prom
 apiVersion: networking.k8s.io/v1
