@@ -16,8 +16,8 @@ sops:
         cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
         okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-10T16:12:27Z"
-  mac: ENC[AES256_GCM,data:lOcC54W6saWFc2JoWJehypQY6JQZzPojjUVJOCtFuW/nN9x2uLThxl9b33kLd9sPiMokwmVwVvTICXJRDVW5Xyx6oq87gkR+wS9Mmq3jLIFGOSz8yj0t9q+Uzn+v9vaaJ4cJEoK/qsFhuEWen/V/XC5p7VKBEzTcFbu9gX3eZJs=,iv:KIvTub856W2rfzHm3PKvu5/cIL/nqMfi1TLfsHbQymo=,tag:4f1uUxyCvSpeXnJUpQ/lCg==,type:str]
+  lastmodified: "2025-10-10T16:16:15Z"
+  mac: ENC[AES256_GCM,data:c30esJ7+rhWRD302QExTK7ALcKJ7ekZRVbGvD77VA6hMqBAh35G/8JlvCnWBw/0o3gQAXlD0QKwGM+i2qVhGQaQ8c3+zRF7oKc2f/JzhcE4WX0sUkr5+woA1uOvq3PZ2hrmoZvSCbKfZ+AoU1tdM1w1FCKwq3kUDpeYyKWGc2JM=,iv:jJySSyFCiNzIqWF/IijSNPyq1xQJK+h5mIgPZyBw6RQ=,tag:qcLqvE18dUn59uQ83bYhaQ==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
   version: 3.11.0
 ---
@@ -36,22 +36,21 @@ spec:
   chart:
     spec:
       chart: policy-reporter
-      version: "3.5.0"
+      version: 3.5.0
       sourceRef:
         kind: HelmRepository
         name: policy-reporter
   values:
     sourceFilters:
-    - selector:
-        source: "Kyverno Event"
-    - selector:
-        source: "kyverno"
-
+      - selector:
+          source: Kyverno Event
+      - selector:
+          source: kyverno
     ui:
       enabled: true
     target:
       discord:
-        webhook: ENC[AES256_GCM,data:frWXGz8m1yeUldV1ZI0Y+cCxV5Qsa0vCTLTr1ysMdvfVO6FO0j+Blq9AHqzpOc20hckRpO56KmNjWGuOeGtM4MC22EO9Wkdz09Mt+k17Avs5EzBLdCyw7C7/3Anky+Tqltwf8Dd8t7aTYr1nF1Oc6P28qD9uh+HFsA==,iv:p4rUoiXmHvREfEL2qRHc1B+7II2BVL4NXl9OxCotzzM=,tag:2tMBOjP63yfJGrSYjggTGA==,type:str]
+        webhook: ENC[AES256_GCM,data:UQxLsxFqkQ10zSXsDwCf2drOyulYi+e5rZIZesTzGx0dKmswMhV2eexiM47fczf4UmiIuPMiTCe2d/F9BQGa1yk8yh/hwdKYl5RtNt1bZubvG3WwiU6rAQx1q3kguW6s9KcqRC55Bsxwzj9369OQe0tO6ZAqUw8CLQ==,iv:tkxCjlTegCsDZlhnxXLQWmHwgOBL8ynVzdDBHCwJl/k=,tag:w7nfHTzFsmPgncXQelWa+g==,type:str]
         skipExistingOnStartup: true
         minimumPriority: info
 sops:
@@ -65,7 +64,7 @@ sops:
         cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
         okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-10T16:12:27Z"
-  mac: ENC[AES256_GCM,data:lOcC54W6saWFc2JoWJehypQY6JQZzPojjUVJOCtFuW/nN9x2uLThxl9b33kLd9sPiMokwmVwVvTICXJRDVW5Xyx6oq87gkR+wS9Mmq3jLIFGOSz8yj0t9q+Uzn+v9vaaJ4cJEoK/qsFhuEWen/V/XC5p7VKBEzTcFbu9gX3eZJs=,iv:KIvTub856W2rfzHm3PKvu5/cIL/nqMfi1TLfsHbQymo=,tag:4f1uUxyCvSpeXnJUpQ/lCg==,type:str]
+  lastmodified: "2025-10-10T16:16:15Z"
+  mac: ENC[AES256_GCM,data:c30esJ7+rhWRD302QExTK7ALcKJ7ekZRVbGvD77VA6hMqBAh35G/8JlvCnWBw/0o3gQAXlD0QKwGM+i2qVhGQaQ8c3+zRF7oKc2f/JzhcE4WX0sUkr5+woA1uOvq3PZ2hrmoZvSCbKfZ+AoU1tdM1w1FCKwq3kUDpeYyKWGc2JM=,iv:jJySSyFCiNzIqWF/IijSNPyq1xQJK+h5mIgPZyBw6RQ=,tag:qcLqvE18dUn59uQ83bYhaQ==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
   version: 3.11.0
