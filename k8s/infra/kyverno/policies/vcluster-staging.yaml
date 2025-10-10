@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: vcluster-ingress
+spec:
+  background: true
+  rules:
+  - name: staging-domain
+    match:
+      any:
+      - resources:
+          kinds:
+          - Ingress
+          namespaces:
+          - staging
+    validate:
+      failureAction: Enforce
+      message: "Ingress hostnames in the 'staging' namespace (from the vcluster) must use the staging domain"
+      pattern:
+        spec:
+          rules:
+            - host: "*.staging.cocointhe.cloud"
