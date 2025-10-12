@@ -27,21 +27,22 @@ spec:
     - port: 53
       protocol: UDP
 ---
-# allow accessing the OIDC provider through the clusterIP service
+# allow accessing the cluster VIP (mainly for the OIDC provider callbacks)
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-oidc
+  name: allow-self-access
 spec:
   podSelector: {}
   policyTypes:
   - Egress
   egress:
   - to:
-    - namespaceSelector: {}
-      podSelector:
-        matchLabels:
-          app: pocket-id
+    - ipBlock:
+        cidr: 192.168.1.10/32
+    ports:
+    - protocol: TCP
+      port: 443
 ---
 # glance -> web for news fetching
 apiVersion: networking.k8s.io/v1
