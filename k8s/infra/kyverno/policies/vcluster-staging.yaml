@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: vcluster-ingress
 spec:
-  background: true
+  background: false
   rules:
   - name: staging-domain
     match:

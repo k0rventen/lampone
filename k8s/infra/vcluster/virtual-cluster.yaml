@@ -32,8 +32,6 @@ spec:
           dataVolume: 
           - name: data
             emptyDir: {}
-            # persistentVolumeClaim:
-            #  claimName: vcluster-data
           volumeClaim:
             enabled: false
         scheduling:
@@ -56,30 +54,3 @@ spec:
       toHost:
         ingresses:
           enabled: true
----
-# # local path on the node 
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: vcluster-data
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 10Gi
-#   storageClassName: manual
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: vcluster-pv
-# spec:
-#   capacity:
-#     storage: 10Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   persistentVolumeReclaimPolicy: Retain
-#   hostPath:
-#     path: /opt/vcluster-data
-#   storageClassName: manual
