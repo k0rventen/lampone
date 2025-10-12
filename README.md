@@ -11,10 +11,9 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 <br>
 
 
-![sli](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Favailability_sli&style=for-the-badge&)
 ![cluster uptime](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_uptime_days&style=for-the-badge&color=blue)
-<br>
 ![cluster version](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fkubernetes_version&style=for-the-badge&color=blue)
+<br>
 ![nodes](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fnodes_count&style=for-the-badge&color=purple)
 ![pods](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fpods_count&style=for-the-badge&color=purple)
 ![cluster power](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_power_draw&style=for-the-badge&color=ffda1e)
@@ -34,10 +33,15 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
   - [OS](#os)
   - [Creating the cluster](#creating-the-cluster)
   - [Deploying the stack](#deploying-the-stack)
-- [SOPS setup](#sops-setup)
-- [OIDC-based ssh access w/ opkssh](#oidc-based-ssh-access-w-opkssh)
-- [Staging env](#staging-env)
-- [Backup strategy](#backup-strategy)
+- [Other bits and pieces](#other-bits-and-pieces)
+  - [Cloudflare tunnel alternative w/ a VPS](#cloudflare-tunnel-alternative-w-a-vps)
+  - [SOPS setup](#sops-setup)
+  - [OIDC-based ssh access w/ opkssh](#oidc-based-ssh-access-w-opkssh)
+  - [Staging env](#staging-env)
+  - [Backup strategy](#backup-strategy)
+    - [restic setup](#restic-setup)
+    - [garage config](#garage-config)
+    - [velero restore process](#velero-restore-process)
 
 
 
@@ -77,20 +81,23 @@ The Kubernetes cluster is deployed with [k3s](https://github.com/k3s-io/k3s).
 
 The cluster state is handled by [fluxcd](https://fluxcd.io/), based on what's in this repo.
 
-In `k8s/` there are 4 folders:
+In `k8s/` there are 3 main folders:
 - `flux`, the entrypoint used by the flux controller for synchronizing the cluster. Main 'apps' are declared here.
   The interval for the source GitRepo is set to `1m`, so changes will be picked up within a minute or so.
 - `infra` represents what's needed for the cluster to function:
   - a [nfs-server](https://github.com/k0rventen/docker-nfs-server) + [csi-nfs-driver](https://github.com/kubernetes-csi/csi-driver-nfs) for handling persistent volumes,
-  - an IngressController with [Traefik](https://github.com/traefik/traefik), one private (listens on local lan), one "public" (routes specific subdomains from cloudflare),
+  - an IngressController with [Traefik](https://github.com/traefik/traefik), one private (listens on local lan), one "public",
   - [cert-manager](https://github.com/cert-manager/cert-manager) for certificates management of my domain,
   - [kube-vip](https://github.com/kube-vip/kube-vip) for managing the cluster's VIP.  
-  - [cloudflare tunnel](https://github.com/cloudflare/cloudflared) for exposing part of my services to the outside world,
+  - [rathole](https://github.com/rathole-org/rathole) for exposing part of my services to the outside world ([see here](#cloudflare-tunnel-alternative-w-a-vps)),
   - [tailscale-operator](https://github.com/tailscale/tailscale/tree/main/cmd/k8s-operator/deploy) for accessing my private services from wherever (using a subnet route) and for my cluster services to access my offsite backup server
   - [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) for managing k8s upgrades directly in the cluster using CRDs.
   - a [renovate](https://github.com/renovatebot/renovate) cronjob to create PR for components updates (w/ auto merging when it's a patch level update and other rules)
-  - a [restic](https://github.com/restic/restic) cronjob that create the local backup (if an app fails and borks its files) and remote backup (if the server catches on fire)
-
+  - [velero](https://velero.io/docs/v1.17/) + [garage](https://garagehq.deuxfleurs.fr/) for daily, local backups of the cluster (if an app fails and borks its files).
+  - a [restic](https://github.com/restic/restic) cronjob that create a remote backup of the whole nfs dir (in case the server catches on fire) for DR situation,
+  - [kyverno](https://kyverno.io/) for enforcing policies in the cluster,
+  - [goldilocks](https://github.com/FairwindsOps/goldilocks) for automatic adjustments of limits/requests,
+  - a [vcluster](https://www.vcluster.com/docs/vcluster/) where I do all my pre production testing, see [here](#staging-env).
 
 - `apps`, the actual services running on the cluster:
   - [adguard](https://github.com/AdguardTeam/AdGuardHome) for DNS/DHCP
@@ -106,10 +113,9 @@ In `k8s/` there are 4 folders:
   - [uptime kuma](https://github.com/louislam/uptime-kuma) as a simple availability dashboard
   - [n8n](https://github.com/n8n-io/n8n) for basic automation workflows
   - [bytestash](https://github.com/jordan-dalby/ByteStash) for remembering short code/iaac snippets 
-  - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring
+  - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring the cluster,
+  - [grist](https://github.com/gristlabs/grist-core) for a modern take on spreadsheets,
   - and some other stuff like a blog , static sites, etc..
-
-- `staging`, where I do all my pre production testing using a virtual cluster using [vcluster](https://www.vcluster.com/docs/vcluster/), see [here](#staging-env).
 
 I try to adhere to gitops/automation principles.
 Some things aren't automated but it's mainly toil (one-time-things during setup etc..).
@@ -120,9 +126,16 @@ Some things aren't automated but it's mainly toil (one-time-things during setup 
 - [flux](https://fluxcd.io/flux/): cluster state mgmt
 - [sops](https://github.com/getsops/sops) + [age](https://github.com/FiloSottile/age/): encryption
 - [git](https://git-scm.com/): change management
-
+- [gitleaks](https://github.com/gitleaks/gitleaks): secret detection as a pre-commit hook
+- velero-cli: manage backups and restores from the CLI
+- vcluster-cli: connect/pause/resume/reset the vcluster 
 ```
-brew install git ansible fluxcd/tap/flux sops age
+
+# install everything needed
+brew install git ansible fluxcd/tap/flux sops age gitleaks loft-sh/tap/vcluster velero
+
+# tell git where to find its hooks
+git config core.hooksPath .githooks
 ```
 
 ### OS
@@ -166,7 +179,46 @@ ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 
 3. From here, Flux will create everything that is declared in `k8s/`, decrypt what's secret using the private key, and keep the stack in sync.
 
-## SOPS setup
+
+## Other bits and pieces
+
+### Cloudflare tunnel alternative w/ a VPS
+
+I previously used Cloudflare Tunnels to expose some apps to WAN without opening ports on my ISP router (and also being behind CGNAT).
+Due to concerns regarding their ability to decrypt traffic at the edge (as they provision their own cert for the domain), I switched to [rathole](https://github.com/rathole-org/rathole) + a VPS. I'm currently renting one at [ByteHosting](https://bytehosting.cloud/index) in Germany. The 'server' side on the VPS forwards all the traffic from port 80/443 to the client running in my cluster, which then forwards everything to my dedicated traefik instance, which handles SSL and routing.
+
+Here is the compose for the VPS:
+
+```yaml
+services:
+  rathole:
+    image: rapiz1/rathole:v0.5.0
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 2333:2333
+    volumes:
+      - ./server.toml:/app/config.toml
+    command: --server /app/config.toml
+```
+
+And an example server config file:
+
+```toml
+[server]
+bind_addr = "0.0.0.0:2333" # `2333` specifies the port that rathole listens for clients
+default_token = "verylongtoken"
+
+[server.services.traefik_https]
+bind_addr = "0.0.0.0:443"
+
+[server.services.traefik_http]
+bind_addr = "0.0.0.0:80"
+```
+
+
+### SOPS setup
 
 This assume you have the decryption key `age.agekey`, and the env var configured:
 
@@ -186,7 +238,7 @@ If you want to edit inline a encrypted file (eg modify a value in a encrypted Se
 sops <file.yaml>
 ```
 
-## OIDC-based ssh access w/ opkssh
+### OIDC-based ssh access w/ opkssh
 
 Whenever possible, authentification is managed through my OIDC provider (pocketID). That's true for most of the services in the cluster, but also for accessing infrastructure-level stuff like my servers, using  [opkssh](https://github.com/openpubkey/opkssh).
 
@@ -202,7 +254,7 @@ Whenever possible, authentification is managed through my OIDC provider (pocketI
 
 4. On the client, do a `opkssh login` then ssh should be seamless.
 
-## Staging env
+### Staging env
 
 My staging environment is managed through [vcluster](https://github.com/loft-sh/vcluster). 
 A virtual cluster is deployed inside my actual cluster, and has access to the ingressclass and storageclass of the underlying cluster. The flux controller can deploy resources in the vcluster by specifying the kubeconfig to use if necessary (see the `staging/deploy.yaml` file).
@@ -226,12 +278,13 @@ flux reconcile hr -n staging vcluster
 ```
 
 
-## Backup strategy
+### Backup strategy
 
 I try to follow a 3-2-1 backup rule. The 'live' data is on the nfs ssd.
 It's backed up daily onto the same ssd (mainly for rollbacks and potential local re-deployments).
 For disaster-recovery situations, it's also backed up daily onto a HDD offsite, which can be accessed through my tailnet.
 
+#### restic setup
 The backup tool is [restic](https://restic.net/). It's deployed as a cronjob in the cluster. It launches a custom script that runs the local backup as well as the remote one (which requires commands before and after to mount the external disk on the remote side.). Here are the commands used to create the restic repos before deploying the cronjob:
 
 1. local repo
@@ -262,4 +315,52 @@ WantedBy=multi-user.target
 Init the repo from the nfs server (this assumes passwordless ssh auth):
 ```
 restic init -r sftp:<remote_server_ip>:/mnt/backup/nfs-backups
+```
+
+#### garage config
+
+To configure garage as an s3 backend for velero, the following commands shall be ran on the garage container:
+
+```sh
+k exec garage-xx -- /garage status
+k exec garage-xx -- /garage layout assign -z dc1 -c 1G node_id
+k exec garage-xx -- /garage layout apply --version 1
+k exec garage-xx -- /garage bucket create velero
+k exec garage-xx -- /garage key create velero
+k exec garage-xx -- /garage bucket allow --read --write --owner velero  --key velero
+```
+
+The key and secret printed when running `key create` can be reported in velero's config.
+
+#### velero restore process
+
+To create a one shot backup of an app:
+
+```
+velero backup create groceries -l app=groceries -n backups
+```
+
+Check its status:
+
+```
+velero backup describe groceries -n backups --details
+```
+
+To restore it:
+
+```sh
+# suspend the flux resource
+flux suspend hr -n cloud groceries
+
+# scale down the deployment
+k scale --replicas 0 deploy groceries -n cloud
+
+# delete the pvc (necessary for velero to recreate it and restore its content through kopia)
+k delete pvc groceries-data -n cloud
+
+# restore
+velero restore create --from-backup groceries
+
+# wait until done
+velero restore describe groceries --details
 ```
