@@ -1,0 +1,95 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: garage
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: appchart
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 1h
+  values:
+    apps:
+      - name: garage
+        image: dxflrs/arm_garage:v2.1.0 # pinned to the arm version for stability reasons
+        deploymentSpec:
+          nodeName: drupelet-1 # fix to the master node with nfs server
+        service: 3900
+        ingress:
+          domain: garage.cocointhe.cloud
+        volumeMounts:
+          - name: garage-config
+            mountPath: /etc/garage.toml
+            subPath: garage.toml
+          - name: garage-data
+            mountPath: /var/lib/garage/data
+          - name: garage-meta
+            mountPath: /var/lib/garage/meta
+        volumes:
+          - name: garage-config
+            secret:
+              secretName: garage-config
+          - name: garage-data
+            persistentVolumeClaim:
+              claimName: garage-data
+          - name: garage-meta
+            persistentVolumeClaim:
+              claimName: garage-meta
+---
+# specific pvc and pv for hostpath on the master node
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: garage-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: garage-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /nfs/garage-velero-backups/data
+  storageClassName: garage-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: garage-meta
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: garage-meta
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-meta
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /nfs/garage-velero-backups/meta
+  storageClassName: garage-meta
