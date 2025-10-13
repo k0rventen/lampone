@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: garage
-        image: dxflrs/arm_garage:v2.1.0 # pinned to the arm version for stability reasons
+        image: dxflrs/arm_garage:v2.1.0@sha256:69dc9a214d5b19f6b49149b5feca7e89d4d49cdb0c824a3a97a15cd8031dd87e # pinned to the arm version for stability reasons
         deploymentSpec:
           nodeName: drupelet-1 # fix to the master node with nfs server
         service: 3900
