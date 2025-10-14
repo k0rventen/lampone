@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: n8n
-        image: ghcr.io/n8n-io/n8n:1.115.2@sha256:ca7bc6b8de1b4f0f87e66d1fee70ddeafa4cc98989c361f7ec1a6c45bec04c96
+        image: ghcr.io/n8n-io/n8n:1.116.1@sha256:cc32e0790f15e3e66fc6ad51f5511b6a9c474bd2c1d43893cd82fc875c3919f7
         env:
           - name: N8N_PORT
             value: "5678"
