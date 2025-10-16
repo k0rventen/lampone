@@ -1,129 +1,119 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: immich
-spec:
-  interval: 24h
-  url: https://immich-app.github.io/immich-charts
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: immich
 spec:
-  install:
-    createNamespace: true
   interval: 10m
-  timeout: 20m
   chart:
     spec:
-      chart: immich
-      version: 0.9.3
+      chart: appchart
+      version: "1.5.0"
       sourceRef:
         kind: HelmRepository
-        name: immich
-      interval: 1h
-  releaseName: immich
-  targetNamespace: immich
+        name: appchart
+        namespace: flux-system
+      interval: 10m
   values:
-    useDeprecatedPostgresChart: true
-    immich:
-      metrics:
-        enabled: false
-      persistence:
-        library:
-          existingClaim: immich-data
-    postgresql:
-      enabled: true
-      image:
-        registry: ghcr.io
-        repository: immich-app/postgres
-        tag: 14-vectorchord0.3.0-pgvectors0.2.1@sha256:a8efd51c01f75663afa7ff3aec8e142901f0e4b394c1538ad5c4fb548086ff6f
-      primary:
-        containerSecurityContext:
-          readOnlyRootFilesystem: false
-        resources:
-          limits:
-            cpu: 1
-            memory: 1Gi
-          requests:
-            cpu: 100m
-            memory: 256Mi
+    apps:
+    - name: immich-server
+      image: ghcr.io/immich-app/immich-server:v2.0.1
+      service: 2283
+      containerSpec:
+        envFrom:
+          - secretRef:
+              name: immich-config
+      podSpec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - immich-machine-learning
+              topologyKey: "kubernetes.io/hostname"
+      ingress:
+        domain: immich.staging.cocointhe.cloud
+      volumeMounts:
+        - name: server-data
+          mountPath: /data
+      volumes:
+        - name: server-data
+          persistentVolumeClaim:
+            claimName: immich-server-data
+      pvc:
+        - immich-server-data
 
-    redis:
-      enabled: true
-      architecture: standalone
-      auth:
-        enabled: false
-    server:
-      enabled: true
-      image:
-        repository: ghcr.io/immich-app/immich-server
-        tag: v2.0.1@sha256:8286638680f0a38a7cb380be64ed77d1d1cfe6d0e0b843f64bff92b24289078d
-        pullPolicy: IfNotPresent
-      resources:
-        limits:
-          cpu: 2
-          memory: 2Gi
-        requests:
-          cpu: 200m
-          memory: 512Mi
-    machine-learning:
-      enabled: true
-      image:
-        repository: ghcr.io/immich-app/immich-machine-learning
-        tag: v2.0.1@sha256:45626a33361ef7ed361de41b0d2dc19e5949442cdf0a8eb64b157dc8a04e9855
-        pullPolicy: IfNotPresent
-      resources:
-        limits:
-          cpu: 1
-          memory: 2Gi
-        requests:
-          cpu: 200m
-          memory: 512Mi
+
+    - name: immich-machine-learning
+      image: ghcr.io/immich-app/immich-machine-learning:v2.0.1
+      service: 3003
       env:
-        TRANSFORMERS_CACHE: /cache
-      persistence:
-        cache:
-          enabled: true
-          size: 10Gi
-          type: pvc
-  valuesFrom:
-    - kind: Secret
-      name: immich-config
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-data
-  namespace: immich
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
----
+      - name: TRANSFORMERS_CACHE
+        value: /cache
+      podSpec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - immich-server
+              topologyKey: "kubernetes.io/hostname"
+      containerSpec:
+        envFrom:
+          - secretRef:
+              name: immich-config
+      volumeMounts:
+        - name: ml-cache
+          mountPath: /cache
+      volumes:
+        - name: ml-cache
+          persistentVolumeClaim:
+            claimName: immich-ml-cache
+      pvc:
+        - immich-ml-cache
 
-# private ingress
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: immich
-  namespace: immich
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: immich.cocointhe.cloud
-      http:
-        paths:
-          - backend:
-              service:
-                name: immich-server
-                port:
-                  number: 2283
-            path: /
-            pathType: Prefix
-  tls:
-    - hosts:
-        - immich.cocointhe.cloud
+
+    - name: immich-valkey
+      image: docker.io/valkey/valkey:8.1
+      service: 6379
+
+
+    - name: immich-postgres
+      image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:41eacbe83eca995561fe43814fd4891e16e39632806253848efaf04d3c8a8b84
+      deploymentSpec:
+        strategy:
+          type: Recreate
+      service: 5432
+      env:
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: immich-config
+            key: DB_PASSWORD
+      - name: POSTGRES_USER
+        valueFrom:
+          secretKeyRef:
+            name: immich-config
+            key: DB_USERNAME
+      - name: POSTGRES_DB
+        valueFrom:
+          secretKeyRef:
+            name: immich-config
+            key: DB_DATABASE_NAME
+      - name: POSTGRES_INITDB_ARGS
+        value: '--data-checksums'
+
+      volumeMounts:
+        - name: pg-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pg-data
+          persistentVolumeClaim:
+            claimName: immich-pg-data
+      pvc:
+        - immich-pg-data
