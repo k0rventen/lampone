@@ -3,11 +3,11 @@ kind: CronJob
 metadata:
   name: restic-backup
 spec:
-  schedule: "0 4 * * *"
+  schedule: "38 3 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      backoffLimit: 1
+      backoffLimit: 0
       template:
         spec:
           restartPolicy: Never
