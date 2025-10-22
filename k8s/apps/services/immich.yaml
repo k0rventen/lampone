@@ -34,7 +34,7 @@ spec:
                   - immich-machine-learning
               topologyKey: "kubernetes.io/hostname"
       ingress:
-        domain: immich.staging.cocointhe.cloud
+        domain: immich.cocointhe.cloud
       volumeMounts:
         - name: server-data
           mountPath: /data
