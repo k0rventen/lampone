@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: uptime-kuma
-        image: louislam/uptime-kuma:2.0.2-slim
+        image: louislam/uptime-kuma:2.0.2-slim@sha256:60f3b7d1b55c3d5a9d941f7f91c3e7ac624dea53beb34538fe5546e3664a1e82
         service: 3001
         volumeMounts:
           - name: uptime-kuma-data
