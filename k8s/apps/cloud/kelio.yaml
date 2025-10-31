@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: keliotomator
-        image: gitea.cocointhe.cloud/coco/kelio-automator
+        image: gitea.cocointhe.cloud/coco/kelio-automator@sha256:0d6f59b5470e4291e28c954963343a5722819eca96cdb2352e186b5012ccd57c
         containerSpec:
           envFrom:
             - secretRef:
