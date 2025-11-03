@@ -48,6 +48,11 @@ spec:
               label: git_version
               title: k8s version
 
+            - name: flux_version
+              query: gotk_token_cache_evictions_total{app="source-controller"}
+              label: app_kubernetes_io_version
+              title: flux version
+
             - name: cluster_temperature
               title: Temperature
               query: round(avg(node_hwmon_temp_celsius{}))
@@ -62,23 +67,13 @@ spec:
               query: round(5 + 3 * (3 + (4* avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])))),.1)
               suffix: "W"
 
-            - name: availability_sli
-              title: Avail. SLI (7d)
-              query: round(avg_over_time((sum(probe_success{job="blackbox-exporter-http",instance="https://news.cocointhe.cloud"}) or vector(0))[7d:15s]) * 100,.1)
-              suffix: "%"
-              colors:
-                - { color: "red", min: 0, max: 94 }
-                - { color: "orange", min: 95, max: 98 }
-                - { color: "green", min: 99, max: 100 }
-
-
             - name: cluster_cpu_usage
               title: CPU Usage
               query: round(avg(100 * avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)))
               suffix: "%"
               colors:
-                - { color: "green", min: 0, max: 35 }
-                - { color: "orange", min: 36, max: 75 }
+                - { color: "green", min: 0, max: 45 }
+                - { color: "orange", min: 56, max: 75 }
                 - { color: "red", min: 76, max: 9999 }
 
             - name: cluster_memory_usage
@@ -86,9 +81,10 @@ spec:
               query: round(sum(node_memory_MemTotal_bytes{} - node_memory_MemAvailable_bytes{}) / sum(node_memory_MemTotal_bytes{}) * 100)
               suffix: "%"
               colors:
-                - { color: green, min: 0, max: 35 }
-                - { color: orange, min: 36, max: 75 }
+                - { color: green, min: 0, max: 55 }
+                - { color: orange, min: 56, max: 75 }
                 - { color: red, min: 76, max: 9999 }
+
             - name: nfs_disk_usage
               title: NFS Usage
               query: round((1 - node_filesystem_free_bytes{mountpoint="/nfs"} / node_filesystem_size_bytes{mountpoint="/nfs"})  * 100)
@@ -107,6 +103,7 @@ spec:
                 - { color: "green", min: 0, max: 180 }
                 - { color: "orange", min: 181, max: 360 }
                 - { color: "red", min: 361, max: 9999 }
+
             - name: pods_count
               title: Pods
               query: sum(kubelet_active_pods)
