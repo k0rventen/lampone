@@ -16,8 +16,8 @@ sops:
         cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
         okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-10T16:16:15Z"
-  mac: ENC[AES256_GCM,data:c30esJ7+rhWRD302QExTK7ALcKJ7ekZRVbGvD77VA6hMqBAh35G/8JlvCnWBw/0o3gQAXlD0QKwGM+i2qVhGQaQ8c3+zRF7oKc2f/JzhcE4WX0sUkr5+woA1uOvq3PZ2hrmoZvSCbKfZ+AoU1tdM1w1FCKwq3kUDpeYyKWGc2JM=,iv:jJySSyFCiNzIqWF/IijSNPyq1xQJK+h5mIgPZyBw6RQ=,tag:qcLqvE18dUn59uQ83bYhaQ==,type:str]
+  lastmodified: "2025-11-08T09:42:15Z"
+  mac: ENC[AES256_GCM,data:O8L+FtgXMOWKYXoQMRTlh/S7lHb6twRzDmKC1f1WN3wmxXKr/Me4wf81xUiBVk3CPJ7saT5kM72criFI6NYss0Ngg9HHZ/gH5qlZ3XKDonrrrutJWEhgiKC6M7vb4+Vf6LRjbZUk1LcIFP3F8RnZL+CA9lTpt1PR5dz7oKdcC2M=,iv:3/9gR2s0GZGtCe4rgycZIEQE40y2k+j1C9D4OYMCOMA=,tag:A2Id9wnY+o3SAJJPheR0vg==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
   version: 3.11.0
 ---
@@ -47,7 +47,7 @@ spec:
       - selector:
           source: kyverno
     ui:
-      enabled: true
+      enabled: false
     target:
       discord:
         webhook: ENC[AES256_GCM,data:UQxLsxFqkQ10zSXsDwCf2drOyulYi+e5rZIZesTzGx0dKmswMhV2eexiM47fczf4UmiIuPMiTCe2d/F9BQGa1yk8yh/hwdKYl5RtNt1bZubvG3WwiU6rAQx1q3kguW6s9KcqRC55Bsxwzj9369OQe0tO6ZAqUw8CLQ==,iv:tkxCjlTegCsDZlhnxXLQWmHwgOBL8ynVzdDBHCwJl/k=,tag:w7nfHTzFsmPgncXQelWa+g==,type:str]
@@ -64,7 +64,7 @@ sops:
         cGdnQzhjQ3VjbmFlMEdzUXJUU1NNa00KE1jh2atKz6Eh6KXPp5PFm93nPN71Haiu
         okYjqj5WHVCfbyCNZg//P2HjQWcZDL7K/4qg1b6vOZIXL8uXbikutA==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-10T16:16:15Z"
-  mac: ENC[AES256_GCM,data:c30esJ7+rhWRD302QExTK7ALcKJ7ekZRVbGvD77VA6hMqBAh35G/8JlvCnWBw/0o3gQAXlD0QKwGM+i2qVhGQaQ8c3+zRF7oKc2f/JzhcE4WX0sUkr5+woA1uOvq3PZ2hrmoZvSCbKfZ+AoU1tdM1w1FCKwq3kUDpeYyKWGc2JM=,iv:jJySSyFCiNzIqWF/IijSNPyq1xQJK+h5mIgPZyBw6RQ=,tag:qcLqvE18dUn59uQ83bYhaQ==,type:str]
+  lastmodified: "2025-11-08T09:42:15Z"
+  mac: ENC[AES256_GCM,data:O8L+FtgXMOWKYXoQMRTlh/S7lHb6twRzDmKC1f1WN3wmxXKr/Me4wf81xUiBVk3CPJ7saT5kM72criFI6NYss0Ngg9HHZ/gH5qlZ3XKDonrrrutJWEhgiKC6M7vb4+Vf6LRjbZUk1LcIFP3F8RnZL+CA9lTpt1PR5dz7oKdcC2M=,iv:3/9gR2s0GZGtCe4rgycZIEQE40y2k+j1C9D4OYMCOMA=,tag:A2Id9wnY+o3SAJJPheR0vg==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
   version: 3.11.0
