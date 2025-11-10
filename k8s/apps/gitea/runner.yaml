@@ -14,7 +14,7 @@ spec:
       hostname: gitea-runner
       containers:
         - name: gitea-act-runner
-          image: gitea/act_runner:0.2.11-dind-rootless@sha256:6120b1165f3a9f567390c616a174b67165db3c8a87e5ec4c9d71c1de21c9cdf9
+          image: gitea/act_runner:0.2.13-dind-rootless@sha256:8d06b5722e58a2d41f6fb7fadcacbc8f9d92ef61586a8470b460b0c7abc5b0c3
           env:
             - name: GITEA_INSTANCE_URL
               value: "http://gitea:3000"
