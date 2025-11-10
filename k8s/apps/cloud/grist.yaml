@@ -16,24 +16,11 @@ spec:
   values:
     apps:
       - name: grist
-        image: gristlabs/grist:1.7.5@sha256:bde50f4639b699cdeeb1ff58c4b7a79caa0e45098a9c8ed422fbb851be80f195
-        env:
-          - name: GRIST_OIDC_SP_HOST
-            value: ENC[AES256_GCM,data:KregCPWHp8gpyEVFXKigxr970EGrfTkuTLVMs9Y=,iv:KSzMyVcxDBdfL+LaGApHRsZDBgAur4gbiYe6jXem5f4=,tag:Kr7Ti9umeB+tHiD2vwo60g==,type:str]
-          - name: GRIST_OIDC_IDP_ISSUER
-            value: ENC[AES256_GCM,data:WeBO6xYfPNY+SkVQqHOI1h/TIt8WP+SvWlWY4klUH5/oIXu+PnG7weqWeSudJsK4U2JQhMHiuaW10vFXOI0D,iv:FQutPAH28zbgvdVXnWdmOgbelqC7A1IveuqLdpzf+zc=,tag:jsPXV14MEdBAN24Al0qJ8g==,type:str]
-          - name: GRIST_OIDC_IDP_SCOPES
-            value: ENC[AES256_GCM,data:g6FNL7P+CnKbXVf1mTpssoHN5q8=,iv:EBJrmQmo8YBVetgg64c3mZbiOZUk5UoIlxcN3haE4Kg=,tag:K+HxCyyK2FQ5aXBeel9eDA==,type:str]
-          - name: GRIST_OIDC_IDP_CLIENT_ID
-            value: ENC[AES256_GCM,data:X4+50462ajIlaQDwU5sv2e30/7J/t9hc2V8T5JjSu2KqCZFw,iv:zdwnRriovX8gsCpc0pptuLHehdt1Ih3wqGDVeKbVIXA=,tag:NGYIFH7T9W1aZpGsL+fTvw==,type:str]
-          - name: GRIST_OIDC_IDP_CLIENT_SECRET
-            value: ENC[AES256_GCM,data:TRH5c8Px6SHOMHxH0BRPW+I0/tydwwY5+X+VcG4sRa0=,iv:z2zTLjgo1yNJJ3czmPg/xzYCgO2YO2JS+oacWrKy4go=,tag:76I8WKh243JM5HVJQbZwIA==,type:str]
-          - name: GRIST_SESSION_SECRET
-            value: ENC[AES256_GCM,data:gCQM3nUWFMEUnXo2fTzcmu48R2aYCF6VvxcwwIGMrYWCSKpYnyv707MBymF4vJu6JINaLnTDCadeGm24Gdf/AQ==,iv:jacTpo9r3bIbYvmYG5kqIWK+Gle/Oh6ets57dvM5zMw=,tag:ZIfYo0/pR5CFQn7gbztf+w==,type:str]
-          - name: GRIST_FORCE_LOGIN
-            value: ENC[AES256_GCM,data:kkjncw==,iv:iUt3Okqqo49rUfeM3AvVQFEpr+I6xTUn/Way+AithQE=,tag:onEbUeprjUGJFaDgb8GEcw==,type:str]
-          - name: GRIST_OIDC_SP_IGNORE_EMAIL_VERIFIED
-            value: ENC[AES256_GCM,data:kkjncw==,iv:iUt3Okqqo49rUfeM3AvVQFEpr+I6xTUn/Way+AithQE=,tag:onEbUeprjUGJFaDgb8GEcw==,type:str]
+        image: gristlabs/grist:1.7.6@sha256:9a232afd98cdf616a5eb2688abc2ed01b1c036cf2a2bcea2d295c5642943b706
+        containerSpec:
+          envFrom:
+            - secretRef:
+                name: grist-config
         volumeMounts:
           - name: grist-data
             mountPath: /persist
@@ -47,18 +34,3 @@ spec:
         ingress:
           domain: grist.cocointhe.cloud
           public: true
-sops:
-  age:
-    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBNldCSmFIcFVxOUg4YWRm
-        eVRZZGhaRHBqUmR3QUZUK2NjUHN3NHNKS0NvCnBQSSsyenB4ZDYxT1B2TmNWSk9E
-        elNZSlJzck43SmhjNjVNSTI0c1ArdTgKLS0tIExnKzBMY2x2WDhUaXoydzZuYXZO
-        SGdQUzJoOXlaeW1RVlRmSk1FbWZucUUKFrYzXDsOdQ4H777Gy9bD/Qs1xymhxGMl
-        0WvR7YDsJw3bNxIjZcNsn5Ni3Rv4lmGu846hrW8n0dakuC0LOXq2GQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-04T18:20:35Z"
-  mac: ENC[AES256_GCM,data:m4YlFDIfS0JtMN54gESIcfeTwJAWN8DYXWdfs7l53UnHazjmSeTAsRWeAMoYlbU8htTtkhV23dkMO2XLFQkdvOUDo0iERSXjSSt5GONwc9i1OXGYGBrN8ZYl1enfvFj5EdH9sQDYlpwghW08hcLGwXZg6H4FO4rErnUPoQBFUGM=,iv:/D7016Kav2LFBhAnfPgjOwau+OwV7Kk4fdvhbQK14IM=,tag:HOlvAVETgj/agbVABmeWmg==,type:str]
-  encrypted_regex: ^value$
-  version: 3.11.0
