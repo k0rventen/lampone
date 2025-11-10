@@ -19,7 +19,8 @@ spec:
   - Egress
   egress:
   - to:
-    - podSelector:
+    - namespaceSelector: {}
+      podSelector:
         matchLabels:
           k8s-app: kube-dns
     ports:
@@ -76,12 +77,17 @@ spec:
   - Egress
   egress:
   - to:
-    - podSelector:
+    - namespaceSelector: {}
+      podSelector:
         matchLabels:
           app.kubernetes.io/name: prometheus
   - to:
     - ipBlock:
         cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
     ports:
     - protocol: TCP
       port: 443
@@ -99,7 +105,8 @@ spec:
   - Egress
   egress:
   - to:
-    - podSelector:
+    - namespaceSelector: {}
+      podSelector:
         matchLabels:
           app.kubernetes.io/name: prometheus
 ---
