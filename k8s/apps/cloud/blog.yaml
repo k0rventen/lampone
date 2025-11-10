@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: blog
-        image: gitea.cocointhe.cloud/coco/k0rventen.github.io@sha256:3fa1356afb28e4bb9c4f1368532cd232afe14f46027cd9ebfbd5bb9568827ccf
+        image: gitea.cocointhe.cloud/coco/blog:2025.08.19.f67afb0
         service: 8080
         anubis: true
         ingress:
