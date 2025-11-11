@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ovh-webhook-config
+stringData:
+  values.yaml: ENC[AES256_GCM,data:bMIs/s2VgEFZ+HTNPgfv7NTSNbMw5/HZESWo3JTWt9SYwfAb1jXdbbA0xfkcSFzEFGGNbYa4MSpv/xGmf/yBbQ0GKtwdeAlOXNlcaomz66SqXz+M57XrfZpCYpsYyAuwDKVKVLkBKOmEa+5NmaE7sy/J+vwhVzbJkOgVs9iqlTOkN7WOZjYnDR5ufbnWofwi5ybRW7Hw40QQ1feu+rDDlQ5pg1moWvcEZ1Am0TRRcrlb4VUnWRa/NawIuSEkfz5NkIy+iPKNiv+qN0WSrPf9FA0xw2VZ2H25UOLF3JvmJL9BgXUtjxzj7ccDH8kHQ15DG/T/oPpT4juFyhhH6ojsVfov3jnQpbaD2TtFKwNeYQugCpXaSqhfLxqRtAGqyUpAEhsuCRwn5ogbP0NxtTkqXvpnWftuAXZupLeALOCZq8eWSMhnQrmE/hoSiM7usjnp5ancsDmolR2lxBGPckDLF6XjAGw2tRotSx2mVV5oJxFCoBW1ZjAjkkI6DhVdinvDVB7ytnJsIVLuT4DGXJw/KDOK0CCbAn5U/QF3p8SvRWf0udEnQRU5FdR6y5WOj5VUnijyLGULfZgeTf4+KikXI1mvCJTBZ6b0UgfuxLUVW7QpKnYo0NscDeJkgVI6513MzGkzB312U4NmwemGwIZWD6gE1v4G0e4dbLLGeWUNVgqdOUBi/8VWsrlfOsUgrQGT8OMG5ErRdIXlArg=,iv:+l90ir9bOJs+UMFjerNI1n8rtxm5gmbye5WQ/PB604A=,tag:DYRkRtr5wah6PNgnTPXTGA==,type:str]
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBTSytOTy9YUlpaeVdQYiti
+        Y3dVejk0aG80NEpkcVRaeDFpMGtSYTFacGpRCksxdFN5WVVzQWphZFN5ZWdtKy90
+        dFp0Vk5uUko4SGhvV3BiM2tMeGw4MG8KLS0tIHFKVWdqbkpoN0lSdngxdDdWUDdQ
+        TTFUNlZLNVcvMCtrS0JiWHhGM2NGUHcKExDNnVRwX5NA3KE7LdDl6tojJqsVp8vC
+        qqCyND5yXvWfRGendT3hLjzhTRaj/x/5UuC+/vyM8XIbed0lxfghcg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-11-11T10:33:00Z"
+  mac: ENC[AES256_GCM,data:A23Cs/0VXhQZsRLDD+MDtAkMDeeZlgq5ARI30/F1QPtBgzY7VDs32UDiLYfDQLWCIIhRaxsO2osRFmhJaP95L3zEIoLq0C4iSVFTkCCmwSBgY5FiMcuXu+qvX6xPH2LMG55/+p2vGNMLjB/lED984QAiau2SkPD0S16OYzQkT7Q=,iv:yKS1lkfXRb2bDn34dVA+tGZR22x9ORZjjnCl6JDYvE8=,tag:6/T0kUk5/7gTbn+yLE9EXA==,type:str]
+  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
+  version: 3.11.0

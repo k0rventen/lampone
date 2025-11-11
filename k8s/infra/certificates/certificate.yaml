@@ -8,7 +8,7 @@ spec:
     - cocointhe.cloud
     - "*.cocointhe.cloud"
   issuerRef:
-    name: cloudflare
+    name: ovh-lets-encrypt-prod
     kind: Issuer
 ---
 apiVersion: cert-manager.io/v1
@@ -20,5 +20,5 @@ spec:
   dnsNames:
     - "*.staging.cocointhe.cloud"
   issuerRef:
-    name: cloudflare
+    name: ovh-lets-encrypt-prod
     kind: Issuer
