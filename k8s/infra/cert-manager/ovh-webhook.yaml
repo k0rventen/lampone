@@ -22,6 +22,8 @@ spec:
         name: cert-manager-webhook-ovh
       interval: 1h
   releaseName: cert-manager-webhook-ovh
+  values:
+    configVersion: 0.0.2
   valuesFrom:
     - kind: Secret
       name: ovh-webhook-config
