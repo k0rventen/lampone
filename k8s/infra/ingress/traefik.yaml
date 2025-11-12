@@ -47,11 +47,6 @@ spec:
     logs:
       general:
         level: "ERROR"  
-    experimental:
-      plugins:
-        traefikoidc:
-          moduleName: github.com/lukaszraczylo/traefikoidc
-          version: v0.7.5
     ingressClass:
       enabled: true
       isDefaultClass: true
