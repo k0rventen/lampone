@@ -8,7 +8,10 @@
   "flux": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "helm-values": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "kubernetes": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
-  "minimumReleaseAge": "2 days",
+
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional", // some docker registry do not provide release timestamps
+
   "packageRules": [
     // allow minor updates if not 0.x
     {
@@ -49,7 +52,7 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/plan\\.yaml$/"],
+      "managerFilePatterns": ["/control-plane\\.yaml$/","/worker\\.yaml$/"],
       "matchStrings": ["version:\\s*(?<currentValue>.*?)\\n"],
       "depNameTemplate": "k3s",
       "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-k3s(?<build>.+)$",
