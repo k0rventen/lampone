@@ -82,6 +82,12 @@ spec:
         matchLabels:
           app.kubernetes.io/name: prometheus
   - to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          app: loki
+
+  - to:
     - ipBlock:
         cidr: 0.0.0.0/0
         except:
