@@ -29,21 +29,3 @@ spec:
           - name: rathole-config
             secret:
               secretName: rathole-config
-    secrets:
-      rathole-config:
-        client.toml: ENC[AES256_GCM,data:RVTXr736gtEREz+owf5Tr9SI+xwU0ozFL/idiw4jAifz69Ncv8cHtChNqDt6SsMQE9HZwiTlaNJv0yVgDrIZdObCdfHglbDMaFrxS15PZBfntQtxE55kx70GsjwKXBTJFsRT+0F2itbtM768rx1mJzTu9d75XMWaGCuVj4ZxRzW0SuGIuWKcsUI2cu3VTZBYWODJTps4nwtytojsACKENJ/Fye2fhqzlOCHKBL+H+KvVuShmNkMdz3odfKA+TdVZC1W6UNfvqRJu54nl61Bi3e2A6zqlzYsHZrCf9pDCj59s7KU18edVTHD+oMQssKoPxasdztujGrTb9fubxv3yddqvwHQ=,iv:MGZ7nY5LLISiiHhcwkbiEqVlswpU6ArrHzwXjJRZXVc=,tag:D3byu00K0k0p1m4v8g2alg==,type:str]
-sops:
-  age:
-    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJbTMxNVdnRU9IaWVPRXNV
-        T1VRR0RoejQzYkUycEVMSWxBN29wVmsxelNBClY5OWFyd2NjL2g1QTlUT1dlY3Za
-        ZlNQeEtsQjFrVVhQclBkQzZ3cEVIajQKLS0tIGJYdm5jZG1DVUs1M051eU1EZFpH
-        R01FZjFhZk1haWZjdzlieUZRWXptSmsK/oizj6UdGew7vKomyMl+47Mm0WllCzOE
-        z+9/Wf01E6N7GB55jYxnC7j+OMtfNWLe/TKH9GRI5B5oE4tDnK1cmA==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-10-06T18:57:28Z"
-  mac: ENC[AES256_GCM,data:8JkowVoFv4fS5ec98DNUfd9AHKm5FhmXJZl0iHvI6Bzst01pPP5CCw0eSGYUSxOzJKhnhoiT1POF0+wGBfzexDecGcO1R+RrggESRJRzR4BL+HqDgIDRmkSkjnNcMwVVM52qgl+6YVeFCyLTL9s3AGHBsFF0PF08V7EThoP0YoA=,iv:+fC5V/ZA8WQg1xrs/Xl+MmGfgEBBZkKHPOs8qz9fKLg=,tag:TS3rt5HVY/U16jY6aAEvkg==,type:str]
-  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
-  version: 3.11.0
