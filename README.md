@@ -26,6 +26,9 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 </div>
 
+<details>
+<summary id="tableOfContents">Table of Contents</summary>
+
 - [Hardware](#hardware)
   - [Bill of materials](#bill-of-materials)
   - [3D printed parts](#3d-printed-parts)
@@ -35,7 +38,7 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
   - [Creating the cluster](#creating-the-cluster)
   - [Deploying the stack](#deploying-the-stack)
 - [Other bits and pieces](#other-bits-and-pieces)
-  - [Cloudflare tunnel alternative w/ a VPS](#cloudflare-tunnel-alternative-w-a-vps)
+  - [Public facing services through a VPS](#public-facing-services-through-a-vps)
   - [SOPS setup](#sops-setup)
   - [OIDC-based ssh access w/ opkssh](#oidc-based-ssh-access-w-opkssh)
   - [Staging env](#staging-env)
@@ -44,6 +47,7 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
     - [garage config](#garage-config)
     - [velero restore process](#velero-restore-process)
 
+</details>
 
 
 ## Hardware
@@ -183,26 +187,71 @@ ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 
 ## Other bits and pieces
 
-### Cloudflare tunnel alternative w/ a VPS
+### Public facing services through a VPS
 
 I previously used Cloudflare Tunnels to expose some apps to WAN without opening ports on my ISP router (and also being behind CGNAT).
-Due to concerns regarding their ability to decrypt traffic at the edge (as they provision their own cert for the domain), I switched to [rathole](https://github.com/rathole-org/rathole) + a VPS. I'm currently renting one at [ByteHosting](https://bytehosting.cloud/index) in Germany. The 'server' side on the VPS forwards all the traffic from port 80/443 to the client running in my cluster, which then forwards everything to my dedicated traefik instance, which handles SSL and routing.
+Due to concerns regarding their ability to decrypt traffic at the edge (as they provision their own cert for the domain), I switched to [rathole](https://github.com/rathole-org/rathole) + a VPS. I'm currently renting one at [ByteHosting](https://bytehosting.cloud/index) in Germany. The 'server' side on the VPS forwards all the traffic from port 80/443 to the client running in my cluster, which then forwards everything to my dedicated traefik instance, which handles SSL and routing. A traefik is in front of rathole to properly pass the client's IP in the headers down the chain.
 
 Here is the compose for the VPS:
 
 ```yaml
 services:
+  traefik:
+    image: docker.io/traefik:v3.6.2
+    restart: always
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+      - ./traefik.yaml:/etc/traefik/traefik.yml
   rathole:
     image: rapiz1/rathole:v0.5.0
     restart: always
     ports:
-      - 80:80
-      - 443:443
       - 2333:2333
     volumes:
       - ./server.toml:/app/config.toml
     command: --server /app/config.toml
 ```
+
+the `traefik.yaml` looks like this:
+
+```yaml
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: "websecure"
+          scheme: "https"
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    directory: /etc/traefik/
+
+tcp:
+  routers:
+    rathole:
+      entryPoints:
+        - websecure
+      rule: "HostSNI(`*`)"
+      tls:
+        passthrough: true
+      service: rathole
+
+  services:
+    rathole:
+      loadBalancer:
+        proxyProtocol:
+          version: 2
+        servers:
+          - address: "rathole:443"
+```
+
+
 
 And an example server config file:
 
@@ -213,9 +262,6 @@ default_token = "verylongtoken"
 
 [server.services.traefik_https]
 bind_addr = "0.0.0.0:443"
-
-[server.services.traefik_http]
-bind_addr = "0.0.0.0:80"
 ```
 
 
