@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prom-config
+stringData:
+  values.yaml: ENC[AES256_GCM,data:rKTjh8yVx0Jl4boV8yn+7bww5/LsQM2ih4ItNXQTrYKNtyhyPxw/VLAytiVGmomVBuK55aYyHCX58kC8aFzFqOD6NIKHypfW9+4e5xct4dO2TmYmlow+4B1O03oWk+Io+jLvRKTSY2+JrxV5vHrkSpy8PXHRcPFZDetaZ39wbnJ73Hi24qb1gsyxZnSMQ3ngqClZEsgQeJICJsCyojLRWQNJT0+ud9Yz4OegTpS3Dv4nNOJ3ATLT8THVPO7ZVuDTNJirr7jov0BNOqFTP9qocyA9RB+bYx3rb2uARYG7RqKVUnd6k2sKF0poYwMneI+HTg4t7q46TmKxlp3JKOu87Fe9Kq54JVmDw5rLJl5MC10pxJjgTf0EbgWeExGupjB5R9S6e4T35yacBXbg66Auj/zAYhWnO15k5Xct6Fg33AlIaeaWoYNSFYEVpbAqSkVHtsGj05/p7AvbB+1gypIDJmO79qd0g7O7txpZ919y6KIHtLO7GzACXLYs0IosIjhLT2mcgghhSMtle43EXUyqG3kIOTzd6D+GRMBAx9NfX2fqpo0c6tvEAI4+h37iX28HIdUnzzNgmZTKRd4UE8SXneLJtBXxM82VD3Bx/h46oyhMldl4StLq9GmWAVa5J92hu5OPnlANwjE90whv8RAevEIbnGpoXonkdIbRCWQ8qQ==,iv:9VHYrMa9tVZX70Ozcy0qLElJLWNMNvksIoy+OzLe2m0=,tag:Gam4w1J7fS1Xtb2WgX3qKA==,type:str]
+sops:
+  age:
+    - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvNnBPNTZleTZGLzdOd29F
+        VWdUeFBPRFdpYzFWSjBGU3pMV3VpQ2FKUG5JCklrbmxEYnFSdVNBZ3hFS2dGNUxC
+        T1AzemxGSU5jMTl1bWx1bkpvZ0VRZEUKLS0tIER3UjlqTnlWNWc1K012aldUVEVI
+        UE1KT1BEc0c5L2tNQVBlRVBsVlBDTjQKh33j1yOzEmpI24EKDHgJOoFIyKXgLC6u
+        eIBxuRjfNLexjQ90M/QoRSwIKr1lQ2ZB01/oiYdgta5WR1IB4FkU+A==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-12-04T19:37:30Z"
+  mac: ENC[AES256_GCM,data:QX7bAXT6pUqiinlC5v8pksGms4HfwiRIH9y9H8+2jZ7DpZjHoYweOPmMUPtwl7TXy56YsCxY0ZoVz8LUsG4om0xKOw4YRPAY9fBqZywqZrURaX1cCiXK0fi21+1B/bWIcv0m1D5t+S6GJBID2mS3uglucxtQHnAzm5TC6ruJS+o=,iv:PHFsWFzUowu0eMFYxncJEGnWsAB4T4+JWK30WPV5Omo=,tag:abloLvIvyO/jBWKhEOZSKQ==,type:str]
+  encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
+  version: 3.11.0

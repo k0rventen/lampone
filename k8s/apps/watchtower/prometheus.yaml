@@ -29,12 +29,6 @@ spec:
       enabled: true
     prometheus-node-exporter:
       enabled: true
-    extraScrapeConfigs: |
-      - job_name: beem-exporter
-        static_configs:
-          - targets:
-              - beem-exporter:8000
-      - job_name: traefik-tunnel
-        static_configs:
-          - targets:
-              - traefik-tunnel-metrics.ingress.svc.cluster.local:9100
+  valuesFrom:
+    - kind: Secret
+      name: prom-config
