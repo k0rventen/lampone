@@ -97,9 +97,7 @@ spec:
       enabled: true
       isDefaultClass: false
       name: "traefik-tunnel"
-    logs:
-      general:
-        level: "ERROR"  
+ 
     tlsStore:
       default:
         certificates:
