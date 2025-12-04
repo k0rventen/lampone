@@ -116,16 +116,26 @@ spec:
             to: websecure
             scheme: https
             permanent: true
-    # metrics disabled for now
-    # metrics:
-    #   prometheus:
-    #     service:
-    #       enabled: true
-    #     entryPoint: metrics
-    #     addServicesLabels: true
-    #     addRoutersLabels: true
-    #     headerLabels:
-    #       useragent: "User-Agent"
-    #       clientip: "Cf-Connecting-Ip"
-    #       clientcountry: "Cf-Ipcountry"
-    #       domain: "X-Forwarded-Host"
+      websecure:
+        forwardedHeaders:
+          trustedIPs: ["10.42.1.0/24"]
+        proxyProtocol:
+          trustedIPs: ["10.42.1.0/24"]
+    metrics:
+      prometheus:
+        service:
+          enabled: true
+        entryPoint: metrics
+        addServicesLabels: true
+        addRoutersLabels: true
+    logs:
+      format: "json"
+      access:
+        enabled: true
+        format: "json"
+        fields:
+          headers:
+            defaultmode: drop
+            names:
+              User-Agent: keep
+              X-Forwarded-For: keep
