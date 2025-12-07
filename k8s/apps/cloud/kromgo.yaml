@@ -54,7 +54,7 @@ spec:
               title: flux version
 
             - name: cluster_temperature
-              title: Temperature
+              title: Rack Temperature
               query: round(avg(node_hwmon_temp_celsius{}))
               suffix: "°C"
               colors:
@@ -86,7 +86,7 @@ spec:
                 - { color: red, min: 76, max: 9999 }
 
             - name: nfs_disk_usage
-              title: NFS Usage
+              title: DISK Usage
               query: round((1 - node_filesystem_free_bytes{mountpoint="/nfs"} / node_filesystem_size_bytes{mountpoint="/nfs"})  * 100)
               suffix: "%"
               colors:
@@ -94,6 +94,16 @@ spec:
                 - { color: orange, min: 51, max: 75 }
                 - { color: red, min: 76, max: 9999 }
 
+
+
+            - name: availability
+              title: Availability (7d)
+              query: round(avg(avg_over_time(monitor_status[7d]) * 100),.01)
+              suffix: "%"
+              colors:
+                - { color: "red", min: 0, max: 90 }
+                - { color: "orange", min: 91, max: 98 }
+                - { color: "green", min: 99, max: 100 }
 
             - name: cluster_uptime_days
               title: Uptime
