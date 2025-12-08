@@ -27,8 +27,8 @@ spec:
                 - cocointhe.cloud
                 - 192.168.1.10
             initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 3
+            periodSeconds: 2
+            failureThreshold: 4
       volumes:
         - name: adguard-data
           persistentVolumeClaim:
