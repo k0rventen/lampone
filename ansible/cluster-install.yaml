@@ -19,7 +19,8 @@
         --disable-helm-controller \
         --disable=traefik \
         --disable=local-storage \
-        --disable=metrics-server
+        --disable=metrics-server \
+        --embedded-registry
       args:
         creates: /usr/local/bin/k3s
       when: role == 'control_plane'
