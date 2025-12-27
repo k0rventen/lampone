@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: nota
-        image: gitea.cocointhe.cloud/coco/nota:0.2.0
+        image: gitea.cocointhe.cloud/coco/nota:0.2.0@sha256:cf2a1f80465c73c25914d43b1dab224dee6431cdbe712397f7a274633baa7926
         service: 8000
         anubis: true
         ingress:
