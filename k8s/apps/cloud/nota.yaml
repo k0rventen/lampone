@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: nota
-        image: gitea.cocointhe.cloud/coco/nota:2025.12.20.dd8f2ae@sha256:4c1a28bd4d07423d874b3366207a9a553b50f45fc97d76a25aba9a8d4682e311
+        image: gitea.cocointhe.cloud/coco/nota:0.2.0
         service: 8000
         anubis: true
         ingress:
