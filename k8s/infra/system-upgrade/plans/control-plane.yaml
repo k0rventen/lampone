@@ -4,7 +4,7 @@ metadata:
   name: server-plan
   namespace: system-upgrade
 spec:
-  version: v1.33.6-k3s1
+  version: v1.34.3-k3s1
 
   concurrency: 1
   cordon: true
