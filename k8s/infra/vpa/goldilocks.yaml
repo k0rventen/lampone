@@ -37,6 +37,8 @@ spec:
           feature-gates: InPlaceOrRecreate=true
       admissionController:
         enabled: true
+        extraArgs:
+          feature-gates: InPlaceOrRecreate=true
     controller:
       enabled: true
       flags:
