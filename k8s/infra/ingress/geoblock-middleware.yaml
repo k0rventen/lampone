@@ -17,3 +17,4 @@ spec:
       cacheSize: 100
       countries:
         - FR
+        - US
