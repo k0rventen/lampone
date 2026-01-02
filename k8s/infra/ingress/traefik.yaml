@@ -32,13 +32,13 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    checkNewVersion: false
+    global:
+      checkNewVersion: false
     sendAnonymousUsage: false
     tlsStore:
       default:
         certificates:
           - secretName: wildcard-cocointhe-cloud-tls
-          - secretName: wildcard-staging-cocointhe-cloud-tls
     service:
       enabled: true
       type: LoadBalancer
@@ -88,8 +88,14 @@ spec:
   releaseName: traefik-tunnel
   targetNamespace: ingress
   values:
-    checkNewVersion: false
+    global:
+      checkNewVersion: false
     sendAnonymousUsage: false
+    experimental:
+      plugins:
+        geoblock:
+          moduleName: "github.com/PascalMinder/geoblock"
+          version: "v0.3.5"
     service:
       enabled: true
       type: ClusterIP
@@ -115,6 +121,8 @@ spec:
             scheme: https
             permanent: true
       websecure:
+        middlewares:
+        - ingress-geoblock@kubernetescrd
         forwardedHeaders:
           trustedIPs: ["10.42.1.0/24"]
         proxyProtocol:
@@ -137,3 +145,4 @@ spec:
             names:
               User-Agent: keep
               X-Forwarded-For: keep
+              X-Ipcountry: keep

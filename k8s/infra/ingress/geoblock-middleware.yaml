@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: geoblock
+  namespace: ingress
+spec:
+  plugin:
+    geoblock:
+      silentStartUp: false
+      allowLocalRequests: false
+      logLocalRequests: false
+      logAllowedRequests: false
+      logApiRequests: true
+      api: "https://get.geojs.io/v1/ip/country/{ip}"
+      apiTimeoutMs: 3000 # optional
+      addCountryHeader: true
+      cacheSize: 100
+      countries:
+        - FR
