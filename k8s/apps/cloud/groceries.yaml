@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: groceries
-        image: gitea.cocointhe.cloud/coco/groceries:0.1.1
+        image: gitea.cocointhe.cloud/coco/groceries:0.1.1@sha256:19e1abc4c947a769da6e3f6a9cea5da86bac9db1a1351db2e5b266ee8f3962e6
         containerSpec:
           envFrom:
             - secretRef:
