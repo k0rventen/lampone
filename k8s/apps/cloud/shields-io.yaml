@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: shields
-        image: shieldsio/shields:server-2025-12-06
+        image: shieldsio/shields:server-2025-12-06@sha256:a2f2f122d8db8877a8da21703b8a30e306185c674e7711207f7412cfce478e22
         service: 8080
         ingress:
           public: true
