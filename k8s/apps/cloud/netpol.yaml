@@ -26,3 +26,23 @@ spec:
     ports:
     - port: 53
       protocol: UDP
+---
+# this is kinda weird, but allowing the VIP for self access (mainly for OIDC callbacks)
+# do not work, but setting the pod subnet as cidr works, while using 443 (although it's not the final port)
+# this does not allow local svc comm (xx.ns.svc.cluster.local) as the subnet is different
+# so the deny-all still works
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock: # pod subnet
+        cidr: 10.42.0.0/16
+    ports:
+    - protocol: TCP
+      port: 443
