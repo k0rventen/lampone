@@ -14,7 +14,8 @@ spec:
       api: "https://get.geojs.io/v1/ip/country/{ip}"
       apiTimeoutMs: 3000 # optional
       addCountryHeader: true
-      cacheSize: 100
+      allowUnknownCountries: false
+      httpStatusCodeDeniedRequest: 418
+      cacheSize: 25
       countries:
         - FR
-        - US

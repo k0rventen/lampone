@@ -10,20 +10,20 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 <br>
 
-![avail](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Favailability&style=for-the-badge)
+![avail](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Favailability&style=for-the-badge)
 <br>
-![cluster temp](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_temperature&style=for-the-badge)
-![cluster power](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_power_draw&style=for-the-badge&color=ffda1e)
+![cluster temp](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fcluster_temperature&style=for-the-badge)
+![cluster power](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fcluster_power_draw&style=for-the-badge&color=ffda1e)
 <br>
-![nodes](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fnodes_count&style=for-the-badge&color=purple)
-![pods](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fpods_count&style=for-the-badge&color=purple)
-![cluster version](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fkubernetes_version&style=for-the-badge&color=blue)
-![flux version](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fflux_version&style=for-the-badge&color=blue)
+![nodes](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fnodes_count&style=for-the-badge&color=purple)
+![pods](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fpods_count&style=for-the-badge&color=purple)
+![cluster version](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fkubernetes_version&style=for-the-badge&color=blue)
+![flux version](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fflux_version&style=for-the-badge&color=blue)
 <br>
-![cluster uptime](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_uptime_days&style=for-the-badge&color=blue)
-![cluster cpu](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_cpu_usage&style=for-the-badge)
-![cluster ram](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fcluster_memory_usage&style=for-the-badge)
-![nfs disk](https://img.shields.io/endpoint?url=https%3A%2F%2Fstats.cocointhe.cloud%2Fnfs_disk_usage&style=for-the-badge)
+![cluster uptime](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fcluster_uptime_days&style=for-the-badge&color=blue)
+![cluster cpu](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fcluster_cpu_usage&style=for-the-badge)
+![cluster ram](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fcluster_memory_usage&style=for-the-badge)
+![nfs disk](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo%3A8080%2Fnfs_disk_usage&style=for-the-badge)
 
 
 </div>

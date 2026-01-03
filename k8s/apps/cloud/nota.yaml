@@ -38,3 +38,21 @@ spec:
               claimName: nota-data
         pvc:
           - nota-data
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-nota-oidc
+spec:
+  podSelector:
+    matchLabels:
+      app: nota
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.10/32
+    ports:
+    - protocol: TCP
+      port: 443

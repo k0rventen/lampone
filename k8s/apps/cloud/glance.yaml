@@ -97,3 +97,24 @@ spec:
                       - UCIgNWXsJcFwvFptmUic6wSw # alpard
                       - UCz7mxur_emoA8fl9kvizgtA # Jzred
                       - UCR-DXc1voovS8nhAvccRZhg # JG
+---
+
+# glance -> web for news fetching
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-glance-web
+spec:
+  podSelector:
+    matchLabels:
+      app: glance
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16

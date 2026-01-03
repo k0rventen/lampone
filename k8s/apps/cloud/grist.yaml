@@ -34,3 +34,22 @@ spec:
         ingress:
           domain: grist.cocointhe.cloud
           public: true
+---
+# allow accessing the cluster VIP (mainly for the OIDC provider callbacks)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-grist-oidc
+spec:
+  podSelector:
+    matchLabels:
+      app: grist
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.10/32
+    ports:
+    - protocol: TCP
+      port: 443

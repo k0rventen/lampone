@@ -121,3 +121,21 @@ spec:
             - name: nodes_count
               query: sum(kubelet_node_name{job="kubernetes-nodes"})
               title: Nodes
+---
+# kromgo-> prom
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-kromgo
+spec:
+  podSelector:
+    matchLabels:
+      app: kromgo
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus

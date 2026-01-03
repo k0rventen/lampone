@@ -1,0 +1,55 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: shields
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: appchart
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 1h
+  values:
+    apps:
+      - name: shields
+        image: shieldsio/shields:server-2025-12-06
+        service: 8080
+        ingress:
+          public: true
+          domain: shields.cocointhe.cloud
+        volumeMounts:
+          - name: shields-config
+            mountPath: /usr/src/app/config/local.yaml
+            subPath: local.yaml
+        volumes:
+          - name: shields-config
+            configMap:
+              name: shields-config
+    configmaps:
+      shields-config:
+        local.yaml: |
+          public:
+            bind:
+              port: 8080
+            allowUnsecuredEndpointRequests: true
+---
+# allow only access to kromgo
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-shields-to-kromgo
+spec:
+  podSelector:
+    matchLabels:
+      app: shields
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: kromgo

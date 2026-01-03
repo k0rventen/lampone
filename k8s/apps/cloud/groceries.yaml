@@ -34,3 +34,21 @@ spec:
           public: true
         pvc:
           - groceries-data
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-groceries-oidc
+spec:
+  podSelector:
+    matchLabels:
+      app: groceries
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.10/32
+    ports:
+    - protocol: TCP
+      port: 443
