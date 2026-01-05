@@ -11,7 +11,7 @@ spec:
       logLocalRequests: false
       logAllowedRequests: false
       logApiRequests: true
-      api: "https://get.geojs.io/v1/ip/country/{ip}"
+      api: "http://iplookup:8000/api/ip/{ip}"
       apiTimeoutMs: 3000 # optional
       addCountryHeader: true
       allowUnknownCountries: false
