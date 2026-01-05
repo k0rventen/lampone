@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: iplookup
-        image: gitea.cocointhe.cloud/coco/iplookup:0.1.0@sha256:8c2a13414b202e5bfac9b47dc4c94347cda51bec2aee44dad74c4305777fbe90
+        image: gitea.cocointhe.cloud/coco/iplookup:0.2.0@sha256:4f9908f8b8dcfdb3fa1b5c6936da54d708318bce08bab18e3f13da8531459ad7
         service: 8080
         env:
           - name: IPINFO_TOKEN
