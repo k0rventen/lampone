@@ -1,0 +1,242 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: errors
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: appchart
+      version: 1.7.0
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 1h
+  values:
+    apps:
+      - name: errors
+        image: caddy:2.11-alpine
+        containerSpec:
+          args:
+            - caddy
+            - file-server
+            - --root
+            - /app
+        service: 80
+        ingress:
+          domain: errors.cocointhe.cloud
+          public: true
+        volumeMounts:
+          - name: errors-html
+            mountPath: /app
+        volumes:
+          - name: errors-html
+            configMap:
+              name: errors-html
+    configmaps:
+      errors-html:
+        418.html: |-
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Access Denied</title>
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f5f5f5;
+                      color: #333;
+                      margin: 0;
+                      padding: 0;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      height: 100vh;
+                  }
+                  .container {
+                      background-color: white;
+                      border-radius: 8px;
+                      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                      padding: 30px;
+                      text-align: center;
+                      max-width: 500px;
+                      width: 90%;
+                  }
+                  h1 {
+                      color: #e74c3c;
+                      margin-bottom: 20px;
+                  }
+                  p {
+                      margin-bottom: 20px;
+                      line-height: 1.5;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>Access Denied</h1>
+                  <p>This service is not available in your region due to legal restrictions.</p>
+              </div>
+          </body>
+          </html>
+
+
+        index.html: |-
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>This does not exist</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+            <style>
+              :root {
+                --bg: #05070d;
+                --grid: rgba(0, 255, 255, 0.08);
+                --neon: #00fff6;
+                --magenta: #ff3cac;
+                --text: #c9d1d9;
+              }
+
+              html, body {
+                height: 100%;
+                margin: 0;
+                font-family: "Courier New", monospace;
+                background: var(--bg);
+                color: var(--text);
+                overflow: hidden;
+              }
+
+              /* retro grid */
+              body::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                  linear-gradient(var(--grid) 1px, transparent 1px),
+                  linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+                background-size: 40px 40px;
+                transform: perspective(600px) rotateX(65deg);
+                transform-origin: center bottom;
+                opacity: 0.6;
+              }
+
+              .container {
+                position: relative;
+                z-index: 1;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+              }
+
+              h1 {
+                font-size: 4rem;
+                margin: 0;
+                color: var(--neon);
+                text-shadow:
+                  0 0 5px var(--neon),
+                  0 0 20px rgba(0, 255, 246, 0.5);
+                animation: flicker 3s infinite;
+              }
+
+              h2 {
+                margin: 1rem 0;
+                font-weight: normal;
+                color: var(--magenta);
+                text-shadow: 0 0 10px rgba(255, 60, 172, 0.6);
+              }
+
+              p {
+                max-width: 520px;
+                margin: 1.5rem auto;
+                line-height: 1.5;
+              }
+
+              .terminal {
+                margin-top: 2rem;
+                padding: 1rem 1.5rem;
+                border: 1px solid var(--neon);
+                color: var(--neon);
+                display: inline-block;
+                background: rgba(0, 255, 246, 0.05);
+                box-shadow: 0 0 20px rgba(0, 255, 246, 0.2);
+              }
+
+              .cursor {
+                display: inline-block;
+                width: 10px;
+                background: var(--neon);
+                margin-left: 4px;
+                animation: blink 1s steps(1) infinite;
+              }
+
+              @keyframes blink {
+                50% { opacity: 0; }
+              }
+
+              @keyframes flicker {
+                0%, 19%, 21%, 23%, 100% { opacity: 1; }
+                20%, 22% { opacity: 0.6; }
+              }
+
+              footer {
+                position: absolute;
+                bottom: 1rem;
+                width: 100%;
+                text-align: center;
+                font-size: 0.75rem;
+                opacity: 0.6;
+              }
+            </style>
+          </head>
+
+          <body>
+            <div class="container">
+              <div>
+                <h1>404</h1>
+                <h2>DOMAIN NOT FOUND</h2>
+
+                <p>
+                  You’ve reached a subdomain that does not yet exists. Your browser asked. Traefik routed. Reality disagreed.
+                </p>
+
+                <div class="terminal">
+                  &gt; pointless reconnection attempt…<span class="cursor"></span>
+                </div>
+              </div>
+            </div>
+
+            <footer>
+              routing anomaly · this is not the page you are looking for
+            </footer>
+          </body>
+          </html>
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wildcard-fallback
+  labels:
+    worldwide_access: "true"
+  annotations:
+    traefik.ingress.kubernetes.io/router.priority: "1"
+    traefik.ingress.kubernetes.io/router.middlewares: ingress-replace@kubernetescrd
+spec:
+  ingressClassName: traefik-tunnel
+  rules:
+    - host: "*.cocointhe.cloud"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: errors
+                port:
+                  number: 80

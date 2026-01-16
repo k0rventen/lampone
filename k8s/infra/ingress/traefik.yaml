@@ -121,8 +121,6 @@ spec:
             scheme: https
             permanent: true
       websecure:
-        # middlewares:
-        # - ingress-geoblock@kubernetescrd
         forwardedHeaders:
           trustedIPs: ["10.42.1.0/24"]
         proxyProtocol:

@@ -2,7 +2,6 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: geoblock
-  namespace: ingress
 spec:
   plugin:
     geoblock:
@@ -15,7 +14,16 @@ spec:
       apiTimeoutMs: 3000 # optional
       addCountryHeader: true
       allowUnknownCountries: false
-      httpStatusCodeDeniedRequest: 418
+      redirectUrlIfDenied: "https://errors.cocointhe.cloud/418.html"
       cacheSize: 25
       countries:
         - FR
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: replace
+spec:
+  replacePathRegex:
+    regex: ".*"
+    replacement: "/"
