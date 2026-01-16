@@ -17,24 +17,32 @@ spec:
     apps:
       - name: errors
         image: caddy:2.11-alpine
-        containerSpec:
-          args:
-            - caddy
-            - file-server
-            - --root
-            - /app
         service: 80
         ingress:
           domain: errors.cocointhe.cloud
           public: true
         volumeMounts:
+          - name: caddyconf
+            mountPath: /etc/caddy
           - name: errors-html
-            mountPath: /app
+            mountPath: /html
         volumes:
           - name: errors-html
             configMap:
               name: errors-html
+          - name: caddyconf
+            configMap:
+              name: caddyconf
     configmaps:
+      caddyconf:
+        Caddyfile: |
+          :80 {
+              root * /html
+              file_server
+              try_files {path} /index.html
+          }
+
+
       errors-html:
         418.html: |-
           <!DOCTYPE html>
@@ -226,7 +234,6 @@ metadata:
     worldwide_access: "true"
   annotations:
     traefik.ingress.kubernetes.io/router.priority: "1"
-    traefik.ingress.kubernetes.io/router.middlewares: ingress-replace@kubernetescrd
 spec:
   ingressClassName: traefik-tunnel
   rules:

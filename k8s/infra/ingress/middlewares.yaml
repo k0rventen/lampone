@@ -18,12 +18,3 @@ spec:
       cacheSize: 25
       countries:
         - FR
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: replace
-spec:
-  replacePathRegex:
-    regex: ".*"
-    replacement: "/"
