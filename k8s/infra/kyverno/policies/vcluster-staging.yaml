@@ -1,3 +1,6 @@
+# Policy for the staging env.
+# They must use the .staging subdomain (to not conflict)
+# and use the proper tls cert
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -20,3 +23,16 @@ spec:
         spec:
           rules:
             - host: "*.staging.cocointhe.cloud"
+  - name: add-secretname-to-staging-ingress
+    match:
+      resources:
+        kinds:
+        - Ingress
+        namespaces:
+        - staging
+    mutate:
+      patchStrategicMerge:
+        spec:
+          tls:
+          - (hosts): []
+            secretName: wildcard-staging-cocointhe-cloud-tls
