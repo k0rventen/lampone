@@ -2,12 +2,73 @@
 - name: Bootstrap k3s cluster
   hosts: all
   become: true
+  vars:
+    mount_unit_name: "nfs.mount"
+    mount_device: "/dev/disk/by-label/cluster-data"
+    mount_path: "/nfs"
+    mount_type: "ext4"
+    mount_permissions: "0777"
+
   tasks:
+
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: Check if reboot required
+      stat:
+        path: /var/run/reboot-required
+      register: reboot_required_file
+
+    - name: Reboot if required
+      reboot:
+      when: reboot_required_file.stat.exists == true
+
     - name: Install curl for all nodes
       apt:
         name: curl
         state: present
-        update_cache: yes
+
+    - name: Deploy NFS disk systemd mount
+      when: role == 'control_plane'
+      block:
+      - name: Create systemd mount unit directory if it doesn't exist
+        ansible.builtin.file:
+          path: "/etc/systemd/system/{{ mount_unit_name }}"
+          state: directory
+          mode: '0755'
+
+      - name: Create systemd mount unit file
+        ansible.builtin.copy:
+          dest: "/etc/systemd/system/{{ mount_unit_name }}"
+          content: |
+            [Unit]
+            Description=Mount cluster-data disk
+
+            [Mount]
+            What={{ mount_device }}
+            Where={{ mount_path }}
+            Type={{ mount_type }}
+            DirectoryMode={{ mount_permissions }}
+
+            [Install]
+            WantedBy=multi-user.target
+          mode: '0644'
+
+      - name: Ensure directory exists before mounting
+        ansible.builtin.file:
+          path: "{{ mount_path }}"
+          state: directory
+          mode: '0777'
+
+      - name: Enable and start the mount unit
+        ansible.builtin.systemd:
+          name: "{{ mount_unit_name }}"
+          enabled: yes
+          state: started
+          daemon_reload: yes
 
     - name: Install k3s server on the master node if not already installed
       shell: |
