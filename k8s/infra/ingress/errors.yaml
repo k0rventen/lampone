@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: errors
-        image: caddy:2.11-alpine
+        image: caddy:2.11-alpine@sha256:c006ba74d79d94d7464db78a3d2755f6a073c3f65db6da40e35d38e8b5585a33
         service: 80
         ingress:
           domain: errors.cocointhe.cloud
