@@ -46,6 +46,12 @@ spec:
             ) and not (
               container.name = "prometheus-server" and
               k8s.ns.name = "watchtower"
+            ) and not (
+              container.name = "traefik-tunnel" and
+              k8s.ns.name = "ingress"
+            ) and not (
+              container.name = "traefik" and
+              k8s.ns.name = "ingress"
             )
 
       allow-explo-crond.yaml: |
