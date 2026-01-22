@@ -16,10 +16,10 @@ spec:
   values:
     apps:
       - name: dummy
-        image: traefik/whoami
+        image: traefik/whoami@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375b41c84dfc4f2475937ab
         service: 80
       - name: waf
-        image: owasp/modsecurity-crs:4.22.0-nginx-202601060501
+        image: owasp/modsecurity-crs:4.22.0-nginx-202601060501@sha256:5d184e8272e86217081483fb57f605d9d525403921d716d4eebcb3adbfa2fdac
         service: 8080
         env:
         - name: BLOCKING_PARANOIA
