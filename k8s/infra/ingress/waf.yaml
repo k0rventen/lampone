@@ -22,6 +22,8 @@ spec:
         image: owasp/modsecurity-crs:4.22.0-nginx-202601060501@sha256:5d184e8272e86217081483fb57f605d9d525403921d716d4eebcb3adbfa2fdac
         service: 8080
         env:
+        - name: ALLOWED_METHODS
+          value: GET HEAD POST OPTIONS DELETE PUT PATCH
         - name: BLOCKING_PARANOIA
           value: "1"
         - name: ANOMALY_INBOUND
