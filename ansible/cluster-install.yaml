@@ -2,13 +2,6 @@
 - name: Bootstrap k3s cluster
   hosts: all
   become: true
-  vars:
-    mount_unit_name: "nfs.mount"
-    mount_device: "/dev/disk/by-label/cluster-data"
-    mount_path: "/nfs"
-    mount_type: "ext4"
-    mount_permissions: "0777"
-
   tasks:
 
     - name: Update and upgrade apt packages
@@ -17,29 +10,33 @@
         upgrade: yes
         update_cache: yes
 
-    - name: Check if reboot required
-      stat:
-        path: /var/run/reboot-required
-      register: reboot_required_file
-
-    - name: Reboot if required
-      reboot:
-      when: reboot_required_file.stat.exists == true
-
     - name: Install curl for all nodes
       apt:
         name: curl
         state: present
 
+
+    - name: Ensure log directory exists
+      ansible.builtin.file:
+        path: "{{ tmpfs_mount_point }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0750'
+
+    - name: Mount tmpfs for k3s pod logs
+      ansible.posix.mount:
+        path: "{{ tmpfs_mount_point }}"
+        src: tmpfs
+        fstype: tmpfs
+        opts: "size={{ tmpfs_size }},noatime"
+        state: mounted
+        boot: true
+
+      
     - name: Deploy NFS disk systemd mount
       when: role == 'control_plane'
       block:
-      - name: Create systemd mount unit directory if it doesn't exist
-        ansible.builtin.file:
-          path: "/etc/systemd/system/{{ mount_unit_name }}"
-          state: directory
-          mode: '0755'
-
       - name: Create systemd mount unit file
         ansible.builtin.copy:
           dest: "/etc/systemd/system/{{ mount_unit_name }}"
@@ -96,3 +93,14 @@
       args:
         creates: /usr/local/bin/k3s
       when: role == 'worker'
+
+    - name: Configure kubelet log rotation for k3s
+      copy:
+        dest: /etc/rancher/k3s/config.yaml
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          kubelet-arg:
+            - container-log-max-size=4Mi
+            - container-log-max-files=2
