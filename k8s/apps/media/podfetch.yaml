@@ -1,0 +1,42 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: podfetch
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: appchart
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 10m
+  values:
+    apps:
+      - name: podfetch
+        image: ghcr.io/samtv12345/podfetch:v4.9.0
+        env:
+        - name: POLLING_INTERVAL
+          value: "3600"
+        - name: DATABASE_URL
+          value: sqlite:///app/db/podcast.db
+
+        service: 8000
+        ingress:
+          domain: podfetch.cocointhe.cloud
+        volumeMounts:
+          - name: podfetch-db
+            mountPath: /app/db
+          - name: jellyfin-music
+            mountPath: /app/podcasts
+        volumes:
+          - name: podfetch-db
+            persistentVolumeClaim:
+              claimName: podfetch-db
+          - name: jellyfin-music
+            persistentVolumeClaim:
+              claimName: jellyfin-music
+        pvc:
+        - podfetch-db
