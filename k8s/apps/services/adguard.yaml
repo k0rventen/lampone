@@ -81,6 +81,7 @@ kind: Ingress
 metadata:
   name: adguard
 spec:
+  ingressClassName: traefik
   rules:
   - host: adguard.cocointhe.cloud
     http:
