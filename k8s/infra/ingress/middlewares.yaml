@@ -5,11 +5,11 @@ metadata:
 spec:
   plugin:
     geoblock:
-      silentStartUp: false
+      silentStartUp: true
       allowLocalRequests: false
       logLocalRequests: false
       logAllowedRequests: false
-      logApiRequests: true
+      logApiRequests: false
       api: "http://iplookup:8000/api/ip/{ip}"
       apiTimeoutMs: 3000 # optional
       addCountryHeader: true
