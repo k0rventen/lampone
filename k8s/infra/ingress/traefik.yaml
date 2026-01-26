@@ -61,11 +61,12 @@ spec:
           enabled: false
     ports:
       web:
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
 ---
 # specific traefik for routing traffic from WAN
 # only listens for ingressclass 'traefik-tunnel' and exposed internally
@@ -118,19 +119,21 @@ spec:
         ingressClass: "traefik-tunnel"
     ports:
       web:
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
       websecure:
-        middlewares:
-        - ingress-errors@kubernetescrd
-        - ingress-modsec@kubernetescrd
-        forwardedHeaders:
-          trustedIPs: ["10.42.1.0/24"]
-        proxyProtocol:
-          trustedIPs: ["10.42.1.0/24"]
+        http:
+          middlewares:
+          - ingress-errors@kubernetescrd
+          - ingress-modsec@kubernetescrd
+          forwardedHeaders:
+            trustedIPs: ["10.42.1.0/24"]
+          proxyProtocol:
+            trustedIPs: ["10.42.1.0/24"]
     metrics:
       prometheus:
         service:
