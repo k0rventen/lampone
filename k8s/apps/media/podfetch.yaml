@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: appchart
-      version: "1.5.0"
+      version: "1.7.0"
       sourceRef:
         kind: HelmRepository
         name: appchart
@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: podfetch
-        image: ghcr.io/samtv12345/podfetch:v4.9.0
+        image: ghcr.io/samtv12345/podfetch:v4.9.0@sha256:a6c7b61f4463d48a748632b160ffe3e67b354c504501a35249501e09e9b074c6
         env:
         - name: POLLING_INTERVAL
           value: "3600"
