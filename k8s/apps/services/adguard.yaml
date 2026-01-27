@@ -61,3 +61,38 @@ spec:
   selector:
     app: adguard
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adguard
+spec:
+  ports:
+  - name: http
+    port: 42080
+    protocol: TCP
+    targetPort: 42080
+  selector:
+    app: adguard
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: adguard
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: adguard.cocointhe.cloud
+    http:
+      paths:
+      - backend:
+          service:
+            name: adguard
+            port:
+              number: 42080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - adguard.cocointhe.cloud
