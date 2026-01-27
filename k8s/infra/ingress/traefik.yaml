@@ -34,7 +34,7 @@ spec:
   values:
     global:
       checkNewVersion: false
-    sendAnonymousUsage: false
+      sendAnonymousUsage: false
     tlsStore:
       default:
         certificates:
@@ -91,7 +91,7 @@ spec:
   values:
     global:
       checkNewVersion: false
-    sendAnonymousUsage: false
+      sendAnonymousUsage: false
     experimental:
       plugins:
         geoblock:
