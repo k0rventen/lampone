@@ -116,6 +116,7 @@ spec:
         enabled: true
       kubernetesIngress:
         ingressClass: "traefik-tunnel"
+
     ports:
       websecure:
         http:
