@@ -1,67 +1,122 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "docker:pinDigests", ":semanticCommits"],
-
-  // this is handled through a specific github action (see .github/workflows/fluxcd.yaml)
-  "ignorePaths": ["k8s/flux/flux-system/gotk-components.yaml"],
-
-  "flux": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
-  "helm-values": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
-  "kubernetes": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
-
-  "minimumReleaseAge": "3 days",
-  "minimumReleaseAgeBehaviour": "timestamp-optional", // some docker registry do not provide release timestamps
-
-  "packageRules": [
-    // allow minor updates if not 0.x
-    {
-      "matchUpdateTypes": ["minor"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true},
-
-    // allow patch and pin, but no digest update 
-    {"matchUpdateTypes": ["patch"],"automerge": true},
-    { "matchUpdateTypes": ["pin"], "enabled": true },
-    { "matchUpdateTypes": ["digest"], "enabled": false },
-
-    // renovate spams too much, so only update once a month
-    { "matchPackageNames": ["renovate/renovate"], "automerge": true, "matchUpdateTypes": ["patch","minor"],"schedule": ["* * 1 * *"]},  
-
-    // group immich related updates 
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/.*immich-app/immich-.*/"],
-      "groupName": "immich"},
-    
-    // do not automerge k3s as it upgrades the nodes
-    { "matchPackageNames": ["k3s"], "automerge": false },
-    // do not change the versionning on the UpgradePlan Images as they will automatically use the one matching the version of the plan
-    { "matchPackageNames":["rancher/k3s-upgrade"],"enabled": false}
+  "extends": [
+    "config:recommended",
+    "docker:pinDigests",
+    ":semanticCommits"
   ],
-
-  // k3s stable release fetcher (instead of latest github release)
-  // update the Plan CRD as well as the ansible var
+  "ignorePaths": [
+    "k8s/flux/flux-system/gotk-components.yaml"
+  ],
+  "flux": {
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
+  },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/k8s/.+\\.ya?ml$/"
+    ]
+  },
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
+        "pin"
+      ],
+      "enabled": true
+    },
+    {
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "renovate/renovate"
+      ],
+      "automerge": true,
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
+      "schedule": [
+        "* * 1 * *"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "/.*immich-app/immich-.*/"
+      ],
+      "groupName": "immich"
+    },
+    {
+      "matchPackageNames": [
+        "k3s"
+      ],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": [
+        "rancher/k3s-upgrade"
+      ],
+      "enabled": false
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/inventory\\.yaml$/"],
-      "matchStrings": ["k3s_version:\\s*(?<currentValue>.*?)\\n"],
+      "managerFilePatterns": [
+        "/inventory\\.yaml$/"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s*(?<currentValue>.*?)\\n"
+      ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "semver-coerced",
       "datasourceTemplate": "custom.k3s"
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/control-plane\\.yaml$/","/worker\\.yaml$/"],
-      "matchStrings": ["version:\\s*(?<currentValue>.*?)\\n"],
+      "managerFilePatterns": [
+        "/control-plane\\.yaml$/",
+        "/worker\\.yaml$/"
+      ],
+      "matchStrings": [
+        "version:\\s*(?<currentValue>.*?)\\n"
+      ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-k3s(?<build>.+)$",
       "datasourceTemplate": "custom.k3supgrade"
     },
-    // regex for traefik plugins
     {
       "customType": "regex",
-      "fileMatch": ["/traefik\\.yaml$/"],
+      "managerFilePatterns": [
+        "//traefik\\.yaml$//"
+      ],
       "matchStrings": [
         "moduleName:\\s*\"(?<depName>github.com/[^\\\"]+)\"[\\s\\S]*?version:\\s*\"(?<currentValue>v?[^\"]+)\""
       ],
