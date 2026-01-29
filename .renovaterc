@@ -61,7 +61,7 @@
     // regex for traefik plugins
     {
       "customType": "regex",
-      "fileMatch": ["/traefik\\.yaml$/"],
+      "managerFilePatterns": ["/traefik\\.yaml$/"],
       "matchStrings": [
         "moduleName:\\s*\"(?<depName>github.com/[^\\\"]+)\"[\\s\\S]*?version:\\s*\"(?<currentValue>v?[^\"]+)\""
       ],
