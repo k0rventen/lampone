@@ -9,8 +9,11 @@
   "helm-values": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "kubernetes": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
 
-  "minimumReleaseAge": "3 days",
-  "minimumReleaseAgeBehaviour": "timestamp-optional", // some docker registry do not provide release timestamps
+  // as some datasources have a release timestamp, and some do not
+  // this leads to incoherent behavior across the apps
+  // so it is being disabled for now
+  //"minimumReleaseAge": "3 days",
+  //"minimumReleaseAgeBehaviour": "timestamp-optional", // some docker registry do not provide release timestamps
 
   "packageRules": [
     // allow minor updates if not 0.x
