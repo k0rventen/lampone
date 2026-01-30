@@ -117,6 +117,12 @@ spec:
       kubernetesIngress:
         ingressClass: "traefik-tunnel"
     ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
       websecure:
         middlewares:
         - ingress-errors@kubernetescrd
