@@ -60,17 +60,17 @@
       "depNameTemplate": "k3s",
       "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-k3s(?<build>.+)$",
       "datasourceTemplate": "custom.k3supgrade"
-    },
-    // regex for traefik plugins
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/traefik\\.yaml$/"],
-      "matchStrings": [
-        "moduleName:\\s*\"(?<depName>github.com/[^\\\"]+)\"[\\s\\S]*?version:\\s*\"(?<currentValue>v?[^\"]+)\""
-      ],
-      "datasourceTemplate": "github-releases",
-      "versioningTemplate": "semver"
     }
+    // regex for traefik plugins
+    // {
+    //   "customType": "regex",
+    //   "managerFilePatterns": ["/traefik\\.yaml$/"],
+    //   "matchStrings": [
+    //     "moduleName:\\s*\"(?<depName>github.com/[^\\\"]+)\"[\\s\\S]*?version:\\s*\"(?<currentValue>v?[^\"]+)\""
+    //   ],
+    //   "datasourceTemplate": "github-releases",
+    //   "versioningTemplate": "semver"
+    // }
   ],
   "customDatasources": {
     "k3s": {
