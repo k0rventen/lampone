@@ -34,7 +34,7 @@ spec:
   values:
     global:
       checkNewVersion: false
-    sendAnonymousUsage: false
+      sendAnonymousUsage: false
     tlsStore:
       default:
         certificates:
@@ -42,8 +42,6 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-      spec:
-        externalTrafficPolicy: Local
     logs:
       general:
         level: "ERROR"  
@@ -90,7 +88,7 @@ spec:
   values:
     global:
       checkNewVersion: false
-    sendAnonymousUsage: false
+      sendAnonymousUsage: false
     experimental:
       plugins:
         geoblock:
@@ -115,6 +113,7 @@ spec:
       kubernetesCRD:
         enabled: true
       kubernetesIngress:
+        enabled: true
         ingressClass: "traefik-tunnel"
     ports:
       web:
@@ -128,16 +127,9 @@ spec:
         - ingress-errors@kubernetescrd
         - ingress-modsec@kubernetescrd
         forwardedHeaders:
-          trustedIPs: ["10.42.1.0/24"]
+          trustedIPs: ["10.0.0.0/8"]
         proxyProtocol:
-          trustedIPs: ["10.42.1.0/24"]
-    metrics:
-      prometheus:
-        service:
-          enabled: true
-        entryPoint: metrics
-        addServicesLabels: true
-        addRoutersLabels: true
+          trustedIPs: ["10.0.0.0/8"]
     logs:
       format: "json"
       access:
@@ -148,5 +140,4 @@ spec:
             defaultmode: drop
             names:
               User-Agent: keep
-              X-Forwarded-For: keep
               X-Ipcountry: keep
