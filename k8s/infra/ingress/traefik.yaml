@@ -47,9 +47,6 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-    logs:
-      general:
-        level: "ERROR"  
     ingressClass:
       enabled: true
       isDefaultClass: true
