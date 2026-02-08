@@ -22,6 +22,19 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
+  name: oidc
+spec:
+  plugin:
+    oidc:
+      Secret: "urn:k8s:secret:oidc-config:secret"
+      Provider:
+        Url: "urn:k8s:secret:oidc-config:url"
+        ClientId: "urn:k8s:secret:oidc-config:clientId"
+        ClientSecret: "urn:k8s:secret:oidc-config:clientSecret"
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
   name: modsec
 spec:
   plugin:

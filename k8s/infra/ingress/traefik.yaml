@@ -35,6 +35,11 @@ spec:
     global:
       checkNewVersion: false
       sendAnonymousUsage: false
+    experimental:
+      plugins:
+        oidc:
+          moduleName: github.com/lukaszraczylo/traefikoidc
+          version: v0.8.21
     tlsStore:
       default:
         certificates:
@@ -91,6 +96,9 @@ spec:
       sendAnonymousUsage: false
     experimental:
       plugins:
+        oidc:
+          moduleName: github.com/lukaszraczylo/traefikoidc
+          version: v0.8.21
         geoblock:
           moduleName: "github.com/PascalMinder/geoblock"
           version: "v0.3.5"
