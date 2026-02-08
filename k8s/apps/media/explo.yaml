@@ -17,7 +17,7 @@ spec:
   values:
     apps:
       - name: explo
-        image: ghcr.io/lumepart/explo:v0.11.5
+        image: ghcr.io/lumepart/explo:v0.11.5@sha256:e4659bd1f4349a6355c0a89a0f718092de27b32d64ee24c76e1609089b060701
         env:
         - name: WEEKLY_EXPLORATION_SCHEDULE
           value: "0 4 * * 1"
