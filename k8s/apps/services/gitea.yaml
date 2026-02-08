@@ -29,6 +29,9 @@ spec:
               secretKeyRef:
                 name: gitea-ci-token
                 key: token
+        pvc:
+          - gitea-data
+          - gitea-conf
         volumeMounts:
           - name: gitea-data
             mountPath: /var/lib/gitea
