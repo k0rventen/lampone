@@ -69,6 +69,19 @@ spec:
             to: websecure
             scheme: https
             permanent: true
+    logs:
+      general:
+        format: "json"
+        level: "WARN"
+      access:
+        enabled: true
+        format: "json"
+        fields:
+          headers:
+            defaultmode: drop
+            names:
+              User-Agent: keep
+
 ---
 # specific traefik for routing traffic from WAN
 # only listens for ingressclass 'traefik-tunnel' and exposed internally
@@ -139,7 +152,9 @@ spec:
         proxyProtocol:
           trustedIPs: ["10.0.0.0/8"]
     logs:
-      format: "json"
+      general:
+        format: "json"
+        level: "WARN"
       access:
         enabled: true
         format: "json"
