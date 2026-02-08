@@ -47,7 +47,6 @@ spec:
 
         service: 8888
         ingress:
-          public: false
           domain: atuin.cocointhe.cloud
 
       - name: atuin-postgres

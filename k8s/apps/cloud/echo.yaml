@@ -21,3 +21,4 @@ spec:
         ingress:
           public: true
           domain: echo.cocointhe.cloud
+          geoblock: false

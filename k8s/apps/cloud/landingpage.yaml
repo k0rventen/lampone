@@ -20,4 +20,5 @@ spec:
         service: 8080
         ingress:
           public: true
+          geoblock: false
           domain: cocointhe.cloud
