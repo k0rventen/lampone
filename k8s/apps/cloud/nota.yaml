@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: appchart
-      version: "1.7.0"
+      version: "1.8.0"
       sourceRef:
         kind: HelmRepository
         name: appchart
@@ -22,6 +22,7 @@ spec:
         ingress:
           public: true
           domain: notes.cocointhe.cloud
+          geoblock: false
         env:
         - name: BLOG_TITLE
           value: "> coco@nota:/"

@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: appchart
-      version: "1.7.0"
+      version: "1.8.0"
       sourceRef:
         kind: HelmRepository
         name: appchart
@@ -21,3 +21,4 @@ spec:
         ingress:
           public: true
           domain: echo.cocointhe.cloud
+          geoblock: false
