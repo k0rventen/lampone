@@ -48,6 +48,8 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
     - [restic setup](#restic-setup)
     - [garage config](#garage-config)
     - [velero restore process](#velero-restore-process)
+  - [Traefik WAF + geoblocking](#traefik-waf--geoblocking)
+  - [Hyperconverged storage w/ Longhorn](#hyperconverged-storage-w-longhorn)
 
 </details>
 
@@ -68,6 +70,7 @@ What it's made of:
 - 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
 - 1 [gigabit ethernet 5 ports switch](https://www.tp-link.com/home-networking/soho-switch/tl-sg105/)
 - 1 [1To lexar ES3 usb SSD](https://www.lexar.com/products/Lexar-ES3-Portable-SSD/)
+- 3 [32Go Sandisk USB3 flash drive](https://www.sandisk.com/products/usb-flash-drives/sandisk-ultra-usb-3-0?sku=SDCZ48-032G-U46)
 - 1 [80mm fan](https://www.thermalright.com/product/tl-8015w/)
 - 3 very short cat6 ethernet cables
 - a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/resources/3d)
@@ -92,7 +95,8 @@ In `k8s/` there are 3 main folders:
 - `flux`, the entrypoint used by the flux controller for synchronizing the cluster. Main 'apps' are declared here.
   The interval for the source GitRepo is set to `1m`, so changes will be picked up within a minute or so.
 - `infra` represents what's needed for the cluster to function:
-  - a [nfs-server](https://github.com/k0rventen/docker-nfs-server) + [csi-nfs-driver](https://github.com/kubernetes-csi/csi-driver-nfs) for handling persistent volumes,
+  - a [nfs-server](https://github.com/k0rventen/docker-nfs-server) + [csi-nfs-driver](https://github.com/kubernetes-csi/csi-driver-nfs) for handling most persistent volumes (using the 1To SSD on the master)
+  - [longhorn](https://github.com/longhorn/longhorn) for high-performance, hyperconverged storage (using the flash drive on each node)
   - an IngressController with [Traefik](https://github.com/traefik/traefik), one private (listens on local lan), one "public",
   - [cert-manager](https://github.com/cert-manager/cert-manager) for certificates management of my domain,
   - [kube-vip](https://github.com/kube-vip/kube-vip) for managing the cluster's VIP.  
@@ -100,11 +104,13 @@ In `k8s/` there are 3 main folders:
   - [tailscale-operator](https://github.com/tailscale/tailscale/tree/main/cmd/k8s-operator/deploy) for accessing my private services from wherever (using a subnet route) and for my cluster services to access my offsite backup server
   - [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) for managing k8s upgrades directly in the cluster using CRDs.
   - a [renovate](https://github.com/renovatebot/renovate) cronjob to create PR for components updates (w/ auto merging when it's a patch level update and other rules)
-  - [velero](https://velero.io/docs/v1.17/) + [garage](https://garagehq.deuxfleurs.fr/) for daily, local backups of the cluster (if an app fails and borks its files).
+  #- [velero](https://velero.io/docs/v1.17/) + [garage](https://garagehq.deuxfleurs.fr/) for daily, local backups of the cluster (if an app fails and borks its files).
   - a [restic](https://github.com/restic/restic) cronjob that create a remote backup of the whole nfs dir (in case the server catches on fire) for DR situation,
   - [kyverno](https://kyverno.io/) for enforcing policies in the cluster,
   - [goldilocks](https://github.com/FairwindsOps/goldilocks) for automatic adjustments of limits/requests,
   - a [vcluster](https://www.vcluster.com/docs/vcluster/) where I do all my pre production testing, see [here](#staging-env).
+  - [falco](https://github.com/falcosecurity/falco) for eBPF based behavior detection
+  - [owasp/modsecurity-csr](https://coreruleset.org/) as a 'WAF' for traefik 
 
 - `apps`, the actual services running on the cluster:
   - [adguard](https://github.com/AdguardTeam/AdGuardHome) for DNS/DHCP
@@ -114,14 +120,15 @@ In `k8s/` there are 3 main folders:
   - [vaultwarden](https://github.com/dani-garcia/vaultwarden) as my passwords manager
   - [filebrowser](https://github.com/gtsteffaniak/filebrowser) for file sharing
   - [glance](https://github.com/glanceapp/glance) as my internet homepage
-  - [kromgo](https://github.com/kashalls/kromgo) for exposing prom stats publicly
+  - [kromgo](https://github.com/kashalls/kromgo) + shields.io for exposing badge-style cluster stats publicly
   - [pocketid](https://github.com/pocket-id/pocket-id) as an OIDC provider
   - [atuin](https://github.com/atuinsh/atuin) for my centralized shell history
   - [uptime kuma](https://github.com/louislam/uptime-kuma) as a simple availability dashboard
   - [n8n](https://github.com/n8n-io/n8n) for basic automation workflows
   - [bytestash](https://github.com/jordan-dalby/ByteStash) for remembering short code/iaac snippets 
-  - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring the cluster,
-  - [grist](https://github.com/gristlabs/grist-core) for a modern take on spreadsheets,
+  - [grafana](https://github.com/grafana/grafana) + [prometheus](https://github.com/prometheus/prometheus) + [loki](https://github.com/grafana/loki) for monitoring the cluster
+  - [grist](https://github.com/gristlabs/grist-core) for a modern take on spreadsheets
+  - [jellyfin](https://github.com/jellyfin/jellyfin) & friends ([explo](https://github.com/LumePart/Explo), [podfetch](https://github.com/SamTV12345/PodFetch),..)
   - and some other stuff like a blog , static sites, etc..
 
 I try to adhere to gitops/automation principles.
@@ -134,12 +141,11 @@ Some things aren't automated but it's mainly toil (one-time-things during setup 
 - [sops](https://github.com/getsops/sops) + [age](https://github.com/FiloSottile/age/): encryption
 - [git](https://git-scm.com/): change management
 - [gitleaks](https://github.com/gitleaks/gitleaks): secret detection as a pre-commit hook
-- velero-cli: manage backups and restores from the CLI
 - vcluster-cli: connect/pause/resume/reset the vcluster 
 ```
 
 # install everything needed
-brew install git ansible fluxcd/tap/flux sops age gitleaks loft-sh/tap/vcluster velero
+brew install git ansible fluxcd/tap/flux sops age gitleaks opkssh loft-sh/tap/vcluster 
 
 # tell git where to find its hooks
 git config core.hooksPath .githooks
@@ -155,10 +161,11 @@ The 3 rasps are running standard [Raspberry Pi OS Lite 64b](https://www.raspberr
 The bootstrapping is done using [ansible](https://docs.ansible.com/). The playbook will simply install k3s on all the nodes.
 
 It is assumed that a ssh key auth is configured on the nodes (ssh-copy-id <ip>),
-with passwordless sudo (`<user> ALL=(ALL) NOPASSWD: ALL` in visudo).
+with passwordless sudo (`<user> ALL=(ALL) NOPASSWD: ALL` in visudo). Otherwise install `sshpass` and add `-k` to the ansible command.
 
 ```
 cd ansible
+ansible-galaxy collection install ansible.posix
 ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 ```
 
@@ -413,3 +420,77 @@ velero restore create --from-backup groceries
 # wait until done
 velero restore describe groceries --details
 ```
+
+
+### Traefik WAF + geoblocking
+
+Since one of my traefik is exposed publicly, it's always a good idea to add basic security hygiene. This is done using 2 plugins for traefik:
+- [geoblock](github.com/PascalMinder/geoblock), for whitelisting countries that are allowed to connect. By default the plugins makes a request to a public API, which is not ideal. I developed/deployed a small local service, which pulls a geoDB from [IPinfo](https://ipinfo.io/) once a day, and the plugin hit it, benefiting from local resilience, and faster responses. 
+- [modsecurity](github.com/acouvreur/traefik-modsecurity-plugin) forwards requests to a owasp/modsecurity container, which detects bad behavior (SQLi, paths, ..) and stops generic attack through detection rules.
+
+### Hyperconverged storage w/ Longhorn
+
+After encountering various issues related to NFS (for example, SQLite concurrency through NFS for jellyfin), I decided to try some hyperconverged storage. Piraeus seemed like a solid option, but it seems arm64 is not yet an available platform for it.
+
+I went for longhorn instead. Some usb flash drives are plugged into the raspberries, and mounted in `/var/lib/longhorn` using a systemd mount unit. Deployment is done through their helm chart (see [here](k8s/infra/longhorn/longhorn.yaml)), and with the redundancy, the 3x32Go flash drives give me around 56Gi of schedulable storage. The storage is at least 3x faster than through NFS (measured using dd at around 130MB/s, which is the advertised speed of the drives).
+The resilience seems very good, as data locality is not a requirement. I can pull (and already have done so for testing) a usb key from a node, and the workloads just keep going.
+
+Resources-wise, the whole longhorn-system uses around 1Gi of RAM (across 3 nodes, as almost all components are replicated), so 300Mi per node. CPU usage is also up, around 5 to 6%:
+
+```sh
+> k top pods --sum -n longhorn-system
+NAME                                                CPU(cores)   MEMORY(bytes)
+longhorn-manager-jkx8n                              23m          122Mi
+...                                                 ________     ________
+                                                    254m         993Mi
+```
+
+As I had to move some PV data from the nfs storageclass to longhorn's, I used the following:
+1. Create new PV for longhorn's storageclass
+2. Scale to 0 the deployment which storage will be migrated  
+3. Deploy a pod with mounts for both classes:
+   ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: jellyfin-copy
+    spec:
+      containers:
+        - image: busybox
+          name: busybox
+          command:
+            - sleep
+            - "inf"
+          volumeMounts:
+            - name: jellyfin-cache
+              mountPath: "/jellyfin-cache"
+            - name: jellyfin-config
+              mountPath: "/jellyfin-config"
+            - name: jellyfin-longhorn-cache
+              mountPath: "/longhorn-cache"
+            - name: jellyfin-longhorn-config
+              mountPath: "/longhorn-config"
+
+      volumes:
+        - name: jellyfin-cache
+          persistentVolumeClaim:
+            claimName: jellyfin-cache
+
+        - name: jellyfin-config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+
+        - name: jellyfin-longhorn-cache
+          persistentVolumeClaim:
+            claimName: jellyfin-longhorn-cache
+
+        - name: jellyfin-longhorn-config
+          persistentVolumeClaim:
+            claimName: jellyfin-longhorn-config
+   ```
+4. In the container, copy from one folder to another:
+   ```sh
+   cp -a /jellyfin-cache/. /longhorn-cache
+   ...
+   ```
+5. Delete the pod, update the mounts on the deployment, scale back up.
