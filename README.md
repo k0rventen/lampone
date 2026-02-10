@@ -60,7 +60,7 @@ This is what the cluster looks like:
 
 <div align="center">
 
-![cluster](./resources/cluster.png)
+![cluster](./resources/cluster.jpeg)
 </div>
 
 ### Bill of materials
