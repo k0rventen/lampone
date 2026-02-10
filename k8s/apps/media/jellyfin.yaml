@@ -30,10 +30,10 @@ spec:
         volumes:
           - name: jellyfin-cache
             persistentVolumeClaim:
-              claimName: jellyfin-cache
+              claimName: jellyfin-longhorn-cache
           - name: jellyfin-config
             persistentVolumeClaim:
-              claimName: jellyfin-config
+              claimName: jellyfin-longhorn-config
           - name: jellyfin-music
             persistentVolumeClaim:
               claimName: jellyfin-music
@@ -43,11 +43,36 @@ spec:
 
         service: 8096
         pvc:
-          - jellyfin-cache
-          - jellyfin-config
           - jellyfin-music
           - jellyfin-shows
 
         ingress:
           domain: jellyfin.cocointhe.cloud
           public: true
+
+# jellyfin internals are stored in longhorn rather than sqlite 
+# due to comcurrency errors when using nfs.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-longhorn-config
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-longhorn-cache
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
