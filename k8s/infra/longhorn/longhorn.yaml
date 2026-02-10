@@ -49,6 +49,6 @@ spec:
       ingressClassName: traefik
       host: longhorn.cocointhe.cloud
       tls: true
-#      annotations:
-#        traefik.ingress.kubernetes.io/router.middlewares: ingress-oidc@kubernetescrd
+      annotations:
+       traefik.ingress.kubernetes.io/router.middlewares: ingress-oidc@kubernetescrd
 
