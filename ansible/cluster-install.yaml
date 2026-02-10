@@ -3,18 +3,10 @@
   hosts: all
   become: true
   tasks:
-
-    - name: Update and upgrade apt packages
-      become: true
-      apt:
-        upgrade: yes
-        update_cache: yes
-
     - name: Install curl for all nodes
       apt:
         name: curl
         state: present
-
 
     - name: Ensure log directory exists
       ansible.builtin.file:
@@ -33,7 +25,42 @@
         state: mounted
         boot: true
 
-      
+
+    - name: Deploy hyperconverged storage
+      block:
+      - name: Install isci for all nodes
+        apt:
+          name: open-iscsi
+          state: present
+      - name: Create systemd mount unit file
+        ansible.builtin.copy:
+          dest: "/etc/systemd/system/{{ hyperconverged_mount_unit_name }}"
+          content: |
+            [Unit]
+            Description=Mount hyperconverged disk
+
+            [Mount]
+            What={{ hyperconverged_mount_device }}
+            Where={{ hyperconverged_mount_path }}
+            Type={{ hyperconverged_mount_type }}
+            DirectoryMode={{ hyperconverged_mount_permissions }}
+
+            [Install]
+            WantedBy=multi-user.target
+          mode: '0644'
+      - name: Ensure directory exists before mounting
+        ansible.builtin.file:
+          path: "{{ hyperconverged_mount_path }}"
+          state: directory
+          mode: '0777'
+      - name: Enable and start the mount unit
+        ansible.builtin.systemd:
+          name: "{{ hyperconverged_mount_unit_name }}"
+          enabled: yes
+          state: started
+          daemon_reload: yes
+
+
     - name: Deploy NFS disk systemd mount
       when: role == 'control_plane'
       block:
@@ -67,6 +94,17 @@
           state: started
           daemon_reload: yes
 
+    - name: Configure kubelet log rotation for k3s
+      copy:
+        dest: /etc/rancher/k3s/config.yaml
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          kubelet-arg:
+            - container-log-max-size=4Mi
+            - container-log-max-files=2
+
     - name: Install k3s server on the master node if not already installed
       shell: |
         curl -sfL https://get.k3s.io | \
@@ -93,14 +131,3 @@
       args:
         creates: /usr/local/bin/k3s
       when: role == 'worker'
-
-    - name: Configure kubelet log rotation for k3s
-      copy:
-        dest: /etc/rancher/k3s/config.yaml
-        owner: root
-        group: root
-        mode: '0644'
-        content: |
-          kubelet-arg:
-            - container-log-max-size=4Mi
-            - container-log-max-files=2
