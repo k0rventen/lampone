@@ -21,6 +21,9 @@ spec:
         name: prometheus
       interval: 10m
   values:
+    scrapeConfigs:
+      kubernetes-api-servers:
+        enabled: false
     prometheus-pushgateway:
       enabled: false
     alertmanager:
