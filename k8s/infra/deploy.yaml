@@ -204,11 +204,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: goldilocks-vpa
+  name: vpa
   namespace: flux-system
 spec:
   interval: 1h
-  targetNamespace: goldilocks
+  targetNamespace: vpa
   path: ./k8s/infra/vpa
   prune: true
   sourceRef:
