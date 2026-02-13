@@ -1,0 +1,34 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: memos
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: appchart
+      version: "1.8.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 1h
+  values:
+    apps:
+      - name: memos
+        image: ghcr.io/usememos/memos:0.26.1
+        service: 5230
+        ingress:
+          domain: journal.cocointhe.cloud
+        env:
+          - name: MEMOS_PORT
+            value: "5230"
+        volumeMounts:
+          - name: memos-data
+            mountPath: /var/opt/memos
+        volumes:
+          - name: memos-data
+            persistentVolumeClaim:
+              claimName: memos-data
+        pvc:
+          - memos-data
