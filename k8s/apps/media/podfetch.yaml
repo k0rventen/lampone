@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: podfetch
-        image: ghcr.io/samtv12345/podfetch:v4.9.0@sha256:a6c7b61f4463d48a748632b160ffe3e67b354c504501a35249501e09e9b074c6
+        image: ghcr.io/samtv12345/podfetch:v5.0.0@sha256:5fbe90c0c55673a8f79519d1f8b7bb0baf69490392ef122d00112f925f29fd6d
         env:
         - name: POLLING_INTERVAL
           value: "3600"
