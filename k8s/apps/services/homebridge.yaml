@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homebridge
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: appchart
+      version: "1.8.0"
+      sourceRef:
+        kind: HelmRepository
+        name: appchart
+        namespace: flux-system
+      interval: 10m
+  values:
+    apps:
+      - name: homebridge
+        podSpec:
+          hostNetwork: true
+        image: homebridge/homebridge:2026-02-11
+        volumeMounts:
+          - name: homebridge-data
+            mountPath: /homebridge
+        volumes:
+          - name: homebridge-data
+            persistentVolumeClaim:
+              claimName: homebridge-data
+        service: 8581
+        ingress:
+          domain: homebridge.cocointhe.cloud
+        pvc:
+          - homebridge-data
