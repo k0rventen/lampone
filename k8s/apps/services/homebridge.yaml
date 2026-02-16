@@ -18,7 +18,7 @@ spec:
       - name: homebridge
         podSpec:
           hostNetwork: true
-        image: homebridge/homebridge:2026-02-11
+        image: homebridge/homebridge:2026-02-11@sha256:599edae573f662b5d44ec22ae268d7ca1b0e9d4f033ec3d5823259715f1e2f6b
         volumeMounts:
           - name: homebridge-data
             mountPath: /homebridge
