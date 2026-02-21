@@ -4,6 +4,7 @@ metadata:
   name: renovate
 spec:
   schedule: "0,15,30 19 * * *"
+  suspend: true
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
