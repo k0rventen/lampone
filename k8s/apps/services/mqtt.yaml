@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt
+spec:
+  selector:
+    matchLabels:
+      app: mqtt
+  template:
+    metadata:
+      labels:
+        app: mqtt
+    spec:
+      containers:
+      - name: mqtt
+        image: eclipse-mosquitto:alpine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+spec:
+  ports:
+  - port: 1883
+    protocol: TCP
+    targetPort: 1883
+  selector:
+    app: mqtt
+  type: LoadBalancer
