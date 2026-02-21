@@ -52,6 +52,8 @@ spec:
             ) and not (
               container.name = "traefik" and
               k8s.ns.name = "ingress"
+            ) and not (
+              proc.name = "kube-vip"
             )
 
       allow-explo-crond.yaml: |
