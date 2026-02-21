@@ -32,6 +32,7 @@ spec:
         ingress:
           public: true
           domain: news.cocointhe.cloud
+          geoblock: false
 
     configmaps:
       glance-config:
