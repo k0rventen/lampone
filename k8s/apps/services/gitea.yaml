@@ -45,7 +45,7 @@ spec:
             persistentVolumeClaim:
               claimName: gitea-conf
       - name: runner
-        image: gitea/act_runner:0.2.11-dind-rootless@sha256:6120b1165f3a9f567390c616a174b67165db3c8a87e5ec4c9d71c1de21c9cdf9
+        image: gitea/act_runner:0.3.0-dind-rootless@sha256:1d70d183cbe87a1461cd2f91730e8073a41bdeaa05949328217401dd4f7c8eb1
         env:
           - name: GITEA_INSTANCE_URL
             value: "http://gitea:3000"
