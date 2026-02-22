@@ -42,7 +42,8 @@ spec:
               nfs-system,
               flux-system,
               system-upgrade,
-              cert-manager
+              cert-manager,
+              longhorn-system
             ) and not (
               container.name = "prometheus-server" and
               k8s.ns.name = "watchtower"
