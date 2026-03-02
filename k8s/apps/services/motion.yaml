@@ -16,7 +16,7 @@ spec:
   values:
     apps:
       - name: motion
-        image: gitea.cocointhe.cloud/coco/motion:v0.2.0
+        image: gitea.cocointhe.cloud/coco/motion:v0.2.0@sha256:8b1260b868b0f8f8ee1b805e879a68144951de21778a4adbbd097222fcdada2f
         volumeMounts:
           - name: motion-data
             mountPath: /data
