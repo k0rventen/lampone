@@ -1,3 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wildcard-fallback
+  labels:
+    cocointhe.cloud/geoblock-disabled: ""
+  annotations:
+    traefik.ingress.kubernetes.io/router.priority: "1"
+spec:
+  ingressClassName: traefik-tunnel
+  rules:
+    - host: "*.cocointhe.cloud"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: errors
+                port:
+                  number: 80
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -21,6 +43,7 @@ spec:
         ingress:
           domain: errors.cocointhe.cloud
           public: true
+          geoblock: false
         volumeMounts:
           - name: caddyconf
             mountPath: /etc/caddy
@@ -532,26 +555,3 @@ spec:
             </footer>
           </body>
           </html>
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: wildcard-fallback
-  labels:
-    worldwide_access: "true"
-  annotations:
-    traefik.ingress.kubernetes.io/router.priority: "1"
-spec:
-  ingressClassName: traefik-tunnel
-  rules:
-    - host: "*.cocointhe.cloud"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: errors
-                port:
-                  number: 80
