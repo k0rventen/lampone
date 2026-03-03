@@ -33,6 +33,12 @@
     // do not update adguard without active standby
     { "matchPackageNames": ["adguard/adguardhome"], "automerge": false},  
 
+    {
+      "description": "Handle OWASP CRS container with nginx-alpine timestamp suffix",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["owasp/modsecurity-crs"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-nginx-alpine-(?<build>\\d{12})$"
+    },
     // group immich related updates 
     {
       "matchDatasources": ["docker"],
