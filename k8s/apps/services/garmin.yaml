@@ -1,0 +1,47 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: garmin-grafana
+spec:
+  type: "oci"
+  url: oci://ghcr.io/arpanghosh8453
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: garmin-grafana
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: garmin-grafana
+      version: "v0.4.0-helm"
+      sourceRef:
+        kind: HelmRepository
+        name: garmin-grafana
+      interval: 1h
+  values:
+    grafana:
+      enabled: false
+
+    influxdb:
+      image:
+        repository: influxdb
+        tag: "1.11"
+      persistence:
+        enabled: true
+        size: 5Gi
+
+    garmin:
+      image:
+        repository: ghcr.io/arpanghosh8453/garmin-fetch-data
+        tag: v0.3.0
+      port: 8000
+      tokens:
+        persistence:
+          enabled: true
+          size: 100Mi
+  valuesFrom:
+    - kind: Secret
+      name: garmin-config
