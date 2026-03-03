@@ -36,7 +36,7 @@ spec:
     garmin:
       image:
         repository: ghcr.io/arpanghosh8453/garmin-fetch-data
-        tag: v0.3.0
+        tag: v0.4.0@sha256:0a41f5e68f9555470e5fe8d97d84e90697777825a89543dc1d501df329358598
       port: 8000
       tokens:
         persistence:
