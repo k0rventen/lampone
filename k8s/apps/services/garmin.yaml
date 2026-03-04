@@ -28,7 +28,7 @@ spec:
     influxdb:
       image:
         repository: influxdb
-        tag: "1.12@sha256:f313b61c0ddb391344f89f0b0f1d2ea521bd405a8961506c3218b4efc01bd2bf" # renovate: ignore
+        tag: "2.8@sha256:60676b368409b4ac9664d1ba57b2613c5dec7c1a0f9dcd9405a0be0c375409f5" # renovate: ignore
       persistence:
         enabled: true
         size: 5Gi
