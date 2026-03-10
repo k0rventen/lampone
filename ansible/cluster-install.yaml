@@ -25,6 +25,15 @@
         state: mounted
         boot: true
 
+    - name: Apply inotify sysctl settings
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        state: present
+        reload: true
+        sysctl_file: /etc/sysctl.d/99-inotify.conf
+      loop: "{{ sysctl_inotify_settings }}"
+
 
     - name: Deploy hyperconverged storage
       block:
