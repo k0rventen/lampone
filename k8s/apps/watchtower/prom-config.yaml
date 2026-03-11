@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: prom-config
 stringData:
-  values.yaml: ENC[AES256_GCM,data:mI7mYZCkBnbAgA6cO8c/Xb61Bfg9rrx7B60avT3VAAcH832+PBvAWzKasMKkq8ZTEy/crHzrAQi4m6hOx8WSIKq9Nt2ePwY4JnAL3QXJdjydPaYCqRlbbjvgZUqtiZ+o7eiKSmQ/2I3JVQ4XBuLTI499FflKhDD7wN/IjtpUAcZJrv4+enK4FCJueuNyJiZqT+wEJHLu36sjpBwJAawl3+Eh9oRUZUAwGHPZo9oEJNAv1LjMKM1C2CH30wvn9a3buDMCOfHIPZcyhAgTWV58dXYIKfKKqnHqvWrUDwUb5C4YZZksKzvs5JOX5MfaftJeZSk+6Z7R1oF4nfu7Vwu5WAk1/HKDo3xn+UNVloXz7McDL3jIVHqUROGEOp1Svl4VnakXupsAdW+5DRPmXljtszQwTzeRZT87LNi9vlsidyAk5bfdDW4RWC81XY9YztzsKwes8wNeUFacZ+I9t1fW0Fbdxhl8dVP6kkxG3AIM3xpzihTHALUS848x0MPCa7JC+IA5Vozr8njEE+wFA8JxzBBvntCi4ucEQ0OcyBDN70m6vN/GLd0Syig14ypBy4la4gMOb5TKOhd4nmXpjU2hlJkJqZ9YlUKrf7iajH2+gGufItDg9kGCUBA0WQAtio8iYo0t+qoNtEeFRueP8GPYtH1Indp6ROvR1DBqEalYC9m2iUKyW5CIp4LoNkuquIGXYiY3r0aIgOVy8QMsQ7ljQMO6zMiZdvMVXKd/n7nIiw87uygL9IcrxT4/Z6vCtK08oluxLfYYDrKoFqgYK38ibCgfxkgAwUcdsPeHgoM=,iv:o1DkmPQ5MOpSKUZVzzxSk8O1u+awBH9CViA6qaiXATg=,tag:C/4FKHieDiiamhlwZfk9jw==,type:str]
+  values.yaml: ENC[AES256_GCM,data:HuwHWCdjyp7uUSojrkpfknnOhGEvU8fx3ta0z/9Iix7/QxoVWCm4wQNcGztUAQMbZazexMrOh9vgoNO3jNJxWlz9sFsPl/nxi++g/NcfnZWYhbg3TMRcAfAINCqp+b0v9fDPASMytywJJqjcnMk0eCEFiJAI7fbfbSCbpWGrlCcaPX61EhWZNpbx+qeAJHkIXGzh93dMVOP7CbOSKU2RNOVf1XgyyHnUarYoUh59u+Kum81j+UkPHfFCrfs1NMXBs/YlQ30eT5tmV1L6M3szMt4AFhuNqzM+uKKhZKrRHCX/qNY9dWCrZuY4Emzq67YSChHebKpCDuOgYVJGOevC7dnyNZF2NqMF8z5TTy+tCqip9TZ44O/add17mqt3ZgxfpJzcFQ7qEegjncCj+pIA0T+2bFx/eYCtQYukm8nc6SKokT2l93+G09GIaFP3V5nqEP9pNNSyzngzU+Z/7R7GFBzLkaxpBZrsq4Q2SnHxyl6Z0x6zgC6rHgJLHrSFQZ3bEKacDohpjSCUAhNdumWutWYzMKPMGU3Rf6GyaI9+ZOKgrrJp/BuDotGx8DjGdhkyA7GxZRDz+Zk/PNQ0VP3owm2NaLaplA7+nX/iuQpz84xXMBlv8w3MrWo/zJDB5zpYUKlUFy1516Pu1kTSmb4+p7ZwQwTkSLbI6kYG+VwyNqlfwxhkmVGagG5CIZtnFDYGz0rOoU29X83pr5k8WoVA61JMr8pDUv0NPT/72MPY5LKler0aaJCFNWcWUjifFcnwyRzEzZZmItYyiZ9D+i3cmNy47GXpbOu6EKKGDQINWYw=,iv:FqweV6+I+xNmJowhbxhgiy/a7oGGT6S49AZYuysPiP4=,tag:4Tx2YE3nGAHG7oR/VCVn1Q==,type:str]
 sops:
   age:
     - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
@@ -15,7 +15,7 @@ sops:
         UE1KT1BEc0c5L2tNQVBlRVBsVlBDTjQKh33j1yOzEmpI24EKDHgJOoFIyKXgLC6u
         eIBxuRjfNLexjQ90M/QoRSwIKr1lQ2ZB01/oiYdgta5WR1IB4FkU+A==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2026-01-26T16:44:11Z"
-  mac: ENC[AES256_GCM,data:rDi7lyH69SHd6EqWsGcPCvDxfC/p0ZorpoO9VOkquZk9KqXa/T0R9bc+PZXus+Y09hZJ2hquwXlMOt4GlRhHVLchOXj9RzrWM4q5K+rxb27g7Rz5mAInmvCOUt7WCsrL1HSYcqHZXrGZrvPkk1FugueBtd6lfMW6pYXH5Z5ZdoM=,iv:mbyMtpiDeQFND2Bu3yuS3HC2Oqn1GcokMBu8Zj++bkg=,tag:wqFo77RALxFt2+lRRjmQZw==,type:str]
+  lastmodified: "2026-03-11T21:14:32Z"
+  mac: ENC[AES256_GCM,data:vJrHcj8mKXqLe0IooxiE7q+ofCQHWRdFMDP1mv7HN6jYHQ9sfvtfzTGTF8i41aNtxDAYprlkCJIcV2mbDwWei4RTdbdK+HNkDtN8Hn5xFbMoZprHZSfdqKoStuirQlOmnOJMczlnzy+5LsIbDDBzAaVUedA74Xp98dNHyks4Dfw=,iv:0pQE6qVjplk8Tm3JXypDqS/rhNAw6loqxcvnrza2RSU=,tag:ThnffwPg7RPf8vGTP7Au5A==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
-  version: 3.11.0
+  version: 3.12.1
