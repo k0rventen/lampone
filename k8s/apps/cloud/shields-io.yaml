@@ -51,6 +51,7 @@ spec:
   - Egress
   egress:
   - to:
-    - podSelector:
+    - namespaceSelector: {}
+      podSelector:
         matchLabels:
           app: kromgo
