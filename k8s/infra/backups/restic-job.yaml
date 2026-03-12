@@ -3,7 +3,8 @@ kind: CronJob
 metadata:
   name: restic-backup
 spec:
-  schedule: "38 3 * * *"
+  schedule: "30 3 * * *"
+  timeZone: "Europe/Paris"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -11,8 +12,8 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          nodeName: drupelet-1
-          hostname: drupelet-1
+          nodeName: drupelet-1 # pin to the nfs node
+          hostname: drupelet-1 # set hostname so the backups use this instead of a pod generated name
           containers:
             - image: gitea.cocointhe.cloud/coco/restic:2025.09.16-fc12269@sha256:ce4a0ee7b8695e2983bd3c528ca54d259c9547b6f728353ce26b8d7be1cd7078
               name: restic-backup

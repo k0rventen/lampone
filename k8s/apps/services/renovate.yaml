@@ -3,7 +3,8 @@ kind: CronJob
 metadata:
   name: renovate
 spec:
-  schedule: "0,15,30 19 * * *"
+  schedule: "0 20 * * *"
+  timeZone: "Europe/Paris"
   # suspend: true
   concurrencyPolicy: Forbid
   jobTemplate:
