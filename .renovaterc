@@ -9,30 +9,23 @@
   "helm-values": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
   "kubernetes": { "managerFilePatterns": ["/k8s/.+\\.ya?ml$/"] },
 
-  // as some datasources have a release timestamp, and some do not
-  // this leads to incoherent behavior across the apps
-  // so it is being disabled for now
-  //"minimumReleaseAge": "3 days",
-  //"minimumReleaseAgeBehaviour": "timestamp-optional", // some docker registry do not provide release timestamps
-
   "packageRules": [
-    // allow minor updates if not 0.x
+    // automerge patch updates
     {
-      "matchUpdateTypes": ["minor"],
-      "matchCurrentVersion": "!/^0/",
+      "matchUpdateTypes": ["patch"],
       "automerge": true},
 
-    // allow patch and pin, but no digest update 
-    {"matchUpdateTypes": ["patch"],"automerge": true},
+    // allow pin but no digest update 
     { "matchUpdateTypes": ["pin"], "enabled": true },
     { "matchUpdateTypes": ["digest"], "enabled": false },
 
     // renovate spams too much, so only update once a month
-    { "matchPackageNames": ["renovate/renovate"], "automerge": true, "matchUpdateTypes": ["patch","minor"],"schedule": ["* * 1 * *"]},  
+    { "matchPackageNames": ["renovate/renovate"], "schedule": ["* * 1 * *"]},  
 
     // do not update adguard without active standby
     { "matchPackageNames": ["adguard/adguardhome"], "automerge": false},  
-
+    
+    // owasp versionning is weird
     {
       "description": "Handle OWASP CRS container with nginx-alpine timestamp suffix",
       "matchDatasources": ["docker"],
@@ -47,6 +40,7 @@
     
     // do not automerge k3s as it upgrades the nodes
     { "matchPackageNames": ["k3s"], "automerge": false },
+    
     // do not change the versionning on the UpgradePlan Images as they will automatically use the one matching the version of the plan
     { "matchPackageNames":["rancher/k3s-upgrade"],"enabled": false}
   ],
