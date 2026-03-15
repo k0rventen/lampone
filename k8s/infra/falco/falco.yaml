@@ -30,6 +30,7 @@ spec:
       disable-false-positives.yaml: |
         - rule: Packet socket created in container
           enabled: false
+      # normal communication to the api server
       allow-kube-vip-apiserver.yaml: |
         - rule: Contact K8S API Server From Container
           override: 
@@ -56,7 +57,7 @@ spec:
             ) and not (
               proc.name = "kube-vip"
             )
-
+      # explo launches a cron for scheduling 
       allow-explo-crond.yaml: |
         - rule: Drop and execute new binary in container
           override: 
@@ -66,6 +67,18 @@ spec:
               k8s.ns.name = "media" and
               container.image.repository = "ghcr.io/lumepart/explo" and
               proc.pname = "crond"
+            )
+      # at startup, it seems owasp is doing some templating for the rules
+      allow-owasp-shell.yaml: |
+        - rule: Run shell untrusted
+          override: 
+            condition: append
+          condition: >
+            and not (
+              k8s.ns.name = "ingress" and
+              container.image.repository = "docker.io/owasp/modsecurity-crs" and
+              container.name = "waf" and
+              proc.pname = "nginx"
             )
 
     falcosidekick:
