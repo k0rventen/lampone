@@ -28,7 +28,7 @@ spec:
         containerSpec:
           envFrom:
             - secretRef:
-                name: groceries-config
+                name: nota-config
         volumeMounts:
           - name: nota-data
             mountPath: /app/data
