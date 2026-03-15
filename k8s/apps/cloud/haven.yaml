@@ -20,10 +20,6 @@ spec:
         containerSpec:
           envFrom:
             - secretRef:
-                name: groceries-config
-        containerSpec:
-          envFrom:
-            - secretRef:
                 name: haven-config
         volumeMounts:
           - name: haven-data
