@@ -33,7 +33,6 @@ spec:
             value: "false"
         containerSpec:
           args:
-            - server
             - start
         volumeMounts:
           - name: atuin-data
