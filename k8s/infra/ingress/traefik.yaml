@@ -20,7 +20,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: "38.0.2"
+      version: "39.0.6"
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -61,11 +61,12 @@ spec:
           enabled: false
     ports:
       web:
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
     logs:
       general:
         format: "json"
@@ -93,7 +94,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: "38.0.2"
+      version: "39.0.6"
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -106,12 +107,9 @@ spec:
       sendAnonymousUsage: false
     experimental:
       plugins:
-        oidc:
-          moduleName: github.com/lukaszraczylo/traefikoidc
-          version: v0.8.21
         geoblock:
           moduleName: "github.com/PascalMinder/geoblock"
-          version: "v0.3.5"
+          version: "v0.3.7"
         modsec:
           moduleName: "github.com/acouvreur/traefik-modsecurity-plugin"
           version: "v1.3.0"
@@ -135,15 +133,17 @@ spec:
         ingressClass: "traefik-tunnel"
     ports:
       web:
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
       websecure:
-        middlewares:
-        - ingress-errors@kubernetescrd
-        - ingress-modsec@kubernetescrd
+        http:
+          middlewares:
+          - ingress-errors@kubernetescrd
+          - ingress-modsec@kubernetescrd
         forwardedHeaders:
           trustedIPs: ["10.0.0.0/8"]
         proxyProtocol:
