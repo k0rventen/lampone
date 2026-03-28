@@ -206,7 +206,7 @@ Here is the compose for the VPS:
 ```yaml
 services:
   traefik:
-    image: docker.io/traefik:v3.6.2
+    image: traefik
     restart: always
     ports:
     - 80:80
@@ -243,21 +243,25 @@ providers:
 
 tcp:
   routers:
-    rathole:
+    to-k8s-tcp:
       entryPoints:
         - websecure
       rule: "HostSNI(`*`)"
       tls:
         passthrough: true
-      service: rathole
+      service: rathole-proxy-tcp
 
   services:
-    rathole:
+    rathole-proxy-tcp:
       loadBalancer:
-        proxyProtocol:
-          version: 2
+        serversTransport: tcp-transport
         servers:
           - address: "rathole:443"
+
+  serversTransports:
+    tcp-transport:
+      proxyProtocol:
+        version: 2
 ```
 
 
