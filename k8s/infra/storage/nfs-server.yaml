@@ -1,90 +1,90 @@
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: nfs-server
-spec:
-  type: ClusterIP
-  ports:
-    - port: 2049
-      targetPort: 2049
-  selector:
-    app: nfs-server
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: nfs-server
+# spec:
+#   type: ClusterIP
+#   ports:
+#     - port: 2049
+#       targetPort: 2049
+#   selector:
+#     app: nfs-server
 
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  name: nfs-server
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nfs-server
-  template:
-    metadata:
-      name: nfs-server
-      labels:
-        app: nfs-server
-    spec:
-      nodeName: "drupelet-1" # pinned to node w/ attached storage
-      initContainers:
-        - name: nfs-modules
-          image: alpine:3.23@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
-          args:
-            - "modprobe"
-            - "nfsd"
-            - "nfs"
-          securityContext:
-            capabilities:
-              add:
-                - "SYS_MODULE"
-          volumeMounts:
-            - mountPath: /lib/modules
-              name: modules
-              readOnly: true
-      containers:
-        - name: nfs-server
-          image: ghcr.io/k0rventen/docker-nfs-server:v0.3.1@sha256:166da8bf7042322ff9200081ae1fe07396a725c7da0586d737c3d5018e9450e2
-          securityContext:
-            privileged: true
-          ports:
-            - name: nfsv4
-              containerPort: 2049
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /nfs
-              name: data
-            - name: nfs-exports
-              mountPath: /etc/exports
-              subPath: exports
-              readOnly: true
-          readinessProbe:
-            exec:
-              command:
-              - sh
-              - -c 
-              - "mkdir -p tmpmnt && mount -t nfs -o nfsvers=4.2 127.0.0.1:/ tmpmnt/ && touch tmpmnt/healthcheck && umount tmpmnt/"
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 2
-      volumes:
-        - name: nfs-exports
-          configMap:
-            name: nfs-exports
-        - name: data
-          hostPath:
-            path: /nfs
-            type: Directory
-        - name: modules
-          hostPath:
-            path: /lib/modules
-            type: Directory
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nfs-exports
-data:
-  exports: |
-    /nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)
+# ---
+# kind: Deployment
+# apiVersion: apps/v1
+# metadata:
+#   name: nfs-server
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: nfs-server
+#   template:
+#     metadata:
+#       name: nfs-server
+#       labels:
+#         app: nfs-server
+#     spec:
+#       nodeName: "drupelet-1" # pinned to node w/ attached storage
+#       initContainers:
+#         - name: nfs-modules
+#           image: alpine:3.23@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
+#           args:
+#             - "modprobe"
+#             - "nfsd"
+#             - "nfs"
+#           securityContext:
+#             capabilities:
+#               add:
+#                 - "SYS_MODULE"
+#           volumeMounts:
+#             - mountPath: /lib/modules
+#               name: modules
+#               readOnly: true
+#       containers:
+#         - name: nfs-server
+#           image: ghcr.io/k0rventen/docker-nfs-server:v0.3.1@sha256:166da8bf7042322ff9200081ae1fe07396a725c7da0586d737c3d5018e9450e2
+#           securityContext:
+#             privileged: true
+#           ports:
+#             - name: nfsv4
+#               containerPort: 2049
+#               protocol: TCP
+#           volumeMounts:
+#             - mountPath: /nfs
+#               name: data
+#             - name: nfs-exports
+#               mountPath: /etc/exports
+#               subPath: exports
+#               readOnly: true
+#           readinessProbe:
+#             exec:
+#               command:
+#               - sh
+#               - -c 
+#               - "mkdir -p tmpmnt && mount -t nfs -o nfsvers=4.2 127.0.0.1:/ tmpmnt/ && touch tmpmnt/healthcheck && umount tmpmnt/"
+#             initialDelaySeconds: 10
+#             periodSeconds: 10
+#             failureThreshold: 2
+#       volumes:
+#         - name: nfs-exports
+#           configMap:
+#             name: nfs-exports
+#         - name: data
+#           hostPath:
+#             path: /nfs
+#             type: Directory
+#         - name: modules
+#           hostPath:
+#             path: /lib/modules
+#             type: Directory
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: nfs-exports
+# data:
+#   exports: |
+#     /nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)
