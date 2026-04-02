@@ -22,17 +22,17 @@ spec:
         envFrom:
           - secretRef:
               name: immich-config
-      podSpec:
-        affinity:
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - immich-machine-learning
-              topologyKey: "kubernetes.io/hostname"
+      # podSpec:
+      #   affinity:
+      #     podAntiAffinity:
+      #       requiredDuringSchedulingIgnoredDuringExecution:
+      #       - labelSelector:
+      #           matchExpressions:
+      #           - key: app
+      #             operator: In
+      #             values:
+      #             - immich-machine-learning
+      #         topologyKey: "kubernetes.io/hostname"
       ingress:
         domain: immich.cocointhe.cloud
       volumeMounts:
@@ -52,17 +52,17 @@ spec:
       env:
       - name: TRANSFORMERS_CACHE
         value: /cache
-      podSpec:
-        affinity:
-          podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - immich-server
-              topologyKey: "kubernetes.io/hostname"
+      # podSpec:
+      #   affinity:
+      #     podAntiAffinity:
+      #       requiredDuringSchedulingIgnoredDuringExecution:
+      #       - labelSelector:
+      #           matchExpressions:
+      #           - key: app
+      #             operator: In
+      #             values:
+      #             - immich-server
+      #         topologyKey: "kubernetes.io/hostname"
       containerSpec:
         envFrom:
           - secretRef:
