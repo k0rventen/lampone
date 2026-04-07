@@ -45,7 +45,7 @@ spec:
             persistentVolumeClaim:
               claimName: gitea-conf
       - name: runner
-        deploymentSpec:
+        podSpec:
           hostname: act-runner
         image: gitea/act_runner:0.3.1-dind-rootless@sha256:a7acab303ccc0d477b4346cb6b0dc058eba22cccb21a5a463ddcb0477527eaad # renovate: ignore
         env:
