@@ -45,16 +45,16 @@ spec:
             persistentVolumeClaim:
               claimName: gitea-conf
       - name: runner
+        deploymentSpec:
+          hostname: act-runner
         image: gitea/act_runner:0.3.1-dind-rootless@sha256:a7acab303ccc0d477b4346cb6b0dc058eba22cccb21a5a463ddcb0477527eaad # renovate: ignore
         env:
           - name: GITEA_INSTANCE_URL
             value: "http://gitea:3000"
+          - name: GITEA_RUNNER_LABELS
+            value: "ubuntu-latest:host"
           - name: DOCKER_HOST
-            value: tcp://localhost:2376
-          - name: DOCKER_CERT_PATH
-            value: /certs/client
-          - name: DOCKER_TLS_VERIFY
-            value: "1"
+            value: "unix:///var/run/user/1000/docker.sock"
           - name: GITEA_RUNNER_REGISTRATION_TOKEN
             valueFrom:
               secretKeyRef:
@@ -63,3 +63,12 @@ spec:
         containerSpec:
           securityContext:
             privileged: true
+        pvc:
+          - runner-data
+        volumeMounts:
+          - name: runner-data
+            mountPath: /data
+        volumes:
+          - name: runner-data
+            persistentVolumeClaim:
+              claimName: runner-data
