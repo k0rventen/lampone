@@ -1,124 +1,124 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: kromgo
-spec:
-  interval: 24h
-  chart:
-    spec:
-      chart: appchart
-      version: "1.8.0"
-      sourceRef:
-        kind: HelmRepository
-        name: appchart
-        namespace: flux-system
-      interval: 1h
-  values:
-    apps:
-      - name: kromgo
-        image: ghcr.io/kashalls/kromgo:v0.8.2@sha256:bd2213c7e471ada38bfec5600f17ede76177815d560d2d6b9a0f433054c93080
-        service: 8080
-        env:
-          - name: PROMETHEUS_URL
-            value: http://prometheus-server.watchtower.svc.cluster.local
-        volumeMounts:
-          - name: kromgo-config
-            mountPath: /kromgo/config.yaml
-            subPath: config.yaml
-        volumes:
-          - name: kromgo-config
-            configMap:
-              name: kromgo-config
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: kromgo
+# spec:
+#   interval: 24h
+#   chart:
+#     spec:
+#       chart: appchart
+#       version: "1.8.0"
+#       sourceRef:
+#         kind: HelmRepository
+#         name: appchart
+#         namespace: flux-system
+#       interval: 1h
+#   values:
+#     apps:
+#       - name: kromgo
+#         image: ghcr.io/kashalls/kromgo:v0.8.2@sha256:bd2213c7e471ada38bfec5600f17ede76177815d560d2d6b9a0f433054c93080
+#         service: 8080
+#         env:
+#           - name: PROMETHEUS_URL
+#             value: http://prometheus-server.watchtower.svc.cluster.local
+#         volumeMounts:
+#           - name: kromgo-config
+#             mountPath: /kromgo/config.yaml
+#             subPath: config.yaml
+#         volumes:
+#           - name: kromgo-config
+#             configMap:
+#               name: kromgo-config
 
-    configmaps:
-      kromgo-config:
-        config.yaml: |
-          ---
-          # yaml-language-server: $schema=https://raw.githubusercontent.com/kashalls/kromgo/main/config.schema.json
-          badge:
-            font: Verdana.ttf
-            size: 12
+#     configmaps:
+#       kromgo-config:
+#         config.yaml: |
+#           ---
+#           # yaml-language-server: $schema=https://raw.githubusercontent.com/kashalls/kromgo/main/config.schema.json
+#           badge:
+#             font: Verdana.ttf
+#             size: 12
 
-          metrics:
-            - name: kubernetes_version
-              query: label_replace(kubernetes_build_info{instance="drupelet-1"}, "git_version", "$1", "git_version", "(.+)")
-              label: git_version
-              title: k8s version
+#           metrics:
+#             - name: kubernetes_version
+#               query: label_replace(kubernetes_build_info{instance="drupelet-1"}, "git_version", "$1", "git_version", "(.+)")
+#               label: git_version
+#               title: k8s version
 
-            - name: flux_version
-              query: gotk_token_cache_evictions_total{app="source-controller"}
-              label: app_kubernetes_io_version
-              title: flux version
+#             - name: flux_version
+#               query: gotk_token_cache_evictions_total{app="source-controller"}
+#               label: app_kubernetes_io_version
+#               title: flux version
 
-            - name: cluster_temperature
-              title: Rack Temperature
-              query: round(avg(node_hwmon_temp_celsius{}))
-              suffix: "°C"
-              colors:
-                - { color: "green", min: 0, max: 55 }
-                - { color: "orange", min: 56, max: 65 }
-                - { color: "red", min: 66, max: 99 }
+#             - name: cluster_temperature
+#               title: Rack Temperature
+#               query: round(avg(node_hwmon_temp_celsius{}))
+#               suffix: "°C"
+#               colors:
+#                 - { color: "green", min: 0, max: 55 }
+#                 - { color: "orange", min: 56, max: 65 }
+#                 - { color: "red", min: 66, max: 99 }
 
-            - name: cluster_power_draw
-              title: Power draw
-              query: round(5 + 3 * (3 + (4* avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])))),.1)
-              suffix: "W"
+#             - name: cluster_power_draw
+#               title: Power draw
+#               query: round(5 + 3 * (3 + (4* avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])))),.1)
+#               suffix: "W"
 
-            - name: cluster_cpu_usage
-              title: CPU Usage
-              query: round(avg(100 * avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)))
-              suffix: "%"
-              colors:
-                - { color: "green", min: 0, max: 45 }
-                - { color: "orange", min: 56, max: 75 }
-                - { color: "red", min: 76, max: 9999 }
+#             - name: cluster_cpu_usage
+#               title: CPU Usage
+#               query: round(avg(100 * avg(1 - rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)))
+#               suffix: "%"
+#               colors:
+#                 - { color: "green", min: 0, max: 45 }
+#                 - { color: "orange", min: 56, max: 75 }
+#                 - { color: "red", min: 76, max: 9999 }
 
-            - name: cluster_memory_usage
-              title: RAM Usage
-              query: round(sum(node_memory_MemTotal_bytes{} - node_memory_MemAvailable_bytes{}) / sum(node_memory_MemTotal_bytes{}) * 100)
-              suffix: "%"
-              colors:
-                - { color: green, min: 0, max: 55 }
-                - { color: orange, min: 56, max: 75 }
-                - { color: red, min: 76, max: 9999 }
+#             - name: cluster_memory_usage
+#               title: RAM Usage
+#               query: round(sum(node_memory_MemTotal_bytes{} - node_memory_MemAvailable_bytes{}) / sum(node_memory_MemTotal_bytes{}) * 100)
+#               suffix: "%"
+#               colors:
+#                 - { color: green, min: 0, max: 55 }
+#                 - { color: orange, min: 56, max: 75 }
+#                 - { color: red, min: 76, max: 9999 }
 
-            - name: nfs_disk_usage
-              title: DISK Usage
-              query: round((1 - node_filesystem_free_bytes{mountpoint="/nfs"} / node_filesystem_size_bytes{mountpoint="/nfs"})  * 100)
-              suffix: "%"
-              colors:
-                - { color: green, min: 0, max: 50 }
-                - { color: orange, min: 51, max: 75 }
-                - { color: red, min: 76, max: 9999 }
+#             - name: nfs_disk_usage
+#               title: DISK Usage
+#               query: round((1 - node_filesystem_free_bytes{mountpoint="/nfs"} / node_filesystem_size_bytes{mountpoint="/nfs"})  * 100)
+#               suffix: "%"
+#               colors:
+#                 - { color: green, min: 0, max: 50 }
+#                 - { color: orange, min: 51, max: 75 }
+#                 - { color: red, min: 76, max: 9999 }
 
 
 
-            - name: availability
-              title: Availability (7d)
-              query: round(avg(avg_over_time(monitor_status[7d]) * 100),.01)
-              suffix: "%"
-              colors:
-                - { color: "red", min: 0, max: 90 }
-                - { color: "orange", min: 91, max: 98 }
-                - { color: "green", min: 99, max: 100 }
+#             - name: availability
+#               title: Availability (7d)
+#               query: round(avg(avg_over_time(monitor_status[7d]) * 100),.01)
+#               suffix: "%"
+#               colors:
+#                 - { color: "red", min: 0, max: 90 }
+#                 - { color: "orange", min: 91, max: 98 }
+#                 - { color: "green", min: 99, max: 100 }
 
-            - name: cluster_uptime_days
-              title: Uptime
-              query: round((time() - max(kube_node_created{node="drupelet-1"})) / 86400)
-              suffix: "d"
-              colors:
-                - { color: "green", min: 0, max: 180 }
-                - { color: "orange", min: 181, max: 360 }
-                - { color: "red", min: 361, max: 9999 }
+#             - name: cluster_uptime_days
+#               title: Uptime
+#               query: round((time() - max(kube_node_created{node="drupelet-1"})) / 86400)
+#               suffix: "d"
+#               colors:
+#                 - { color: "green", min: 0, max: 180 }
+#                 - { color: "orange", min: 181, max: 360 }
+#                 - { color: "red", min: 361, max: 9999 }
 
-            - name: pods_count
-              title: Pods
-              query: sum(kubelet_active_pods)
+#             - name: pods_count
+#               title: Pods
+#               query: sum(kubelet_active_pods)
 
-            - name: nodes_count
-              query: sum(kubelet_node_name{job="kubernetes-nodes"})
-              title: Nodes
----
+#             - name: nodes_count
+#               query: sum(kubelet_node_name{job="kubernetes-nodes"})
+#               title: Nodes
+# ---
 # kromgo-> prom
 # apiVersion: networking.k8s.io/v1
 # kind: NetworkPolicy
