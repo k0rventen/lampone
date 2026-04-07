@@ -223,7 +223,23 @@ metadata:
 spec:
   interval: 1h
   targetNamespace: kyverno
-  path: ./k8s/infra/kyverno
+  path: ./k8s/infra/kyverno/deployment
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kyverno-policies
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kyverno
+  interval: 1h
+  targetNamespace: kyverno
+  path: ./k8s/infra/kyverno/policies
   prune: true
   sourceRef:
     kind: GitRepository
