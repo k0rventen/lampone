@@ -34,7 +34,7 @@ spec:
     nodePathMap: []
     sharedFileSystemPath: "/data"
     storageClass:
-      name: local
+      name: nfs-csi
       reclaimPolicy: Retain
       defaultClass: true
       pathPattern: "{{ .PVC.Namespace }}-{{ .PVC.Name }}"
