@@ -10,15 +10,3 @@ spec:
   issuerRef:
     name: ovh-lets-encrypt-prod
     kind: Issuer
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: wildcard-staging-cocointhe-cloud
-spec:
-  secretName: wildcard-staging-cocointhe-cloud-tls
-  dnsNames:
-    - "*.staging.cocointhe.cloud"
-  issuerRef:
-    name: ovh-lets-encrypt-prod
-    kind: Issuer
