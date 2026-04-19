@@ -2,19 +2,10 @@ all:
   children:
     lampone:
       hosts:
-        drupelet-1:
-          ansible_host: 192.168.1.1
-          role: control_plane
-        drupelet-2:
-          ansible_host: 192.168.1.2
-          role: worker
-        drupelet-3:
-          ansible_host: 192.168.1.3
-          role: worker
+        tepore:
+          ansible_host: 192.168.1.10
+
   vars:
-    k3s_version: v1.35.1+k3s1
-    cluster_cp_ip: 192.168.1.10
-    k3s_token: randomtokenforclusterjoin
 
     sysctl_inotify_settings:
       - { name: fs.inotify.max_user_instances, value: 1024 }
@@ -23,15 +14,3 @@ all:
     tmpfs_mount_point: /var/log/pods
     tmpfs_size: 256M
     ansible_python_interpreter: auto_silent
-
-    mount_unit_name: "nfs.mount"
-    mount_device: "/dev/disk/by-label/cluster-data"
-    mount_path: "/nfs"
-    mount_type: "ext4"
-    mount_permissions: "0777"
-
-    hyperconverged_mount_unit_name: "var-lib-longhorn.mount"
-    hyperconverged_mount_device: "/dev/disk/by-label/hyperconverged"
-    hyperconverged_mount_path: "/var/lib/longhorn"
-    hyperconverged_mount_type: "ext4"
-    hyperconverged_mount_permissions: "0777"

@@ -3,11 +3,6 @@
   hosts: all
   become: true
   tasks:
-    - name: Install curl for all nodes
-      apt:
-        name: curl
-        state: present
-
     - name: Ensure log directory exists
       ansible.builtin.file:
         path: "{{ tmpfs_mount_point }}"
@@ -35,74 +30,6 @@
       loop: "{{ sysctl_inotify_settings }}"
 
 
-    - name: Deploy hyperconverged storage
-      block:
-      - name: Install isci for all nodes
-        apt:
-          name: open-iscsi
-          state: present
-      - name: Create systemd mount unit file
-        ansible.builtin.copy:
-          dest: "/etc/systemd/system/{{ hyperconverged_mount_unit_name }}"
-          content: |
-            [Unit]
-            Description=Mount hyperconverged disk
-
-            [Mount]
-            What={{ hyperconverged_mount_device }}
-            Where={{ hyperconverged_mount_path }}
-            Type={{ hyperconverged_mount_type }}
-            DirectoryMode={{ hyperconverged_mount_permissions }}
-
-            [Install]
-            WantedBy=multi-user.target
-          mode: '0644'
-      - name: Ensure directory exists before mounting
-        ansible.builtin.file:
-          path: "{{ hyperconverged_mount_path }}"
-          state: directory
-          mode: '0777'
-      - name: Enable and start the mount unit
-        ansible.builtin.systemd:
-          name: "{{ hyperconverged_mount_unit_name }}"
-          enabled: yes
-          state: started
-          daemon_reload: yes
-
-
-    - name: Deploy NFS disk systemd mount
-      when: role == 'control_plane'
-      block:
-      - name: Create systemd mount unit file
-        ansible.builtin.copy:
-          dest: "/etc/systemd/system/{{ mount_unit_name }}"
-          content: |
-            [Unit]
-            Description=Mount cluster-data disk
-
-            [Mount]
-            What={{ mount_device }}
-            Where={{ mount_path }}
-            Type={{ mount_type }}
-            DirectoryMode={{ mount_permissions }}
-
-            [Install]
-            WantedBy=multi-user.target
-          mode: '0644'
-
-      - name: Ensure directory exists before mounting
-        ansible.builtin.file:
-          path: "{{ mount_path }}"
-          state: directory
-          mode: '0777'
-
-      - name: Enable and start the mount unit
-        ansible.builtin.systemd:
-          name: "{{ mount_unit_name }}"
-          enabled: yes
-          state: started
-          daemon_reload: yes
-
     - name: Configure kubelet log rotation for k3s
       copy:
         dest: /etc/rancher/k3s/config.yaml
@@ -114,29 +41,15 @@
             - container-log-max-size=4Mi
             - container-log-max-files=2
 
-    - name: Install k3s server on the master node if not already installed
+    - name: Install k3s server if not already installed
       shell: |
         curl -sfL https://get.k3s.io | \
         INSTALL_K3S_VERSION={{ k3s_version }} \
-        K3S_TOKEN="{{ k3s_token }}" \
         sh -s - \
         --write-kubeconfig-mode 644 \
         --disable-helm-controller \
         --disable=traefik \
         --disable=local-storage \
-        --disable=metrics-server \
-        --embedded-registry
+        --disable=metrics-server
       args:
         creates: /usr/local/bin/k3s
-      when: role == 'control_plane'
-
-    - name: Install k3s agent on worker nodes if not already installed
-      shell: |
-        curl -sfL https://get.k3s.io | \
-        INSTALL_K3S_VERSION={{ k3s_version }} \
-        K3S_URL=https://{{ cluster_cp_ip }}:6443 \
-        K3S_TOKEN="{{ k3s_token }}" \
-        sh -s -
-      args:
-        creates: /usr/local/bin/k3s
-      when: role == 'worker'
