@@ -47,7 +47,7 @@ spec:
       - name: runner
         podSpec:
           hostname: act-runner
-        image: gitea/act_runner:0.3.1-dind-rootless@sha256:a7acab303ccc0d477b4346cb6b0dc058eba22cccb21a5a463ddcb0477527eaad # renovate: ignore
+        image: gitea/act_runner:0.4.1-dind-rootless@sha256:3461d10b1e6dca429b6148cb1b008db93566c7f1cfdcff731aa9e4c5f5cf6a51 # renovate: ignore
         env:
           - name: GITEA_INSTANCE_URL
             value: "http://gitea:3000"
