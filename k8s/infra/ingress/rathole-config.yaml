@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: rathole-config
 stringData:
-  client.toml: ENC[AES256_GCM,data:ixoUq/quL5o7SKAYXr2IU5JHiqKvLG2d2mKBSAJ/990I6dlZzI90RJ3IKd3hQZP9QeKnsM7TBAos18QWGtbT9IqZrBuBXfW2K2b+Vu8rsehVkLDN29XMQUMi9ggkmNL4gY5xufNgzrAXO9kDqOJkdzcdFEp5GPWpgxlcj31QHIxly1MXS9Zw5OAvjcK26asOYrGUYfeaTmWDCxz1p6D13DG3zJx5wso7sZj0cgcwmTK5RLJZ/yt3MdtsrMbcaBG2kNk=,iv:0mfYhhLndotq2xKti+Spa3lUbFvgkZBY+kUUtR0tMf0=,tag:uyP2QS3DOBBeQEiJkaan3g==,type:str]
+  client.toml: ENC[AES256_GCM,data:fRYDT2qILoYJxvuh1YyTKP1qlcxfGtko2O2bwgn1LJuGvrwwzMcfG8jwjtVKuWKSNRcorE/+zFb1XADvZzNtG9JxREdRZ74orPDBJHsUYOIeYOUy/vr2COTfRKQ12u95xq27HEYaw3yfvj61hPCyoQfrhymAXYTjnE+FVWF9olqtL43CPcaLtGyhT8Y0VN9q/WTqCcDQYRHUhqygjIPep01YhLoIet/fMexVAZlCeBmyZhS4zp2VktfzFOGLAS7YIA==,iv:GFPHXzve5g3wjP5HggD2/f8woexaGwuQ3LOtB3QjVxQ=,tag:RmXGfIgasmGIry7bJPJkYg==,type:str]
 sops:
   age:
     - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
@@ -15,7 +15,7 @@ sops:
         bFI5RVc2MlRHVEVPY1RkQkJubC9ZVHMKAqH1/GFI64wi7snArBteDlJTn+gYWetc
         G9VpIBmq6kRRo6unUo31hrQZ7UUlY0Y3ZcsQbUXxk4Vl0tukfCz0WA==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-12-04T20:41:52Z"
-  mac: ENC[AES256_GCM,data:xtzxMFG2PYNGxq30cAZnJsjFSSXDaIRL2ZcaZm7y2w1ZtP5eR5usskG7UZ0P8TWOQYkdeUXZr65tcNmQprPjm0+Axo0v1HPYF2vrj/9umk9uHmwiPTCWv/b9Kf5vh9V/SrnDzdJlm1j5TQEDOxj/TbQzdiDftcckLCVhEj7NTOw=,iv:PG24fAL0khhywUYbI+ZdOvfuD3/Wj0FRLxBaoi7jjN4=,tag:aRA2d8uKFHeKDfWsilJQrQ==,type:str]
+  lastmodified: "2026-04-24T15:52:59Z"
+  mac: ENC[AES256_GCM,data:xiWThjMc+u8VnmnHtA+bgDbx21hckk92CVuiKk9OVTukSC6p63csmI17vX+wNAP4w1EzeGcPZDDJLTlps/SLm1RYFxnbiOeABH0xypWO4z0I4zH5nJkZjuR+7sooLhAvCUa9CPqzYHCQZ2Wc7Hw9an9t6q8C69q4P6DpTcTfJTk=,iv:7FIgUG5+HoPrNBrzeugyu6Xq8sUfiKJTbhVvecQtWQw=,tag:j+uYUJgPI2WOGZhRGwZfEQ==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
-  version: 3.11.0
+  version: 3.12.2
