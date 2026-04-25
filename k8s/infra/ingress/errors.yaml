@@ -2,8 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wildcard-fallback
-  labels:
-    cocointhe.cloud/geoblock-disabled: ""
+  # labels:
+  #   cocointhe.cloud/geoblock-disabled: ""
   annotations:
     traefik.ingress.kubernetes.io/router.priority: "1"
 spec:

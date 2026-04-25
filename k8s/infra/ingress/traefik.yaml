@@ -35,11 +35,11 @@ spec:
     global:
       checkNewVersion: false
       sendAnonymousUsage: false
-    experimental:
-      plugins:
-        oidc:
-          moduleName: github.com/lukaszraczylo/traefikoidc
-          version: v0.8.21
+    # experimental:
+    #   plugins:
+    #     oidc:
+    #       moduleName: github.com/lukaszraczylo/traefikoidc
+    #       version: v0.8.21
     tlsStore:
       default:
         certificates:
@@ -142,7 +142,8 @@ spec:
       websecure:
         http:
           middlewares:
-          - ingress-errors@kubernetescrd
+          - ingress-errors@kubernetescrd 
+          - ingress-geoblock@kubernetescrd
           - ingress-modsec@kubernetescrd
         forwardedHeaders:
           trustedIPs: ["10.0.0.0/8"]
