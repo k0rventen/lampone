@@ -17,10 +17,10 @@ spec:
     apps:
       - name: haven
         image: ghcr.io/ancsemi/haven:3.8.0@sha256:952f8eb9802ed9c390f871e8e080893b8d44344957c223552994e634b9cc7f53
-        containerSpec:
-          envFrom:
-            - secretRef:
-                name: haven-config
+        # containerSpec:
+        #   envFrom:
+        #     - secretRef:
+        #         name: haven-config
         volumeMounts:
           - name: haven-data
             mountPath: /data
