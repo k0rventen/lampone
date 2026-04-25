@@ -8,32 +8,11 @@
 
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
-<br>
-
-![avail](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Favailability&style=for-the-badge)
-<br>
-![cluster temp](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fcluster_temperature&style=for-the-badge)
-![cluster power](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fcluster_power_draw&style=for-the-badge&color=ffda1e)
-<br>
-![nodes](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fnodes_count&style=for-the-badge&color=purple)
-![pods](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fpods_count&style=for-the-badge&color=purple)
-![cluster version](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fkubernetes_version&style=for-the-badge&color=blue)
-![flux version](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fflux_version&style=for-the-badge&color=blue)
-<br>
-![cluster uptime](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fcluster_uptime_days&style=for-the-badge&color=blue)
-![cluster cpu](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fcluster_cpu_usage&style=for-the-badge)
-![cluster ram](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fcluster_memory_usage&style=for-the-badge)
-![nfs disk](https://shields.cocointhe.cloud/endpoint?url=http%3A%2F%2Fkromgo.services%3A8080%2Fnfs_disk_usage&style=for-the-badge)
-
-
 </div>
 
 <details>
 <summary id="tableOfContents">Table of Contents</summary>
 
-- [Hardware](#hardware)
-  - [Bill of materials](#bill-of-materials)
-  - [3D printed parts](#3d-printed-parts)
 - [Software](#software)
   - [Requirements](#requirements)
   - [OS](#os)
@@ -43,42 +22,11 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
   - [Public facing services through a VPS](#public-facing-services-through-a-vps)
   - [SOPS setup](#sops-setup)
   - [OIDC-based ssh access w/ opkssh](#oidc-based-ssh-access-w-opkssh)
-  - [Staging env](#staging-env)
   - [Backup strategy](#backup-strategy)
     - [restic setup](#restic-setup)
-    - [garage config](#garage-config)
-    - [velero restore process](#velero-restore-process)
   - [Traefik WAF + geoblocking](#traefik-waf--geoblocking)
-  - [Hyperconverged storage w/ Longhorn](#hyperconverged-storage-w-longhorn)
 
 </details>
-
-
-## Hardware
-
-This is what the cluster looks like:
-
-<div align="center">
-
-![cluster](./resources/cluster.jpeg)
-</div>
-
-### Bill of materials
-
-What it's made of:
-
-- 3 [raspberry pi 4 (8Go)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
-- 1 [gigabit ethernet 5 ports switch](https://www.tp-link.com/home-networking/soho-switch/tl-sg105/)
-- 1 [1To lexar ES3 usb SSD](https://www.lexar.com/products/Lexar-ES3-Portable-SSD/)
-- 3 [32Go Sandisk USB3 flash drive](https://www.sandisk.com/products/usb-flash-drives/sandisk-ultra-usb-3-0?sku=SDCZ48-032G-U46)
-- 1 [80mm fan](https://www.thermalright.com/product/tl-8015w/)
-- 3 very short cat6 ethernet cables
-- a [3d printed rack](https://github.com/k0rventen/lampone/tree/main/resources/3d)
-- some m3 threaded inserts and screws
-
-### 3D printed parts
-
-The rack is a remix of [this one](https://makerworld.com/en/models/180806-raspberry-pi-4-5-mini-server-rack-case). I've included the [stls here](https://github.com/k0rventen/lampone/tree/main/resources/3d) that I remixed/designed, aka the vented sleds for the PI4 and the SSD, and the side fan mount.
 
 
 ## Software
@@ -141,11 +89,11 @@ Some things aren't automated but it's mainly toil (one-time-things during setup 
 - [sops](https://github.com/getsops/sops) + [age](https://github.com/FiloSottile/age/): encryption
 - [git](https://git-scm.com/): change management
 - [gitleaks](https://github.com/gitleaks/gitleaks): secret detection as a pre-commit hook
-- vcluster-cli: connect/pause/resume/reset the vcluster 
-```
 
+
+```
 # install everything needed
-brew install git ansible fluxcd/tap/flux sops age gitleaks opkssh loft-sh/tap/vcluster 
+brew install git ansible fluxcd/tap/flux sops age gitleaks opkssh
 
 # tell git where to find its hooks
 git config core.hooksPath .githooks
@@ -199,7 +147,7 @@ ansible-playbook -i inventory.yaml -l lampone cluster-install.yaml
 ### Public facing services through a VPS
 
 I previously used Cloudflare Tunnels to expose some apps to WAN without opening ports on my ISP router (and also being behind CGNAT).
-Due to concerns regarding their ability to decrypt traffic at the edge (as they provision their own cert for the domain), I switched to [rathole](https://github.com/rathole-org/rathole) + a VPS. I'm currently renting one at [ByteHosting](https://bytehosting.cloud/index) in Germany. The 'server' side on the VPS forwards all the traffic from port 80/443 to the client running in my cluster, which then forwards everything to my dedicated traefik instance, which handles SSL and routing. A traefik is in front of rathole to properly pass the client's IP in the headers down the chain.
+Due to concerns regarding their ability to decrypt traffic at the edge (as they provision their own cert for the domain), I switched to [rathole](https://github.com/rathole-org/rathole) + a VPS. The 'server' side on the VPS forwards all the traffic from port 80/443 to the client running in my cluster, which then forwards everything to my dedicated traefik instance, which handles SSL and routing. A traefik is in front of rathole to properly pass the client's IP in the headers down the chain, and requires an https upgrade on port 80.
 
 Here is the compose for the VPS:
 
@@ -266,7 +214,7 @@ tcp:
 
 
 
-And an example server config file:
+And an example server config file for rathole:
 
 ```toml
 [server]
@@ -314,29 +262,6 @@ Whenever possible, authentification is managed through my OIDC provider (pocketI
 
 4. On the client, do a `opkssh login` then ssh should be seamless.
 
-### Staging env
-
-My staging environment is managed through [vcluster](https://github.com/loft-sh/vcluster). 
-A virtual cluster is deployed inside my actual cluster, and has access to the ingressclass and storageclass of the underlying cluster. The flux controller can deploy resources in the vcluster by specifying the kubeconfig to use if necessary (see the `staging/deploy.yaml` file).
-
-This allows a isolated cluster for testing things like new versions of various software, deploying new CRDs or testing RBAC rules or NetPols, and other cluster-wide changes without impacting the production environment. 
-
-Quick commands:
-
-```bash
-# connect and switch kubeconfig
-vcluster connect vcluster
-
-# disconnect
-vcluster disconnect
-
-# destroy the vcluster
-vcluster delete vcluster
-
-# and recreate from scratch 
-flux reconcile hr -n staging vcluster
-```
-
 
 ### Backup strategy
 
@@ -377,124 +302,9 @@ Init the repo from the nfs server (this assumes passwordless ssh auth):
 restic init -r sftp:<remote_server_ip>:/mnt/backup/nfs-backups
 ```
 
-#### garage config
-
-To configure garage as an s3 backend for velero, the following commands shall be ran on the garage container:
-
-```sh
-k exec garage-xx -- /garage status
-k exec garage-xx -- /garage layout assign -z dc1 -c 1G node_id
-k exec garage-xx -- /garage layout apply --version 1
-k exec garage-xx -- /garage bucket create velero
-k exec garage-xx -- /garage key create velero
-k exec garage-xx -- /garage bucket allow --read --write --owner velero  --key velero
-```
-
-The key and secret printed when running `key create` can be reported in velero's config.
-
-#### velero restore process
-
-To create a one shot backup of an app:
-
-```
-velero backup create groceries -l app=groceries -n backups
-```
-
-Check its status:
-
-```
-velero backup describe groceries -n backups --details
-```
-
-To restore it:
-
-```sh
-# suspend the flux resource
-flux suspend hr -n cloud groceries
-
-# scale down the deployment
-k scale --replicas 0 deploy groceries -n cloud
-
-# delete the pvc (necessary for velero to recreate it and restore its content through kopia)
-k delete pvc groceries-data -n cloud
-
-# restore
-velero restore create --from-backup groceries
-
-# wait until done
-velero restore describe groceries --details
-```
-
 
 ### Traefik WAF + geoblocking
 
 Since one of my traefik is exposed publicly, it's always a good idea to add basic security hygiene. This is done using 2 plugins for traefik:
 - [geoblock](github.com/PascalMinder/geoblock), for whitelisting countries that are allowed to connect. By default the plugins makes a request to a public API, which is not ideal. I developed/deployed a small local service, which pulls a geoDB from [IPinfo](https://ipinfo.io/) once a day, and the plugin hit it, benefiting from local resilience, and faster responses. 
 - [modsecurity](github.com/acouvreur/traefik-modsecurity-plugin) forwards requests to a owasp/modsecurity container, which detects bad behavior (SQLi, paths, ..) and stops generic attack through detection rules.
-
-### Hyperconverged storage w/ Longhorn
-
-After encountering various issues related to NFS (for example, SQLite concurrency through NFS for jellyfin), I decided to try some hyperconverged storage. Piraeus seemed like a solid option, but it seems arm64 is not yet an available platform for it.
-
-I went for longhorn instead. Some usb flash drives are plugged into the raspberries, and mounted in `/var/lib/longhorn` using a systemd mount unit. Deployment is done through their helm chart (see [here](k8s/infra/longhorn/longhorn.yaml)), and with the redundancy, the 3x32Go flash drives give me around 56Gi of schedulable storage. The storage is at least 3x faster than through NFS (measured using dd at around 130MB/s, which is the advertised speed of the drives).
-The resilience seems very good, as data locality is not a requirement. I can pull (and already have done so for testing) a usb key from a node, and the workloads just keep going.
-
-Resources-wise, the whole longhorn-system uses around 1Gi of RAM (across 3 nodes, as almost all components are replicated), so 300Mi per node. CPU usage is also up, around 5 to 6%:
-
-```sh
-> k top pods --sum -n longhorn-system
-NAME                                                CPU(cores)   MEMORY(bytes)
-longhorn-manager-jkx8n                              23m          122Mi
-...                                                 ________     ________
-                                                    254m         993Mi
-```
-
-As I had to move some PV data from the nfs storageclass to longhorn's, I used the following:
-1. Create new PV for longhorn's storageclass
-2. Scale to 0 the deployment which storage will be migrated  
-3. Deploy a pod with mounts for both classes:
-   ```yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: jellyfin-copy
-    spec:
-      containers:
-        - image: busybox
-          name: busybox
-          command:
-            - sleep
-            - "inf"
-          volumeMounts:
-            - name: jellyfin-cache
-              mountPath: "/jellyfin-cache"
-            - name: jellyfin-config
-              mountPath: "/jellyfin-config"
-            - name: jellyfin-longhorn-cache
-              mountPath: "/longhorn-cache"
-            - name: jellyfin-longhorn-config
-              mountPath: "/longhorn-config"
-
-      volumes:
-        - name: jellyfin-cache
-          persistentVolumeClaim:
-            claimName: jellyfin-cache
-
-        - name: jellyfin-config
-          persistentVolumeClaim:
-            claimName: jellyfin-config
-
-        - name: jellyfin-longhorn-cache
-          persistentVolumeClaim:
-            claimName: jellyfin-longhorn-cache
-
-        - name: jellyfin-longhorn-config
-          persistentVolumeClaim:
-            claimName: jellyfin-longhorn-config
-   ```
-4. In the container, copy from one folder to another:
-   ```sh
-   cp -a /jellyfin-cache/. /longhorn-cache
-   ...
-   ```
-5. Delete the pod, update the mounts on the deployment, scale back up.
