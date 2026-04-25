@@ -50,4 +50,5 @@ spec:
 
         ingress:
           domain: jellyfin.cocointhe.cloud
+          public: true
 
