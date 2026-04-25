@@ -142,8 +142,8 @@ spec:
       websecure:
         http:
           middlewares:
-          - ingress-errors@kubernetescrd 
           - ingress-geoblock@kubernetescrd
+          - ingress-errors@kubernetescrd 
           - ingress-modsec@kubernetescrd
         forwardedHeaders:
           trustedIPs: ["10.0.0.0/8"]
