@@ -41,12 +41,24 @@ spec:
   - Egress
   egress:
   - to:
-    - ipBlock: # pod subnet
-        cidr: 10.0.0.0/8
     - ipBlock: # VIP of the cluster
         cidr: 192.168.0.0/16
-    - ipBlock: # pod subnet
-        cidr: 172.16.0.0/16
     ports:
     - protocol: TCP
       port: 443
+---
+# allow at least dns to coredns for all
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pocket-id
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          app: pocket-id

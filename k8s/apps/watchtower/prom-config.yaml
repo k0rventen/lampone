@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: prom-config
 stringData:
-  values.yaml: ENC[AES256_GCM,data:HuwHWCdjyp7uUSojrkpfknnOhGEvU8fx3ta0z/9Iix7/QxoVWCm4wQNcGztUAQMbZazexMrOh9vgoNO3jNJxWlz9sFsPl/nxi++g/NcfnZWYhbg3TMRcAfAINCqp+b0v9fDPASMytywJJqjcnMk0eCEFiJAI7fbfbSCbpWGrlCcaPX61EhWZNpbx+qeAJHkIXGzh93dMVOP7CbOSKU2RNOVf1XgyyHnUarYoUh59u+Kum81j+UkPHfFCrfs1NMXBs/YlQ30eT5tmV1L6M3szMt4AFhuNqzM+uKKhZKrRHCX/qNY9dWCrZuY4Emzq67YSChHebKpCDuOgYVJGOevC7dnyNZF2NqMF8z5TTy+tCqip9TZ44O/add17mqt3ZgxfpJzcFQ7qEegjncCj+pIA0T+2bFx/eYCtQYukm8nc6SKokT2l93+G09GIaFP3V5nqEP9pNNSyzngzU+Z/7R7GFBzLkaxpBZrsq4Q2SnHxyl6Z0x6zgC6rHgJLHrSFQZ3bEKacDohpjSCUAhNdumWutWYzMKPMGU3Rf6GyaI9+ZOKgrrJp/BuDotGx8DjGdhkyA7GxZRDz+Zk/PNQ0VP3owm2NaLaplA7+nX/iuQpz84xXMBlv8w3MrWo/zJDB5zpYUKlUFy1516Pu1kTSmb4+p7ZwQwTkSLbI6kYG+VwyNqlfwxhkmVGagG5CIZtnFDYGz0rOoU29X83pr5k8WoVA61JMr8pDUv0NPT/72MPY5LKler0aaJCFNWcWUjifFcnwyRzEzZZmItYyiZ9D+i3cmNy47GXpbOu6EKKGDQINWYw=,iv:FqweV6+I+xNmJowhbxhgiy/a7oGGT6S49AZYuysPiP4=,tag:4Tx2YE3nGAHG7oR/VCVn1Q==,type:str]
+  values.yaml: ENC[AES256_GCM,data:b9oGXs4VJwUukFCpb1eS8zrL443YI3kXZrdjj0fqQa56IpDbTQeJPjFaD48PCfPMRHF72S5YNrlqvqyECjbIDAta47LKeIaP8jSxskXZeqSMPgQPi/hhZu442dJkr6cTvdujA9vmFRN6uCFWKbPI10F+5EMzxmEdoTE+c1aOYOm42e6+Q5rmPkYd+f1c/tMF493+Rgx3aI7RlrF+Hn4eHgAW9bdb0Xyc/v9ZMlg5C0otbBKrdRfVPuQjwA6nSnRyhM3lFHHzA2h97VRGKtuUCMeJY3TmpNJwVqvqNmCwZLMc+o6NfFbssPLHfjwdBMgfpExwM2EL1uuC25HItDNZ5LgznuSkcSXQfntNP3iS2V2uDQY+Imu9SD5lXyX8XkdW0DxPPG2KcLE5mW3LwyVuSGzpwfujOMqWRKKnlbgYgQdt1lJluGZzJ044YGQXoHsd6X91f9pTYkL+a0++XXZfS5L/PoWRfkkubHxReSXgmNCNM8Yfxr5Qun5JwcZ6+ArQbQUzG9L9EVUvC8bCRQtB/nuMDJEfAIadbItWK2zH4nEO+XT5vkrYOghCnpZx6/bRvhR5KOW7LLt7V/5PwSoAbauehe1IofE5tQ1TMAaub+DCeNDrv8X7Vo0VIyFmQhZFIAh8AWFmHmVJXIRX6D4e1Rajx7BGshuFTZgGeG1TZKJMIw==,iv:+0V/ZaayWkycl0BfqXdJUZHTgJyrdP9H807QKNPYy+0=,tag:2GPmYtZX5XOEKYF89767dw==,type:str]
 sops:
   age:
     - recipient: age16xc3m2q69s2le4hah3pcne50qn6mljhgc9mxekskwf0mp8fc0vaq5q5dz2
@@ -15,7 +15,7 @@ sops:
         UE1KT1BEc0c5L2tNQVBlRVBsVlBDTjQKh33j1yOzEmpI24EKDHgJOoFIyKXgLC6u
         eIBxuRjfNLexjQ90M/QoRSwIKr1lQ2ZB01/oiYdgta5WR1IB4FkU+A==
         -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2026-03-11T21:14:32Z"
-  mac: ENC[AES256_GCM,data:vJrHcj8mKXqLe0IooxiE7q+ofCQHWRdFMDP1mv7HN6jYHQ9sfvtfzTGTF8i41aNtxDAYprlkCJIcV2mbDwWei4RTdbdK+HNkDtN8Hn5xFbMoZprHZSfdqKoStuirQlOmnOJMczlnzy+5LsIbDDBzAaVUedA74Xp98dNHyks4Dfw=,iv:0pQE6qVjplk8Tm3JXypDqS/rhNAw6loqxcvnrza2RSU=,tag:ThnffwPg7RPf8vGTP7Au5A==,type:str]
+  lastmodified: "2026-04-25T21:16:18Z"
+  mac: ENC[AES256_GCM,data:egS8u1XEFgx5FRYAjeLCEhZRnsVCEg9ARLHuJDPhZEgpx65uvHjLsY+TMbCnYJqxygyUYcANX9z3ckciyXrOJMGpYehO5NOxk7KWo4ls6Vwy9WB81XKr1IUAOBVTGgXSVBBDNArz9WS6LxYNMXMqftEVhQXrsnJMk1pPozyAcGI=,iv:YD8Vh9R578eM1IUrC2KZgd9UQeZh1a+j4y8KIFnT8+s=,tag:59k5e3+SMwvtrIg8W0+3jA==,type:str]
   encrypted_regex: (token|email|^data$|^stringData$|webhook$|creds$|secrets$)
-  version: 3.12.1
+  version: 3.12.2
