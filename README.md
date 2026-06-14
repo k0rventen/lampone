@@ -1,6 +1,5 @@
-### Note: This was my cluster up until early 2026. I've since moved to another setup (I've outgrown the pi's compute), but this repo will stay as is, because it's kinda cool and unique. 
-
 <div align="center">
+<h3>Note: This was my cluster up until early 2026. I've since moved to another setup (I've outgrown the pi's compute), but this repo will stay as is, because it's kinda cool and unique. </h3>
 
 ![logo](./resources/logo.png)
 
@@ -9,27 +8,18 @@
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 <br>
-
 ![avail](https://img.shields.io/badge/Availability%20(7d)-99.4%25-green?style=for-the-badge)
-
 <br>
-
 ![cluster temp](https://img.shields.io/badge/Cluster%20_temp-39%C2%B0C-green?style=for-the-badge)
 ![cluster power](https://img.shields.io/badge/Cluster%20power-15.6W-yellow?style=for-the-badge)
-
 <br>
-
 ![nodes](https://img.shields.io/badge/nodes-3-purple?style=for-the-badge)
 ![pods](https://img.shields.io/badge/pods-114-purple?style=for-the-badge)
 ![cluster version](https://img.shields.io/badge/k8s%20version-v1.34.1-blue?style=for-the-badge)
 ![flux version](https://img.shields.io/badge/fluxcd%20version-v2.8.3-blue?style=for-the-badge)
-
-
 <br>
-
 ![cluster uptime](https://img.shields.io/badge/uptime-283%20days-blue?style=for-the-badge)
 ![cluster cpu](https://img.shields.io/badge/cluster%20cpu-38%25-green?style=for-the-badge)
-
 ![cluster ram](https://img.shields.io/badge/cluster%20memory-61%25-orange?style=for-the-badge)
 ![nfs disk](https://img.shields.io/badge/cluster%20disk-29%25-green?style=for-the-badge)
 
@@ -70,6 +60,7 @@ This is what the cluster looked like (early 2026):
 </div>
 
 Previous 'versions':
+
 <details>
 <summary id="tableOfContents">Late 2025</summary>
 <div align="center">
