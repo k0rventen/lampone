@@ -1,5 +1,6 @@
 <div align="center">
-<h3>Note: This was my cluster up until early 2026. I've since moved to another setup (I've outgrown the pi's compute), but this repo will stay as is, because it's kinda cool and unique. </h3>
+
+<h4>Note: This was my cluster up until early 2026. I've since moved to another setup (I've outgrown the pi's compute), but this repo will stay as is, because it's kinda cool and unique.</h4>
 
 ![logo](./resources/logo.png)
 
@@ -8,6 +9,7 @@
 My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 
 <br>
+    
 ![avail](https://img.shields.io/badge/Availability%20(7d)-99.4%25-green?style=for-the-badge)
 <br>
 ![cluster temp](https://img.shields.io/badge/Cluster%20_temp-39%C2%B0C-green?style=for-the-badge)
@@ -56,23 +58,31 @@ My self hosted cloud, available at [cocointhe.cloud](https://cocointhe.cloud).
 This is what the cluster looked like (early 2026):
 
 <div align="center">
+
 ![cluster](./resources/cluster.jpeg)
+
 </div>
 
 Previous 'versions':
 
 <details>
 <summary id="tableOfContents">Late 2025</summary>
+
 <div align="center">
+
 ![cluster](./resources/cluster-end-2025.png)
 </div>
+
 </details>
 
 <details>
 <summary id="tableOfContents">Early 2025</summary>
+
 <div align="center">
+
 ![cluster](./resources/cluster.gif)
 </div>
+
 </details>
 
 ### Bill of materials
